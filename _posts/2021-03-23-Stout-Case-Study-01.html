@@ -12,7 +12,7 @@ tags: [banking, fraud, skewed, gbm, logistic, decisiontree, classification, outl
  
 <h2><span style="text-decoration: underline;"><strong>Introduction</strong></span></h2>
     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anyone with a bank account currently living must have encountered the words 'Transaction Fraud'.
-		It might be their personal experience or a third-party experience heard from someone else or from agents selling insurance. 
+		It might be their personal exprience or a third-party experience heard from someone else or from agents selling insurance. 
 		As the world is becoming more and more digital, the transaction frauds also increasing at a rapid pace. 
 		In a study, it is found out that 24 bilion USD is lost due to credit card fraud transactions in one year.</p>
 
@@ -136,6 +136,7 @@ tags: [banking, fraud, skewed, gbm, logistic, decisiontree, classification, outl
 	<h4>Datetime features</h4>
 	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		'Step' is the only datetime feature. Hour of the day, Day of the week, Day of the month, Week of the month variables are created in this exercise. Codes are written below.
+		<img src="images/ABB/CTree 2.png">
 		Some other variables that can be created are day to hour transactions, day to hour fraud transactions and hours since last fraud transaction.</p>
 <img src="/images/cs1_datetime.PNG">
 
@@ -143,6 +144,7 @@ tags: [banking, fraud, skewed, gbm, logistic, decisiontree, classification, outl
 	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		There are three categorical features present in the data - 'type', 'nameOrig' and 'nameDest'. 'nameOrig' and 'nameDest' are ignored during this exercise because it is very memory and time-consuming to work with millions of unique categories.
 		Only 'type' is handled using get_dummies() function of pandas. Code and output is given below.
+		<img src="images/ABB/CTree 2.png">
 		Provided there are no space and processing power issues, variables like number of cash-in/cash-out/etc. transactions made by a customer during last hour/3 hours/6 hours/1 day can be calculated.</p>
 <img src="/images/cs1_dummies.PNG">
 
@@ -152,6 +154,7 @@ tags: [banking, fraud, skewed, gbm, logistic, decisiontree, classification, outl
 		 As fraud also can be a reason why there is such a differnce, creating such variables would be useful. 
 		Also log transformations as explained in the previous section also would be created. 
 		Ratio between different balances can also turn out to be useful. One is added to denominator to handle the missing values
+		<img src="images/ABB/CTree 2.png">
 		Interaction variables with 'type' can be created. Binned quantitative variables also sometimes give a good result in case of regression modelling.</p>
 <img src="/images/cs1_quant.PNG">
 
@@ -199,20 +202,36 @@ tags: [banking, fraud, skewed, gbm, logistic, decisiontree, classification, outl
 		Since we are dealing with skewed data, accuracy is not a suitable metric to compare model performances. F1 score and AUC are better metrics in this case. </p>
 
 <img src="/images/cs1_model_perf1.PNG">
+<img src="/images/cs1_perf2.PNG">
 
 		As we can see, GBM model is performing the best out of the three models in terms of F1 score and AUC.
 	
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
 		Precision and recall can also be calculated and compared depending on the business requirements. If the business values loss remedy more than anything else, recall is the metric to go to becasue we can get how many actual frauds are captured. If customer experience matters, we can check precision. </p>
-		Depending on what we need to maximize - precision or recall, the right cut-off for probabilities can be selected.
+		Depending on what we need to maximize - precision or recall, the right cut-off for probabilities can be selected. In the below case, for GBM model precision and recall of thresholds 0.5 and 0.95 are compared.
+		
+<img src="/images/cs1_perf3.PNG">
 
+<p> Let's assume that a bank using a fraud strategy of amount greater than 200000. This means that bank is flagging any transaction greater than 200000 as fraud. 
+	We can compare the GBM model output with this strategy to see the incremental benefit in frauds captured. Let's use the test sample to compare. </p>
 	
+<img src="/images/cs1_perf4.PNG">
+
+<p> As we can see from the above image, GBM model captures 30% more frauds than the existing strategy. We can also see the raw increase in losses saved due to GBM model. </p>
+
+<img src="/images/cs1_perf5.PNG">
+
+<p> 33 millions is saved due to using GBM model
+
 <h2><span style="text-decoration: underline;"><strong>Proposals to improve the model</strong></span></h2>
 
 	<p> •	Run the entire process above on PySpark instead of Python which saves lot of time and memory.</p>
 	<p> •	Explore other outlier treatment techniques to handle the quantitative variables in a better manner.</p>
-	<p> •	Get more data and information to solve the problem of '2 variables not talking with each other' issue.</p>
+	<p> •	Diagnose the data to solve the problem of '2 variables not talking with each other' issue.</p>
 	<p> •	More variables can be created as mentioned in the feature generation section.</p>
 	<p> •	Sampling techniques other than Undersampling can be used and the best model can be taken.</p>
 	<p> •	Hyperparameter tuning is not done on any model. There is still lot of scope of improvement by tuning the models.</p>
 	<p> •	Selecting the best model based out of precision and recall rather than AUC and F-1 score</p>
+
+
+<p> The jupyter notebook with the code explained above is present in <a href="https://www.kaggle.com/saivamshi/eda-and-modelling">here</a> </p>.
