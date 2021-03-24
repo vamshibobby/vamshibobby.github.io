@@ -1,0 +1,237 @@
+---
+layout: post
+title: Modelling Fraud Transaction data
+excerpt: How to detect fraud transactions?
+permalink: /fraud-transactions
+publish: false
+tags: [banking, fraud, skewed, gbm, logistic, decisiontree, classification, outliers, visualization, sklearn]
+---
+
+<link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+
+ 
+<h2><span style="text-decoration: underline;"><strong>Introduction</strong></span></h2>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anyone with a bank account currently living must have encountered the words 'Transaction Fraud'.
+		It might be their personal exprience or a third-party experience heard from someone else or from agents selling insurance. 
+		As the world is becoming more and more digital, the transaction frauds also increasing at a rapid pace. 
+		In a study, it is found out that 24 bilion USD is lost due to credit card fraud transactions in one year.</p>
+
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Banking and financial institutions are facing severe challenges due to fraudulent transactions.
+		To tackle these frauds, there is a need for banks to put some strategies in place so that customers' money is not lost.
+		The most common strategy used by banks is put a threshold on transaction amount and any transaction above that amount requires multiple-authentications from customer.
+		This method works well in most of the cases but it is a crude way to make a fraud strategy as it spoils the customer experience. 
+		Also having a dumb strategy like this would not work because of the fraudsters' scary ability of adapting to different environments. 
+		An evolving and intelligent fraud policy is the best solution to this problem. Machine learning is the perfect answer and algorithms like Boosting and Regression can be used to classify frauds.
+		</p>
+
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Post building a model, we can use this to predict whether a fraud can happen or not and only authenticate a transaction if the moedl says so.
+		There is another problem that many banks encounter while model implementation that is to run the model on real-time basis and give results instantly. Unlike models to optimize marketing campaigns or determine customer's risk score which can be done in batch, transaction models need to be run on real-time.
+		Hence there is lot of emphasis on big data cloud platforms like AWS, Azure and Hadoop that stores data and implement machine learning models on scale when considering transaction frauds.
+		</p>
+
+	
+<p>This case study aims to answer some of the questions related to transaction frauds using visualizations. Couple of classification models would also be built at the end and the features that drive these models' performance would be explained.</p> 
+	
+<h2><span style="text-decoration: underline;"><strong>Approach</strong></span></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		This dataset is taken from <a href="https://www.kaggle.com/ntnu-testimon/paysim1">Kaggle</a>.
+		The dataset is creating by simulating mobile money transactions based on a sample of real transactions extracted from one month of financial logs from a mobile money service implemented in an African country. 
+		Though the data is synthetic, the insights and model should be accurate as it is based on real-life transactions.</p>
+
+<img src="/images/cs1_head.PNG">
+
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		The data consists of ~6.4 million transactions over a 1 month time period. Time is recorded at an hour level. So there are 31*24 = 744 hours of data recorded.
+		The variable 'isFraud' tells whether a transaction is fraud or not.
+		There are other independent variables like tpye of the transaction, opening and closing balance of customer, opening and closing balance of the recipient and transaction amount.
+		There are 5 transaction type, ~6.35M customers are ~2.7M recipients involved in this data.	
+</p>
+<img src="/images/cs1_dtypes.PNG">	
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		In this case study, Python is used to manipulate, visualize and model the data. Numpy and Pandas libraries are used to manipulate data, Matplotlib and Seaborn are used to visualize the data and Scikit-Learn and Keras are used to model the data.
+		Since the data is large, PySpark is the better option to do data manipulation as it incorporated parallel processing. But for explanation purpose, Base Python is easier and hence Python is used throught the case study.</p>
+
+<h2><span style="text-decoration: underline;"><strong>Issues with the dataset</strong></span></h2>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+	Simple univariate and bivariate analysis is done on all the variables to diagnose the data. There are primarily four issues with the data. </p>
+
+	<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		First, the number of frauds are in avery minute amount in the data. From a logical standpoint, it makes sense and also it is good for the society that there are very less number of frauds happening.
+		But from a modelling and data point of view, less number of events is a troublesome issue and there is a need of solving it before developing the model.
+	</p>
+<img src="/images/cs1_fraudrate.PNG">
+
+	<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		Secondly, there are very big outliers in the quantitative variables. Generally, very very big outliers are removed because there is a chance that it because of wrong recording.
+		But in this case, wrong recording is not the case because very large frauds transactions tend to happen. So we cannot remove the outliers and there is a need of treating them before analysis or modelling.
+		
+</p>
+<img src="/images/cs1_histplots.PNG">		
+	<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		Though there are five transaction types, frauds happened only when the transaction type is TRANSFER or CASH_IN. Frauds happen the most during Payments, Transfers, Cash-outs from customers and Cash-ins to recipients.
+		This trend is not reflected in the data.
+	</p>	
+<img src="/images/cs1_type.PNG">
+
+	<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		Last but not the least, many variables are not talking with each other. For example, take a transaction from a customer "C1900366749" to recipient "C997608398".
+		The data states that opening customer balance is 4465, closing customer balance is 0, opening recipient balance is 10845, closing recipient balance is 157982.12 and transaction amount is 9644.94.
+		The difference between opening and closing balance of customer, difference between opening and closing balance of recipient and transaction amount must be equal which is not happening for most of the observations. (>85%)
+		Also, the customer's account balance remained same when TRANSFER transactions happened more than 15% of the times.
+		There are multiple reasons this can happen - Different currencies or multiple transactions at the same time or wrong recording. We don't have solution for any of these problems.
+
+</p>	
+	<img src="/images/cs1_issues.PNG">
+
+
+<h2><span style="text-decoration: underline;"><strong>Exploratory Data Analysis</strong></span></h2>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		Through the exploratory data analysis, we can prove some hypothesis about fraud attacks and get some visual interpretations from data.</p>
+	
+	<p> One popular trend is fraud attacks by big criminals happen in a short period of time. To check this, we can plot the fraud attacks with time. In our data, we have data every hour.
+		The below graph shows the fraud attack every hour in the 744 hours. As expected there are peaks and troughs and also a very big peak. This suggests that frauds happen in short period of time.
+	</p>	
+	
+	<img src="/images/cs1_vis1.PNG">
+
+	<p> Another analysis that can be interesting is at which hour of a day, the fraud attacks generally happen. From the step variable, we can get the hour of day. The below plot shows the frauds at different hours of day.
+		It tells that frauds happen during sleeping hours the most. Close to 20% of transactions that happen during 4 AM and 5 AM are fraud transactions.
+	</p>	
+<img src="/images/cs1_vis2.PNG">
+
+	<p> We can look at the transaction amount and customer's opening balance for fraud and non-fraud cash-out and tranfer transactions seperately. Median for these variables are compared because mean is biased because of outliers. From the plots, we can see that these variables are abnormally high for fraud cash-out transactions compared to non-fraud cash-out transactions.
+	</p>	
+<img src="/images/cs1_vis3.PNG">
+
+	<p> We can look at the recipient's opening balance for fraud and non-fraud cash-out and transfer transactions seperately. From the plots, we can see that this variable is very less for transfer fraud transactions compared to transfer non-fraud transactions which is reverse of what we observed in customer balance.
+	</p>	
+<img src="/images/cs1_vis4.PNG">
+
+	<p> As mentioned in the issues sections, there is a need of outlier treatment in the quantitative variables. Two popular ways to treat the outliers are transformations and capping. 
+		For transformation, Log(1+x) is a decent one when there are zeroes present in the variable and 3*p75 is a good cut-off for capping. The box plots for one variable 'amount' are shown below pre and post transformations.
+	</p>
+<img src="/images/cs1_vis5.PNG">
+	
+<h2><span style="text-decoration: underline;"><strong>Data Cleaning</strong></span></h2>
+
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		Before model development, we need to clean the data i.e. deal with missing values and outliers. The missing values information is shown below. Since there are none, we are going to continue with next step</p>
+<img src="/images/cs1_msng.PNG">
+
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		For outlier treatment, capping will not be done on the quantitative variables as we can lose some information because frauds happen at high transactions. Log transformed variables and the original variables both will also be used in the model and the algorithm decides which variable is better. Code is shown below</p>
+<img src="/images/cs1_outlier.PNG">
+
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		Other issues with the data (variables not talking with each other) can also be dealt with if more information is present. The less event rate is handled during model development using sampling techniques.</p>
+
+
+<h2><span style="text-decoration: underline;"><strong>Feature Generation</strong></span></h2>
+
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		There are 5 numeric features, 1 categorical feature and 1 datetime feature that we can use in the model. In this section, the three different feature types would be explored.</p>
+
+	<h4>Datetime features</h4>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		'Step' is the only datetime feature. Hour of the day, Day of the week, Day of the month, Week of the month variables are created in this exercise. Codes are written below.
+		<img src="images/ABB/CTree 2.png">
+		Some other variables that can be created are day to hour transactions, day to hour fraud transactions and hours since last fraud transaction.</p>
+<img src="/images/cs1_datetime.PNG">
+
+	<h4>Categorical features</h4>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		There are three categorical features present in the data - 'type', 'nameOrig' and 'nameDest'. 'nameOrig' and 'nameDest' are ignored during this exercise because it is very memory and time-consuming to work with millions of unique categories.
+		Only 'type' is handled using get_dummies() function of pandas. Code and output is given below.
+		<img src="images/ABB/CTree 2.png">
+		Provided there are no space and processing power issues, variables like number of cash-in/cash-out/etc. transactions made by a customer during last hour/3 hours/6 hours/1 day can be calculated.</p>
+<img src="/images/cs1_dummies.PNG">
+
+	<h4>Quantitative features</h4>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		As seen in the issues section, difference between opening and closing balance should give the transaction amount.
+		 As fraud also can be a reason why there is such a differnce, creating such variables would be useful. 
+		Also log transformations as explained in the previous section also would be created. 
+		Ratio between different balances can also turn out to be useful. One is added to denominator to handle the missing values
+		<img src="images/ABB/CTree 2.png">
+		Interaction variables with 'type' can be created. Binned quantitative variables also sometimes give a good result in case of regression modelling.</p>
+<img src="/images/cs1_quant.PNG">
+
+	
+<h2><span style="text-decoration: underline;"><strong>Modelling</strong></span></h2>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		Prior to model developemnt the dataset need to be divided into train and test samples. In this case, since the modelling dataset is huge, model will be built on a 25% sample only. Post sampling, ~1.1M samples are present in train dataset.
+		Code to create train and test samples is given below. </p>
+<img src="/images/cs1_traintest.PNG">
+	
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		Three different algorithms are used to build a model during this case study - Decision Tree, Logistic Regression, and GBM.
+		To deal with skewed data, the most popular methods like Undersampling, oversampling and SMOTE. Undersampling removes records of the majority class randomly and oversampling duplicates the records of minority class. SMOTE is a modelling technique that generates new minority class records and the most accurate. Since SMOTE is a modelling technique and oversampling increases the already large sample size, undersmapling is used in this exercise.
+		Algorithms like Random Forest and LightGBM have inbuilt weight adjusting parameters to deal with skewed data.</p>
+
+
+	<h4>Decision Tree Classifier</h4>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		A simple decision tree classifier with a depth of 6 is built. The code and decision tree is shown below.
+		</p>
+<img src="/images/cs1_dtcode.PNG">
+<img src="/images/cs1_dtree.PNG">
+
+	<h4>Logistic Regression</h4>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		Logistic regression model without regularization is built with all the variables inputted. The code and equation are shown below.
+		Multiple iterations to remove multi-collinearity and variables with high p-values need to be done on logistic regression equation to get the best model.
+		</p>
+<img src="/images/cs1_logreg.PNG">
+<img src="/images/cs1_logreg_eq.PNG">
+
+
+	<h4>Gradient Boosting</h4>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		A cross validation GBM model is built with little hyperparameter tuning. AUC is used to select the best model from the different cross-validation folds. Top 10 most important variables are also plotted below.
+
+		</p>
+<img src="/images/cs1_gbm.PNG">
+<img src="/images/cs1_importance.PNG">
+
+	
+	
+<h2><span style="text-decoration: underline;"><strong>Model Performance</strong></span></h2>
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		Since we are dealing with skewed data, accuracy is not a suitable metric to compare model performances. F1 score and AUC are better metrics in this case. </p>
+
+<img src="/images/cs1_model_perf1.PNG">
+<img src="/images/cs1_perf2.PNG">
+
+		As we can see, GBM model is performing the best out of the three models in terms of F1 score and AUC.
+	
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		Precision and recall can also be calculated and compared depending on the business requirements. If the business values loss remedy more than anything else, recall is the metric to go to becasue we can get how many actual frauds are captured. If customer experience matters, we can check precision. </p>
+		Depending on what we need to maximize - precision or recall, the right cut-off for probabilities can be selected. In the below case, for GBM model precision and recall of thresholds 0.5 and 0.95 are compared.
+		
+<img src="/images/cs1_perf3.PNG">
+
+<p> Let's assume that a bank using a fraud strategy of amount greater than 200000. This means that bank is flagging any transaction greater than 200000 as fraud. 
+	We can compare the GBM model output with this strategy to see the incremental benefit in frauds captured. Let's use the test sample to compare. </p>
+	
+<img src="/images/cs1_perf4.PNG">
+
+<p> As we can see from the above image, GBM model captures 30% more frauds than the existing strategy. We can also see the raw increase in losses saved due to GBM model. </p>
+
+<img src="/images/cs1_perf5.PNG">
+
+<p> 33 millions is saved due to using GBM model
+
+<h2><span style="text-decoration: underline;"><strong>Proposals to improve the model</strong></span></h2>
+
+	<p> •	Run the entire process above on PySpark instead of Python which saves lot of time and memory.</p>
+	<p> •	Explore other outlier treatment techniques to handle the quantitative variables in a better manner.</p>
+	<p> •	Diagnose the data to solve the problem of '2 variables not talking with each other' issue.</p>
+	<p> •	More variables can be created as mentioned in the feature generation section.</p>
+	<p> •	Sampling techniques other than Undersampling can be used and the best model can be taken.</p>
+	<p> •	Hyperparameter tuning is not done on any model. There is still lot of scope of improvement by tuning the models.</p>
+	<p> •	Selecting the best model based out of precision and recall rather than AUC and F-1 score</p>
+
+
+<p> The jupyter notebook with the code explained above is present in <a href="https://www.kaggle.com/saivamshi/eda-and-modelling">here</a> </p>.

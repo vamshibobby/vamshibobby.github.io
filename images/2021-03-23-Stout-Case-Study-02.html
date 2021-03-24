@@ -1,0 +1,128 @@
+---
+layout: post
+title: Python queries to get marketing metrics
+excerpt: How to query data in Python Pandas?
+permalink: /python-sql-query
+publish: false
+tags: [customer orders, python, attrition, pandas]
+---
+
+<link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+
+ 
+<h2><span style="text-decoration: underline;"><strong>Introduction</strong></span></h2>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SQL and Python are widely used languages to query data and get insights from them. SQL is primarily used for querying data and get tables as outputs. It is very easy to combine multiple tables an maintain relationships between tables. On the other hand, Python can be used for wide range of applications and the libraries like Pandas and Numpy can handle far more complicated transformations compared to SQL. Simple transformations like Group by and complicated analysis like statistical tests can be performed with ease in Python.</p>
+	
+<p>In most of the cases, SQL queries run faster than Python. But because of difficulty in handling high level transformations in SQL, many companies generally manipulate data in SQL when the relationships between tables are important. After that, they read the data into Python and extract insights and visualizations using Pandas and Matplotlib libraries</p>
+	
+<p>In this case study, we are going to look at a customer orders dataset and perform some queries in Python to get some insights.</p>
+ 
+
+<h2><span style="text-decoration: underline;"><strong>Dataset</strong></span></h2>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 	
+	    The dataset contains 3 years worth of customer orders. There are 4 columns in the csv dataset: index, CUSTOMER_EMAIL(unique identifier as hash), Net_Revenue, and Year.
+		There are 685,927 orders in the data distributed across three years - 2015, 2016 and 2017.
+		There are multiple observations for one customer but only 1 observation for customer x year in the dataset.
+		By doing a simple group by, we can see that there are 6162 customers with three years of data, 68,985 customers with 2 years of data and remaining with 1 year of data.
+		<img src="images/casestudy2_img1.PNG">
+    </p>
+
+	
+<h3><span style="text-decoration: underline;"><strong>Total revenue for the current year</strong></span></h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp This query is simple in both Python and SQL. 
+		In Python, we can use the Pandas Group following with sum aggregation function to get the revenue for the current year.
+		<img src="images/casestudy2_img2.PNG">
+	</p>
+
+
+<h3><span style="text-decoration: underline;"><strong>New Customer Revenue</strong></span></h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp A customer is considered new in the current year if there is no data pertaining to that in the customer in the previous year. Since data prior to 2015 is not available, new customer revenue in 2015 cannot be calculated. </p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp There are multiple ways to get the new customer revenue in Python. 
+		One method is to sort all the rows by customer email and year and then take the difference of year variable between current row and previous row. 
+		New customer revenue is the sum of sales when the difference between years variable is equal to 0 because this variable would change if there are multiple sales for one customer. 
+		Code is shown below
+		<img src="images/casestudy2_img3.PNG"></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		The above method is time and memory intensive. 
+		Another easy method is to get the minimum year of every customer and add up all the rows when minimum year is equal to current year. 
+		Code is shown below
+		<img src="images/casestudy2_img4.PNG"></p>
+
+<p>The output for both the methods is same.</p>
+
+
+<h3><span style="text-decoration: underline;"><strong>Existing Customer Growth</strong></span></h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		Existing Customer growth is the difference between revenue of existing customers in the current year and revenue of existing customers in the existing year.
+		Again, growth for 2015 cannot be calculated as there is no prior information.
+		To accomplish this, we need to sort the orders by customer email and year, calculate difference between years for current observation and previous observation and calculate difference between sales for current observation and previous observation.
+		The customer growth is the sum of difference in sales when the difference in years is exactly 1. Code and output are given below.
+		<img src="images/casestudy2_img5.PNG"></p>
+<p> Like the previous query, the above method is time and memory intensive. 
+		Faster method is to calculate the revenue of existing customers in the current year and revenue of existing customers in the existing year seperately and then take the difference. The queries for these metrics will be explained later in this article.
+	</p>
+
+
+<h3><span style="text-decoration: underline;"><strong>Revenue lost from attrition</strong></span></h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		Revenue attrition is a very important metric for lot of businesses and it refers to the loss of revenue from one period to next.
+		To get this metric, an assumption that the attrited customers generate same revenue if they are still on the book need to be made.
+		Attrition for 2017 cannot be calculated because information post 2017 is not present.
+		This can be calculated in the same way as existing customer growth but difference need to be taken between current year and next year instead of current year and previous year. Other method is to get all the observations when the current year is equal to maximum year for the customer and sum them up. Code and output are given below.
+		<img src="images/casestudy2_img6.PNG"></p>
+	</p>
+
+
+<h3><span style="text-decoration: underline;"><strong>Existing Customer Revenue Current Year</strong></span></h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		This cannot be calculated for 2015 as we don't know whether a customer is existing or not in 2015.
+		Difference between years should be created like in the existing customer growth query. Sum of sales when the difference equal to 1 gives the existing customers revenue every year.
+		<img src="images/casestudy2_img7.PNG"></p>
+	</p>
+
+
+<h3><span style="text-decoration: underline;"><strong>Existing Customer Revenue Prior Year</strong></span></h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		This cannot be calculated for 2015 as we don't know whether a customer is existing or not in 2015.
+		To get this, we need to merge the existing customers data with the original data by year and year+1 respectively. Code is shown below.
+		<img src="images/casestudy2_img8.PNG"></p>
+	</p>
+
+
+<h3><span style="text-decoration: underline;"><strong>Total Customers Current Year</strong></span></h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		The method is same as the total revenue current year metric. Instead of using sum aggregate function, count need to be used.
+		<img src="images/casestudy2_img9.PNG"></p>
+	</p>
+
+
+<h3><span style="text-decoration: underline;"><strong>Total Customers Previous Year</strong></span></h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		The numbers in the above query need be shifted by 1 observation.
+		<img src="images/casestudy2_img10.PNG"></p>
+	</p>
+
+
+<h3><span style="text-decoration: underline;"><strong>New Customers</strong></span></h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		This is calculated in the same way as new customer revenue metric.
+		<img src="images/casestudy2_img11.PNG"></p>
+	</p>
+
+
+<h3><span style="text-decoration: underline;"><strong>Lost Customers</strong></span></h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		This is calculated in the same way as revenue lost from attrition. We use count instead of sum
+		<img src="images/casestudy2_img12.PNG"></p>
+	</p>
+
+
+<h2><span style="text-decoration: underline;"><strong>Final Output</strong></span></h2>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp 
+		All the metrics calculated for the three years can be merged and shown in a single table. Code and output are shown below.
+		<img src="images/casestudy2_img13.PNG"></p>
+	</p>
+	
+<p> The jupyter notebook is present <a href="https://github.com/vamshibobby/marketingcasestudy">here</a>. </p>
