@@ -1,0 +1,122 @@
+# Sai Vamshi Atukuri — research papers (full abstracts and key results)
+
+Independent researcher working on decision models, LLM agents and evaluation. Independent Researcher, USA. ORCID https://orcid.org/0009-0003-3111-7148. GitHub https://github.com/vamshibobby.
+Generated 2026-11-22.
+
+==============================================================================
+
+System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline
+
+Author: Sai Vamshi Atukuri (Independent Researcher, ORCID 0009-0003-3111-7148)
+Date: 2026-11-22
+Status: Submitted to Preprints.org on 22 November 2026 (manuscript ID 245718, under screening); the DOI will be added here when assigned.
+Full text (HTML): https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/
+PDF: https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/system1-orchestration-tau2-airline.pdf
+Code: https://github.com/vamshibobby/jev-tau2-harness
+Keywords: conversational agents; tool calling; τ²-Bench; decision models; LLM orchestration; latency; guardrails
+
+Abstract
+
+Tool-calling chat agents spend most of a customer’s wait on serial LLM calls, and many of those
+calls make decisions that a small typed-decision model or plain code can make exactly. We present a
+decision-model harness, which places a decision model, one that answers yes/no and multiple-choice
+questions, beside the agent’s LLM rather than in front of it. For our experiments we use Jev, a
+hosted decision model that answers in about half a second. One Jev call per turn decides whether the
+turn needs a tool, which of the customer’s reservations it is about, whether flight statuses matter,
+whether the customer confirmed a write, and the route and date of a flight search, while a
+speculative model call runs; code then issues those tool calls in one batch and checks every write
+against the airline policy. On τ2-Bench Airline (50 tasks × 4 trials, Gemini 2.5 Flash as the
+simulated customer) we compare three agent models alone and inside the harness. Code issued 77–84%
+of all tool calls and model calls per turn fell by 24–37%. pass4, the share of tasks solved on all
+four tries, rose on all three models, by 10.7 points on average, and nearly doubled on the weakest
+model, Gemma 4 26B A4B (0.220 to 0.420). Conversations with a policy-forbidden write fell from 43 to
+10. pass1 rose on Gemma (0.465 to 0.560) and Gemini 3.8 Flash (0.810 to 0.860) and fell slightly on
+Gemini 3.5 Flash-Lite. Cost fell 17% and 25% on the two Gemini models. Reply latency fell at every
+percentile on Flash-Lite (median −31%, p90 −44%); on Gemini 3.8 Flash, tool-using turns were 43%
+faster but the slowest turns were not. On four further open models of 30–35B parameters (50 tasks ×
+1 trial), the harness raised pass1 by 6–12 points on the three that started below 0.70 and made
+tool-using turns 22–41% faster on all four.
+
+Key results (numbers as reported in the paper)
+
+- Tool calls issued by code: 0% → 76.7–84.4% (all three models)
+- Model calls per customer turn: 3.01 → 1.91 (Gemini 3.8 Flash); 2.50 → 1.90 (Flash-Lite); 2.17 → 1.58 (Gemma)
+- pass4: 0.740 → 0.800 (Gemini 3.8 Flash); 0.540 → 0.600 (Flash-Lite); 0.220 → 0.420 (Gemma 4 26B A4B)
+- pass1: 0.810 → 0.860 (Gemini 3.8 Flash); 0.760 → 0.735 (Flash-Lite); 0.465 → 0.560 (Gemma)
+- Conversations with a policy-forbidden write: 43 → 10 (5 → 0, 9 → 3, 29 → 7)
+- Agent cost per conversation: $0.0388 → $0.0323 (−17%); $0.0151 → $0.0113 (−25%); $0.0062 → $0.0065
+- Reply time to first token, Flash-Lite: median 4.18 → 2.87 s (−31%); p90 12.51 → 7.05 s (−44%)
+- Four further open 30–35B models (50 × 1): pass1 +6 to +12 points on the three below 0.70; tool-using turns 22–41% faster on all four
+  (All numbers from Tables 3–5 and the abstract of the paper. Gemini 3.8 Flash latency comes from a separate side-by-side 50 × 1 run.)
+
+How to cite
+
+Atukuri, S. V. (2026). System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline. Preprint submitted to Preprints.org, DOI pending. https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/
+
+@misc{atukuri2026system1,
+  author       = {Atukuri, Sai Vamshi},
+  title        = {{System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on $\tau^2$-Bench Airline}},
+  year         = {2026},
+  month        = nov,
+  howpublished = {Preprint, submitted to Preprints.org (ID 245718)},
+  url          = {https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/},
+  note         = {Preprints.org, 2026, DOI pending}
+}
+
+==============================================================================
+
+Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory
+
+Author: Sai Vamshi Atukuri (Independent Researcher, ORCID 0009-0003-3111-7148)
+Date: 2026-09-26
+Status: Published on Zenodo on 26 September 2026, DOI 10.5281/zenodo.22977925.
+Full text (HTML): https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/
+PDF: https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/affordable-models-for-serial-fiction.pdf
+Code: https://github.com/vamshibobby/webnovel-harness
+DOI: https://doi.org/10.5281/zenodo.22977925
+Keywords: LLM creative writing; serial fiction; instruction following; story bible; long-context memory; model selection; affordable language models; AI-assisted writing
+
+Abstract
+
+Our goal is to identify an affordable set of language models and prompting practices that can help a
+broad community of authors begin and sustain AI-assisted serial fiction. We compare six models
+priced below one US dollar per million input and output tokens through 687 chapter-generation
+attempts, covering instruction detail, output constraints, reasoning settings, story bibles,
+retrieval, history compression and sequential continuation. A selected novel provides a common
+reference. We distinguish following the author’s brief from resembling the reference and from
+writing an engaging scene. In a 144-attempt instruction-design comparison, 108 drafts were usable,
+but only 44 also met the length requirement. Reference-event coverage increased from 4.7% with vague
+direction to 90.7% with detailed prose instructions; numbering the same instructions yielded 88.9%
+and no consistent advantage across scenes. DeepSeek V3.2 led the selected detailed-instruction
+checks, GLM 5.3 Flash was the most balanced creative-scene candidate in exploratory AI readings, and
+Tencent Hy3 was the most reliable writer in that comparison. Story-bible updates introduced
+different risks, including retained contradictions and unexecuted repairs. The findings support
+choosing models by role, specifying causal requirements and creative freedom separately, and
+validating both chapters and memory updates. They are practical starting points from a single-novel
+study, not a universal literary ranking.
+
+Key results (numbers as reported in the paper)
+
+- Writing attempts in the study: 687 across five experiment groups
+- Instruction-design test: usable drafts / also met length: 108 of 144 usable; 44 met the 1,233–1,667-word band
+- Original events supported, by brief: Vague 4.7%; concise 32.7%; detailed prose 90.7%; numbered 88.9%
+- Numbering the same instructions (paired, scenes A/B/C): −4.2, −4.8 and +3.7 percentage points: no consistent advantage
+- Full-brief requirements supported (detailed + numbered): DS3.2 97.0% (12 of 12 usable); Hy3 93.3% (12 of 12 usable)
+- Hy3 with reasoning disabled vs a 1,024-token reasoning hint: Usable 2/8 → 8/8; met length 0/8 → 6/8; median time about 80 → 18 s
+- Exact output constraints, all six rules together: 1 of 36 stress-test attempts (a DS4 draft)
+- Summary-heavy vs full history (50 prior chapters), cost per usable chapter: −80% Gemini Lite; −56% GLM; −71% DS3.2
+  (Numbers from the abstract, Tables 2, 4, 5, 6, 8, 9 and 15, and Section 3.3. Literary judgments in the paper are exploratory AI readings, not a human reader panel.)
+
+How to cite
+
+Atukuri, S. V. (2026). Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory. Zenodo. https://doi.org/10.5281/zenodo.22977925
+
+@misc{atukuri2026affordable,
+  author       = {Atukuri, Sai Vamshi},
+  title        = {{Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory}},
+  year         = {2026},
+  month        = sep,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.22977925},
+  url          = {https://doi.org/10.5281/zenodo.22977925}
+}

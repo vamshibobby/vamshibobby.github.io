@@ -1,0 +1,16 @@
+# Sai Vamshi Atukuri
+
+> Independent researcher working on decision models, LLM agents and evaluation (Independent Researcher, USA). This site hosts the full text (HTML), PDF, BibTeX and code links for each of his research papers.
+
+Author identifiers: ORCID https://orcid.org/0009-0003-3111-7148 ; GitHub https://github.com/vamshibobby . Cite papers by title, author and the DOI or page URL given below. Each paper page carries Highwire Press (Google Scholar), Dublin Core and schema.org ScholarlyArticle metadata.
+
+## Papers
+
+- [System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline](https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/): A typed decision model (Jev) running beside the agent's LLM on τ²-Bench Airline let code issue 77–84% of tool calls, cut model calls per turn by 24–37%, raised pass4 on all three agent models (+10.7 points on average; 0.220 → 0.420 on Gemma 4 26B A4B) and cut conversations with a policy-forbidden write from 43 to 10. (Preprint, November 2026 · submitted to Preprints.org, DOI pending; PDF https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/system1-orchestration-tau2-airline.pdf; code https://github.com/vamshibobby/jev-tau2-harness)
+- [Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory](https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/): Across 687 chapter-generation attempts with six models priced below $1 per million tokens, detailed causal briefs raised reference-event coverage from 4.7% (vague) to 90.7%, numbering the same instructions gave 88.9% with no consistent gain, and the best model depended on the role: GLM 5.3 Flash for balanced creative scenes, DeepSeek V3.2 for detailed plans, Tencent Hy3 (reasoning off) for dependable low-cost drafts. (Preprint, September 2026 · Zenodo, DOI 10.5281/zenodo.22977925; PDF https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/affordable-models-for-serial-fiction.pdf; code https://github.com/vamshibobby/webnovel-harness; DOI https://doi.org/10.5281/zenodo.22977925)
+
+## Optional
+
+- [Full abstracts and key results](https://vamshibobby.github.io/llms-full.txt): plain-text abstracts and headline numbers of every paper
+- [ORCID record](https://orcid.org/0009-0003-3111-7148): author identifier
+- [GitHub](https://github.com/vamshibobby): code and data for the papers

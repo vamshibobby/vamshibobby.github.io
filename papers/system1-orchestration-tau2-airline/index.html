@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline</title>
+<meta name="description" content="Tool-calling chat agents spend most of a customer’s wait on serial LLM calls, and many of those calls make decisions that a small typed-decision model or…">
+<meta name="author" content="Sai Vamshi Atukuri">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="canonical" href="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/">
+<link rel="icon" href="data:,">
+<meta name="color-scheme" content="light dark">
+
+<!-- Highwire Press tags for Google Scholar -->
+<meta name="citation_title" content="System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline">
+<meta name="citation_author" content="Atukuri, Sai Vamshi">
+<meta name="citation_author_institution" content="Independent Researcher">
+<meta name="citation_author_orcid" content="https://orcid.org/0009-0003-3111-7148">
+<meta name="citation_author_email" content="vamshibobby1996@gmail.com">
+<meta name="citation_publication_date" content="2026/11/22">
+<meta name="citation_online_date" content="2026/11/22">
+<meta name="citation_pdf_url" content="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/system1-orchestration-tau2-airline.pdf">
+<meta name="citation_abstract_html_url" content="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/">
+<meta name="citation_fulltext_html_url" content="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/">
+<meta name="citation_language" content="en">
+<meta name="citation_keywords" content="conversational agents; tool calling; τ²-Bench; decision models; LLM orchestration; latency; guardrails">
+<meta name="citation_technical_report_institution" content="Independent Researcher">
+
+<!-- Dublin Core -->
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.title" content="System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline">
+<meta name="DC.creator" content="Atukuri, Sai Vamshi">
+<meta name="DC.date" content="2026-11-22">
+<meta name="DC.identifier" content="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/">
+<meta name="DC.description" content="Tool-calling chat agents spend most of a customer’s wait on serial LLM calls, and many of those calls make decisions that a small typed-decision model or…">
+<meta name="DC.language" content="en">
+<meta name="DC.type" content="Text.Preprint">
+<meta name="DC.rights" content="https://creativecommons.org/licenses/by/4.0/">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline">
+<meta property="og:description" content="Tool-calling chat agents spend most of a customer’s wait on serial LLM calls, and many of those calls make decisions that a small typed-decision model or…">
+<meta property="og:url" content="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/">
+<meta property="og:site_name" content="Sai Vamshi Atukuri — Research">
+<meta property="article:published_time" content="2026-11-22">
+<meta property="article:author" content="Sai Vamshi Atukuri">
+<meta property="article:tag" content="conversational agents">
+<meta property="article:tag" content="tool calling">
+<meta property="article:tag" content="τ²-Bench">
+<meta property="article:tag" content="decision models">
+<meta property="article:tag" content="LLM orchestration">
+<meta property="article:tag" content="latency">
+<meta property="article:tag" content="guardrails">
+<meta property="og:image" content="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/fig/fig1-sequence.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/fig/fig1-sequence.png">
+<meta name="twitter:title" content="System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline">
+<meta name="twitter:description" content="Tool-calling chat agents spend most of a customer’s wait on serial LLM calls, and many of those calls make decisions that a small typed-decision model or…">
+<link rel="alternate" type="application/pdf" href="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/system1-orchestration-tau2-airline.pdf" title="PDF">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "ScholarlyArticle",
+ "@id": "https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/#article",
+ "headline": "System-1 Orchestration for Enterprise Conversational Agents",
+ "name": "System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline",
+ "author": {
+  "@type": "Person",
+  "@id": "https://orcid.org/0009-0003-3111-7148",
+  "name": "Sai Vamshi Atukuri",
+  "url": "https://vamshibobby.github.io/",
+  "affiliation": {
+   "@type": "Organization",
+   "name": "Independent Researcher"
+  },
+  "sameAs": [
+   "https://orcid.org/0009-0003-3111-7148",
+   "https://github.com/vamshibobby"
+  ]
+ },
+ "datePublished": "2026-11-22",
+ "abstract": "Tool-calling chat agents spend most of a customer’s wait on serial LLM calls, and many of those calls make decisions that a small typed-decision model or plain code can make exactly. We present a decision-model harness, which places a decision model, one that answers yes/no and multiple-choice questions, beside the agent’s LLM rather than in front of it. For our experiments we use Jev, a hosted decision model that answers in about half a second. One Jev call per turn decides whether the turn needs a tool, which of the customer’s reservations it is about, whether flight statuses matter, whether the customer confirmed a write, and the route and date of a flight search, while a speculative model call runs; code then issues those tool calls in one batch and checks every write against the airline policy. On τ2-Bench Airline (50 tasks × 4 trials, Gemini 2.5 Flash as the simulated customer) we compare three agent models alone and inside the harness. Code issued 77–84% of all tool calls and model calls per turn fell by 24–37%. pass4, the share of tasks solved on all four tries, rose on all three models, by 10.7 points on average, and nearly doubled on the weakest model, Gemma 4 26B A4B (0.220 to 0.420). Conversations with a policy-forbidden write fell from 43 to 10. pass1 rose on Gemma (0.465 to 0.560) and Gemini 3.8 Flash (0.810 to 0.860) and fell slightly on Gemini 3.5 Flash-Lite. Cost fell 17% and 25% on the two Gemini models. Reply latency fell at every percentile on Flash-Lite (median −31%, p90 −44%); on Gemini 3.8 Flash, tool-using turns were 43% faster but the slowest turns were not. On four further open models of 30–35B parameters (50 tasks × 1 trial), the harness raised pass1 by 6–12 points on the three that started below 0.70 and made tool-using turns 22–41% faster on all four.",
+ "description": "Tool-calling chat agents spend most of a customer’s wait on serial LLM calls, and many of those calls make decisions that a small typed-decision model or…",
+ "keywords": [
+  "conversational agents",
+  "tool calling",
+  "τ²-Bench",
+  "decision models",
+  "LLM orchestration",
+  "latency",
+  "guardrails"
+ ],
+ "inLanguage": "en",
+ "url": "https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/",
+ "mainEntityOfPage": "https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/",
+ "isAccessibleForFree": true,
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "encoding": {
+  "@type": "MediaObject",
+  "contentUrl": "https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/system1-orchestration-tau2-airline.pdf",
+  "encodingFormat": "application/pdf",
+  "name": "system1-orchestration-tau2-airline.pdf"
+ },
+ "isBasedOn": {
+  "@type": "SoftwareSourceCode",
+  "codeRepository": "https://github.com/vamshibobby/jev-tau2-harness",
+  "url": "https://github.com/vamshibobby/jev-tau2-harness"
+ }
+}
+</script>
+<style>:root{--bg:#fdfcf9;--fg:#1d1d1b;--muted:#5d5d57;--line:#dedbd2;--accent:#1f5fae;--box:#f3f1ea;--code:#f1efe8}
+@media (prefers-color-scheme:dark){:root{--bg:#16171a;--fg:#e6e4de;--muted:#a3a19a;--line:#34363b;--accent:#8ab8f0;--box:#1f2125;--code:#22252a}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.62 Charter,"Bitstream Charter","Sitka Text",Cambria,Georgia,serif}
+main,.site-head,.site-foot{max-width:46rem;margin:0 auto;padding:0 16px}
+.site-head{padding-top:18px;font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+.site-head a{color:var(--muted);text-decoration:none}
+.site-foot{margin-top:3rem;padding-bottom:2rem;border-top:1px solid var(--line);color:var(--muted);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25}
+h1{font-size:1.75rem;margin:1.4rem 0 .5rem}
+h1 .subtitle{display:block;font-size:1.15rem;font-weight:500;color:var(--muted);margin-top:.35rem}
+h2{font-size:1.3rem;margin:2.2rem 0 .6rem;padding-bottom:.25rem;border-bottom:1px solid var(--line)}
+h3{font-size:1.08rem;margin:1.6rem 0 .4rem}
+h4{font-size:1rem;margin:1.2rem 0 .3rem}
+.kicker,.byline,.status,.linkbar,.meta{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.kicker{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin:1.6rem 0 0}
+.byline{margin:.4rem 0;font-size:.98rem}
+.status{color:var(--muted);font-size:.9rem;margin:.3rem 0}
+.linkbar{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 0;padding:0;list-style:none;font-size:.92rem}
+.linkbar a{display:inline-block;padding:.28rem .7rem;border:1px solid var(--line);border-radius:6px;text-decoration:none;background:var(--box)}
+#abstract{background:var(--box);border-radius:8px;padding:.2rem 1.1rem .6rem;margin-top:1.5rem}
+#abstract h2{border:0;margin-top:1rem}
+.table-wrap{overflow-x:auto;margin:1.2rem 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;min-width:60%}
+caption{caption-side:bottom;text-align:left;color:var(--muted);font-size:13.5px;padding-top:.5rem;line-height:1.45}
+th,td{border-bottom:1px solid var(--line);padding:.35rem .55rem;text-align:left;vertical-align:top}
+thead th{border-bottom:2px solid var(--fg)}
+th[colspan]{text-align:center}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+figure{margin:1.6rem 0}
+figure img{display:block;max-width:100%;height:auto;margin:0 auto;background:#fff;border-radius:4px;padding:6px}
+figcaption{color:var(--muted);font-size:.9rem;margin-top:.5rem;line-height:1.5}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em}
+code{background:var(--code);padding:0 .2em;border-radius:3px;word-break:break-word}
+pre{background:var(--code);padding:.8rem 1rem;border-radius:6px;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0}
+#cite pre{white-space:pre-wrap}
+#references ol,#references ul{padding-left:1.6rem;font-size:.92rem}
+#references li{margin-bottom:.35rem}
+.papers{list-style:none;padding:0}
+.papers li{margin:0 0 1.8rem}
+.papers h3{margin:0 0 .25rem;font-size:1.12rem}
+.papers h3 a{text-decoration:none}
+.papers .meta{color:var(--muted);font-size:.88rem;margin:0 0 .35rem}
+.papers p{margin:.25rem 0}
+.papers .linkbar{margin-top:.5rem;font-size:.85rem}
+.note{color:var(--muted);font-size:.92rem}
+@media (max-width:540px){body{font-size:16px}h1{font-size:1.45rem}}</style>
+</head>
+<body>
+<header class="site-head"><a href="../../">← Sai Vamshi Atukuri · Research papers</a></header>
+<main>
+<article itemscope itemtype="https://schema.org/ScholarlyArticle">
+<header>
+<p class="kicker">Preprint · November 2026</p>
+<h1 itemprop="name">System-1 Orchestration for Enterprise Conversational Agents<span class="subtitle">Typed Decisions Beside the LLM on τ²-Bench Airline</span></h1>
+<p class="byline"><a href="../../" rel="author" itemprop="author">Sai Vamshi Atukuri</a> · Independent Researcher, USA · <a href="https://orcid.org/0009-0003-3111-7148">ORCID 0009-0003-3111-7148</a></p>
+<p class="status">Submitted to Preprints.org on 22 November 2026 (manuscript ID 245718, under screening); the DOI will be added here when assigned.</p>
+<ul class="linkbar"><li><a href="system1-orchestration-tau2-airline.pdf" type="application/pdf">PDF</a></li><li><a href="https://github.com/vamshibobby/jev-tau2-harness">Code</a></li><li><a href="#cite">Cite</a></li></ul>
+</header>
+<section id="abstract"><h2>Abstract</h2>
+<p>Tool-calling chat agents spend most of a customer’s wait on serial LLM calls, and many of those calls make decisions that a small typed-decision model or plain code can make exactly. We present a <em>decision-model harness</em>, which places a decision model, one that answers yes/no and multiple-choice questions, beside the agent’s LLM rather than in front of it. For our experiments we use Jev, a hosted decision model that answers in about half a second. One Jev call per turn decides whether the turn needs a tool, which of the customer’s reservations it is about, whether flight statuses matter, whether the customer confirmed a write, and the route and date of a flight search, while a speculative model call runs; code then issues those tool calls in one batch and checks every write against the airline policy. On τ<sup>2</sup>-Bench Airline (50 tasks × 4 trials, Gemini 2.5 Flash as the simulated customer) we compare three agent models alone and inside the harness. Code issued 77–84% of all tool calls and model calls per turn fell by 24–37%. pass<sup>4</sup>, the share of tasks solved on all four tries, rose on all three models, by 10.7 points on average, and nearly doubled on the weakest model, Gemma 4 26B A4B (0.220 to 0.420). Conversations with a policy-forbidden write fell from 43 to 10. pass<sup>1</sup> rose on Gemma (0.465 to 0.560) and Gemini 3.8 Flash (0.810 to 0.860) and fell slightly on Gemini 3.5 Flash-Lite. Cost fell 17% and 25% on the two Gemini models. Reply latency fell at every percentile on Flash-Lite (median −31%, p90 −44%); on Gemini 3.8 Flash, tool-using turns were 43% faster but the slowest turns were not. On four further open models of 30–35B parameters (50 tasks × 1 trial), the harness raised pass<sup>1</sup> by 6–12 points on the three that started below 0.70 and made tool-using turns 22–41% faster on all four.</p>
+</section>
+<section id="key-results"><h2>Key results</h2>
+<table><thead><tr><th scope="col">Result (τ²-Bench Airline, 50 tasks × 4 trials)</th><th scope="col">Model alone → inside the harness</th></tr></thead><tbody>
+<tr><th scope="row">Tool calls issued by code</th><td>0% → 76.7–84.4% (all three models)</td></tr>
+<tr><th scope="row">Model calls per customer turn</th><td>3.01 → 1.91 (Gemini 3.8 Flash); 2.50 → 1.90 (Flash-Lite); 2.17 → 1.58 (Gemma)</td></tr>
+<tr><th scope="row">pass<sup>4</sup></th><td>0.740 → 0.800 (Gemini 3.8 Flash); 0.540 → 0.600 (Flash-Lite); 0.220 → 0.420 (Gemma 4 26B A4B)</td></tr>
+<tr><th scope="row">pass<sup>1</sup></th><td>0.810 → 0.860 (Gemini 3.8 Flash); 0.760 → 0.735 (Flash-Lite); 0.465 → 0.560 (Gemma)</td></tr>
+<tr><th scope="row">Conversations with a policy-forbidden write</th><td>43 → 10 (5 → 0, 9 → 3, 29 → 7)</td></tr>
+<tr><th scope="row">Agent cost per conversation</th><td>$0.0388 → $0.0323 (−17%); $0.0151 → $0.0113 (−25%); $0.0062 → $0.0065</td></tr>
+<tr><th scope="row">Reply time to first token, Flash-Lite</th><td>median 4.18 → 2.87 s (−31%); p90 12.51 → 7.05 s (−44%)</td></tr>
+<tr><th scope="row">Four further open 30–35B models (50 × 1)</th><td>pass<sup>1</sup> +6 to +12 points on the three below 0.70; tool-using turns 22–41% faster on all four</td></tr>
+</tbody></table>
+<p class="note">All numbers from Tables 3–5 and the abstract of the paper. Gemini 3.8 Flash latency comes from a separate side-by-side 50 × 1 run.</p>
+</section>
+<section id="sec-1">
+<h2>1. Introduction</h2>
+<p>Enterprise conversational agents act through tools: they look up records, search inventory and change bookings. A typical turn runs the LLM once to ask for a tool, waits for the result, and runs it again to reply, so the customer waits for two or more serial model calls. Many of those calls decide things that need no general reasoning: the argument to a lookup is often an ID the customer just typed, the reservation a customer means is one of the few on their profile, the route of a flight search is a choice among twenty airports, and whether a cancellation is allowed follows from fields on the reservation.</p>
+<p>We borrow the dual-process framing of <em>fast</em> and <em>slow</em> thinking [<a href="#ref-12">12</a>]. System 1 is code plus Jev [<a href="#ref-11">11</a>], which answers typed questions with probabilities in a fraction of a second. System 2 is the general LLM, kept for open-ended language and judgement. The aim is to take every decision System 1 can make exactly off System 2’s critical path, without lowering task success or raising cost. Our contributions are: (1) a decision-model harness that runs one decision-model call per turn (Jev, in our experiments) <em>in parallel</em> with a speculative model call; (2) a rule for which tool arguments leave the model, with code issuing the resulting calls in one batch; (3) a “tool needed?” fast path that sends simple turns straight to the model; (4) a write gate that combines a code policy check with Jev’s confirmation answer, plus input and output guardrails on the same calls; and (5) a paired evaluation on three agent models of different strength and speed and four smaller open models, with an analysis of the simulated customer’s share of failures, and an account of where the harness does not help.</p>
+</section>
+<section id="sec-2">
+<h2>2. Related work</h2>
+<p><strong>Tool-using agents and their benchmarks.</strong> ReAct [<a href="#ref-27">27</a>] interleaves reasoning traces with tool calls, Toolformer [<a href="#ref-24">24</a>] teaches a model when and how to call an API, and Gorilla [<a href="#ref-21">21</a>] and ToolLLM [<a href="#ref-22">22</a>] fine-tune models to pick among thousands of real APIs and fill their arguments. Benchmarks moved from single calls to stateful, multi-turn work: API-Bank [<a href="#ref-15">15</a>] scores planning, retrieval and calling; ToolSandbox [<a href="#ref-17">17</a>] adds state dependencies between tools and an on-policy simulated user; AppWorld [<a href="#ref-25">25</a>] asks agents to drive nine apps through code. τ-bench [<a href="#ref-28">28</a>] brought the setting closest to customer service: a simulated customer, a domain policy the agent must enforce, a database whose final state is checked, and the pass<sup>k</sup> metric for consistency over repeated trials. τ<sup>2</sup>-Bench [<a href="#ref-2">2</a>] extends it to environments the user can also act on, and OpenRouter runs a public leaderboard on its airline domain [<a href="#ref-20">20</a>]. All of this work makes the LLM a better tool user. We take the opposite route: we leave the LLM as it is and move the mechanical part of tool use, copying IDs, choosing among enumerable options and checking policy, out of it.</p>
+<p><strong>Making LLM systems cheaper and faster.</strong> One line of work picks the cheapest model that will do. FrugalGPT [<a href="#ref-4">4</a>] and AutoMix [<a href="#ref-1">1</a>] cascade from small to large models and escalate when a check fails; Hybrid LLM [<a href="#ref-7">7</a>] and RouteLLM [<a href="#ref-19">19</a>] train a router that sends each query to a strong or a weak model before it runs. TinyAgent [<a href="#ref-8">8</a>] shows that a small, fine-tuned model can handle function calling on its own for a narrow domain, and Belcak et al. [<a href="#ref-3">3</a>] argue that most agent calls are repetitive and specialised enough for small models. A second line attacks latency in the serving stack and the call graph: speculative decoding [<a href="#ref-14">14</a>] drafts tokens with a small model and verifies them with a large one; Skeleton-of-Thought [<a href="#ref-18">18</a>] generates the parts of an answer in parallel; LLMCompiler [<a href="#ref-13">13</a>] plans function calls as a graph and runs independent ones at once; SGLang [<a href="#ref-29">29</a>] and Prompt Cache [<a href="#ref-9">9</a>] reuse computation across calls that share a prefix; and hedged requests [<a href="#ref-6">6</a>] trim tail latency in any distributed service. Our harness borrows from both lines but removes calls instead of choosing who makes them: decisions with an exact answer never reach the LLM, and the decision call we add runs in parallel with a speculative model call, so it is speculation at the level of whole calls rather than tokens.</p>
+<p><strong>Fast and slow components, guardrails and structured decisions.</strong> Dual-process designs [<a href="#ref-12">12</a>] have been tried in agents before. SwiftSage [<a href="#ref-16">16</a>] pairs a small fast model for routine actions with a large model for planning, and the Talker–Reasoner architecture [<a href="#ref-5">5</a>] lets a fast conversational model answer while a slower reasoner updates beliefs and plans in the background. In both, the fast part is still a generative LLM. On the safety side, Llama Guard [<a href="#ref-10">10</a>] classifies inputs and outputs with a dedicated LLM, and NeMo Guardrails [<a href="#ref-23">23</a>] scripts the rails a conversation may follow; each adds a call, or a step, in front of the model. Constrained decoding [<a href="#ref-26">26</a>] guarantees that a generator’s output fits a schema but does not make the choice faster or cheaper. Our System 1 differs in kind: a typed decision model returns probabilities over a fixed set of answers, so every guardrail, confirmation and argument choice is one cheap, parallel call whose answer code can act on with a threshold.</p>
+</section>
+<section id="sec-3">
+<h2>3. The decision-model harness</h2>
+<figure id="fig-1">
+<img loading="lazy" src="fig/fig1-sequence.png" alt="Sequence diagram of one customer turn across Customer, Harness (code), Decision model (Jev), Agent model and Tools" width="1412" height="1071">
+<figcaption><strong>Figure 1:</strong> One customer turn as a sequence diagram. IDs typed in the message are looked up by code first; Jev’s call and a speculative model call then run side by side. When Jev says no tool is needed, the model’s answer goes straight back; otherwise code fetches what Jev’s answers point to in one batch, and every write passes the gate before it runs.</figcaption>
+</figure>
+<p><strong>Decision models.</strong> The harness needs one component besides code: a <em>decision model</em>, which reads a short text state and answers typed questions (yes/no, or a choice among named options) with probabilities. Many models can play this role: safety classifiers such as Llama Guard [<a href="#ref-10">10</a>], the learned routers that pick an LLM per query [<a href="#ref-19">19</a>, <a href="#ref-7">7</a>], fine-tuned small classifiers, or a small LLM constrained to a fixed set of answers. The harness asks only for the answers and their probabilities, so any of them can be used. For this experiment we chose Jev, because it answers many typed questions in one request, returns a probability for every option, and is served through a public API.</p>
+<p><strong>Jev.</strong> Jev [<a href="#ref-11">11</a>] is a hosted typed-decision model from TypeSafe, served through OpenRouter’s decisions API. A request carries a short text state and any number of questions, each either yes/no (answered with a probability) or a choice among named options (answered with a probability per option). Its architecture and training data are not public; we treat it as a black box, called under the tag <code> typesafe/jev-latest</code> between 30 September and 6 October 2026. In our runs it answered the per-turn call in a median 0.53–0.56 s and cost $0.0006–0.0009 per conversation.</p>
+<p><strong>One turn</strong> (Figure <a href="#fig-1">1</a>). <em>IDs first:</em> user IDs and six-character reservation codes in the message are validated with read-only calls and issued as real tool calls, with no model call and no wait for Jev; a user with at most four reservations has all of them fetched when none is named, and flight statuses are fetched too when the message mentions a delay, cancellation or status. <em>Jev and a speculative model call:</em> one Jev request carries the questions of Table <a href="#tab-1">1</a>, and a model call starts at the same time (after the ID lookups’ results, on turns that had any). <em>Fast path:</em> when Jev’s <code>tool_needed</code> answer is below 0.5, the model’s answer goes out as is (26–31% of turns); if the model nonetheless asked for a tool, the call proceeds normally, except that below 0.2 the model is asked again without tool schemas. <em>Jev-chosen lookups:</em> otherwise, code issues in one batch the reservation Jev picked (or all of them, up to ten, when the customer means several or has not said which), the statuses of their flights when Jev says the reply depends on them, and the direct and one-stop searches when Jev names origin, destination and date; the speculative call is then left to finish unused and the model is called again with the results. Every search result, whoever issued it, gets per-cabin itinerary totals appended, so the <code>calculate</code> tool is removed from the model’s tool list. <em>Write gate:</em> a write runs only if it passes a code policy check and Jev’s <code>confirm</code> answer is at least 0.5 (Section <a href="#sec-3-3">3.3</a>). <em>Guardrails:</em> abuse ≥ 0.9 with no IDs in the message returns a fixed de-escalation reply; injection ≥ 0.8 adds a guard note and re-runs the model, on the fast path too; after a reply is sent, a second Jev call checks it, except on the fast path and for policy-mandated fixed lines.</p>
+<h3 id="sec-3-1">3.1 The decision question set</h3>
+<div class="table-wrap"><table id="tab-1">
+<caption><strong>Table 1:</strong> Every Jev question the harness asks. All input questions share one request and one state: the agent’s previous message, the customer’s latest message and today’s date.</caption>
+<thead>
+<tr>
+<th>Question</th>
+<th>Type</th>
+<th>Options</th>
+<th>Use and action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="4"><em>Input call, once per customer turn, in parallel with the model</em></td>
+</tr>
+<tr>
+<td><code>tool_needed</code></td>
+<td>yes/no</td>
+<td>–</td>
+<td>Fast path below 0.5: the model’s answer goes out (re-asked without tools below 0.2 if it asked for one)</td>
+</tr>
+<tr>
+<td><code>reservation</code></td>
+<td>choice</td>
+<td>the customer’s reservations (route, dates, cabin, passengers), all, none</td>
+<td>Code fetches the chosen one, or all, in one batch (≥ 0.5); asked once the profile is known</td>
+</tr>
+<tr>
+<td><code>flight_status</code></td>
+<td>yes/no</td>
+<td>–</td>
+<td>≥ 0.5 → code fetches the statuses of the flights in play</td>
+</tr>
+<tr>
+<td><code>next</code></td>
+<td>choice</td>
+<td>lookup, search, execute, reply, transfer</td>
+<td><code>search</code> ≥ 0.4 enables the code-run search</td>
+</tr>
+<tr>
+<td><code>origin</code>, <code>destination</code></td>
+<td>choice</td>
+<td>20 airports (“PHL (Philadelphia)”), none</td>
+<td>Search arguments, used at ≥ 0.4</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>choice</td>
+<td>16 dates (“May 19, 2024 (Sunday, 4 days from today)”), none</td>
+<td>Search argument, used at ≥ 0.4</td>
+</tr>
+<tr>
+<td><code>confirm</code></td>
+<td>yes/no</td>
+<td>–</td>
+<td>Write gate: &lt; 0.5 → write not executed; model told to obtain a yes if allowed</td>
+</tr>
+<tr>
+<td><code>abuse</code> / <code>injection</code></td>
+<td>yes/no</td>
+<td>–</td>
+<td>Fixed de-escalation reply (≥ 0.9, no IDs in the message) / guard note and re-run (≥ 0.8)</td>
+</tr>
+<tr>
+<td colspan="4"><em>Only when an insured cancellation’s eligibility depends on it (blocking)</em></td>
+</tr>
+<tr>
+<td><code>reason</code></td>
+<td>choice</td>
+<td>change of plan, airline cancelled, health, weather, other</td>
+<td>Policy check: insurance covers health or weather only</td>
+</tr>
+<tr>
+<td colspan="4"><em>Output call, after the reply is sent (logged, never blocking)</em></td>
+</tr>
+<tr>
+<td><code>leak</code> / <code>toxic</code> / <code>caved</code></td>
+<td>yes/no</td>
+<td>–</td>
+<td>Another person’s data or a card number / rudeness / obeying an override</td>
+</tr>
+</tbody>
+</table></div>
+<p>Choice options carry human-readable descriptions rather than bare codes, so Jev can match “my trip to Denver on the 27th” to a reservation, a city name to its airport and “the day after my flight” to a date; every choice has a <em>none</em> option, so Jev can decline. A Jev answer is acted on only above its threshold; below it the model’s own behaviour stands. The thresholds are fixed and simple: 0.5 for yes/no answers and reservation choices, 0.4 for the search arguments, and 0.8–0.9 for the guardrails.</p>
+<h3 id="sec-3-2">3.2 Where each tool argument comes from</h3>
+<div class="table-wrap"><table id="tab-2">
+<caption><strong>Table 2:</strong> Argument sourcing. Code and Jev fill only arguments whose correct value is a copy or a choice from a small, enumerable set; anything that needs judgement or free text stays with the model.</caption>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Argument</th>
+<th>Source</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>get_user_details</code></td>
+<td><code>user_id</code></td>
+<td>code</td>
+<td>Regex on the message, validated by a read-only lookup</td>
+</tr>
+<tr>
+<td><code>get_reservation_details</code></td>
+<td><code>reservation_id</code></td>
+<td>code, Jev</td>
+<td>A code in the message (code), or Jev’s choice among the customer’s own reservations</td>
+</tr>
+<tr>
+<td><code>get_flight_status</code></td>
+<td>number, date</td>
+<td>code, Jev</td>
+<td>From the fetched reservations: when the message names a reservation and mentions a delay or status (code), or when Jev says the reply depends on statuses</td>
+</tr>
+<tr>
+<td><code>search_direct_flight</code></td>
+<td>origin, dest., date</td>
+<td>Jev</td>
+<td>Choices over 20 airports and 16 dates (Table <a href="#tab-1">1</a>)</td>
+</tr>
+<tr>
+<td><code>search_onestop_flight</code></td>
+<td>origin, dest., date</td>
+<td>Jev</td>
+<td>Same answers; both searches run in one batch</td>
+</tr>
+<tr>
+<td><code>calculate</code></td>
+<td>expression</td>
+<td>removed</td>
+<td>Code appends per-cabin itinerary totals to every search result</td>
+</tr>
+<tr>
+<td>Writes (book, cancel, change, certificate)</td>
+<td>all</td>
+<td>model</td>
+<td>The model fills every argument; Jev only decides <em>whether</em> a write runs (<code>confirm</code>, <code>reason</code>)</td>
+</tr>
+<tr>
+<td><code>transfer_to_human_agents</code></td>
+<td>summary</td>
+<td>model</td>
+<td>Free text</td>
+</tr>
+</tbody>
+</table></div>
+<p>Table <a href="#tab-2">2</a> shows how arguments are filled. Code-issued calls enter the conversation history exactly like the model’s own tool calls, so the model reads their results on its next call and the benchmark scores them the same way.</p>
+<h3 id="sec-3-3">3.3 The write gate</h3>
+<p>τ<sup>2</sup>’s tools do not enforce the airline policy; the agent must. The gate checks every write in code before it runs. A cancellation is blocked if any flight has already flown, and otherwise allowed only if the booking is under 24 hours old, the cabin is business, the airline cancelled a flight, or the reservation is insured and the customer’s reason (Jev’s <code>reason</code> choice, a separate blocking call) is health or weather. A compensation certificate must match $100 × passengers for a cancelled flight or $50 × passengers for a delayed one, for a silver or gold member or an insured or business reservation. Basic-economy flights cannot be changed. An allowed write still runs only if Jev’s <code>confirm</code> answer, available from the start of the turn, is at least 0.5. A blocked write is never executed: the model gets a neutral explanation and is called again, up to three times, after which the write is dropped from the reply. A write that passes adds no time; a blocked one costs another model call. Replaying every task’s gold actions offline, the gate blocked none of the 31 gold writes it has rules for (cancellations, certificates and flight changes), with the cancellation reason stubbed either way.</p>
+</section>
+<section id="sec-4">
+<h2>4. Experimental setup</h2>
+<p>We use τ<sup>2</sup>-Bench v1.0.1 (commit <code>5bfa7e3</code>), airline domain, all 50 tasks with seed 300 and Gemini 2.5 Flash as the simulated customer, the customer model of OpenRouter’s leaderboard [<a href="#ref-20">20</a>], with τ<sup>2</sup>’s original system prompt. Three agent models span strength and speed, all on Vertex AI’s global endpoint with default decoding settings: <strong>Gemini 3.8 Flash</strong> (<code>gemini-3.8-flash</code>, thinking level <em>low</em>), <strong>Gemini 3.5 Flash-Lite</strong> (<code>gemini-3.5-flash-lite</code>, thinking level <em>low</em>) and <strong>Gemma 4 26B A4B</strong> (<code>google/gemma-4-26b-a4b-it-maas</code>, a mixture-of-experts open model with about 4B active parameters, through the managed OpenAI-compatible endpoint, no thinking setting). Each model runs alone (all 14 tools, one model call per step) and inside the harness, which differs by the components of Section <a href="#sec-3">3</a>, including the removed <code>calculate</code> tool. We tried two iterations of the harness; the aim of this work is not to tune a harness to a benchmark but to show what a decision model adds to a tool-calling agent. Runs were made between 1 and 5 October 2026.</p>
+<p><strong>Accuracy and cost</strong> come from 4 trials of every task (200 scored conversations per agent). Conversations that ended in an endpoint error were re-run, as τ<sup>2</sup> does by default: 0 and 3 re-run attempts for Gemini 3.8 Flash alone and with the harness, 1 and 3 for Flash-Lite, and 55 and 63 for Gemma, whose endpoint failed often; cost includes the spend of these attempts. <strong>Latency</strong> for Flash-Lite and Gemma comes from their 4-trial runs; Flash-Lite’s two runs ran side by side. For Gemini 3.8 Flash, latency comes from a separate side-by-side run of 50 tasks × 1 trial, made for latency only. Turns that contain a retried call are excluded from all latency figures.</p>
+<p><strong>Smaller open models.</strong> To see how the harness carries to small open-weight models, we ran four more models of 30–35B parameters through OpenRouter, each alone and inside the harness, 50 tasks × 1 trial, with the two arms side by side and every call sent to one pinned provider with no fallback: <strong>Qwen3.6-35B-A3B</strong> (<code>qwen/qwen3.6-35b-a3b</code>, DeepInfra, FP8, reasoning effort <em>low</em>), <strong>Nemotron 3.5 Lightning</strong> (<code>nvidia/nemotron-3.5-lightning</code>, 30B with 3B active, DeepInfra, BF16, reasoning effort <em>low</em>), <strong>Gemma 4 31B</strong> (<code>google/gemma-4-31b-it</code>, dense, Friendli) and <strong>Solar Mini 4</strong> (<code>upstage/solar-mini4</code>, 35B with 3B active, Upstage). These runs were made on 6 October 2026 with the same customer simulator, prompt and harness; a conversation in which the model kept emitting malformed tool-call JSON counts as a failure (Gemma 4 31B: 5 conversations alone, 3 with the harness).</p>
+<p><strong>Metrics.</strong> τ<sup>2</sup>’s pass<sup>k</sup> (k = 1…4: the chance that all <span class="math inline"><em>k</em></span> trials of a task succeed, averaged over tasks) and its database-match and communication checks; <em>tool-selection rate</em>, the share of gold tool calls whose tool the agent called at least once, and the <em>write-tool selection rate</em>, the same share over gold write calls only; <em>argument accuracy</em>, the share of the selected gold calls made with exactly the right arguments under τ<sup>2</sup>’s matcher; <em>write precision</em>, the share of the agent’s write calls that match a gold write; <em>policy-forbidden writes</em>, the number of conversations that made any write on a task whose correct outcome has no writes; the share of tool calls issued by code; model calls per customer turn; <em>reply time to first token</em> (TTFT), from the customer’s message reaching the agent to the first token of the agent’s final reply, excluding turns with a retried call; a <em>tool-using turn</em> is one with a code-issued call, a model tool call, or more than one model call; and agent cost at list price, with Vertex’s automatic prompt cache billed at its cached rate, plus Jev as billed.</p>
+</section>
+<section id="sec-5">
+<h2>5. Results</h2>
+<div class="table-wrap"><table id="tab-3">
+<caption><strong>Table 3:</strong> Accuracy, work and cost for each model alone and inside the harness (200 conversations per cell).</caption>
+<thead>
+<tr>
+<th></th>
+<th colspan="2">Gemini 3.8 Flash</th>
+<th colspan="2">Gemini 3.5 Flash-Lite</th>
+<th colspan="2">Gemma 4 26B A4B</th>
+</tr>
+<tr>
+<th>50 tasks × 4 trials</th>
+<th>alone</th>
+<th>harness</th>
+<th>alone</th>
+<th>harness</th>
+<th>alone</th>
+<th>harness</th>
+</tr>
+</thead>
+<tbody>
+
+
+<tr>
+<td>pass<sup>1</sup></td>
+<td class="num">0.810</td>
+<td class="num">0.860</td>
+<td class="num">0.760</td>
+<td class="num">0.735</td>
+<td class="num">0.465</td>
+<td class="num">0.560</td>
+</tr>
+<tr>
+<td>pass<sup>2</sup></td>
+<td class="num">0.773</td>
+<td class="num">0.823</td>
+<td class="num">0.663</td>
+<td class="num">0.660</td>
+<td class="num">0.333</td>
+<td class="num">0.477</td>
+</tr>
+<tr>
+<td>pass<sup>3</sup></td>
+<td class="num">0.755</td>
+<td class="num">0.810</td>
+<td class="num">0.595</td>
+<td class="num">0.625</td>
+<td class="num">0.265</td>
+<td class="num">0.440</td>
+</tr>
+<tr>
+<td>pass<sup>4</sup></td>
+<td class="num">0.740</td>
+<td class="num">0.800</td>
+<td class="num">0.540</td>
+<td class="num">0.600</td>
+<td class="num">0.220</td>
+<td class="num">0.420</td>
+</tr>
+<tr>
+<td>Database matches expected state</td>
+<td class="num">82.0%</td>
+<td class="num">87.0%</td>
+<td class="num">78.0%</td>
+<td class="num">74.5%</td>
+<td class="num">50.3%</td>
+<td class="num">60.3%</td>
+</tr>
+<tr>
+<td>Required information communicated</td>
+<td class="num">83.3%</td>
+<td class="num">87.5%</td>
+<td class="num">70.8%</td>
+<td class="num">79.2%</td>
+<td class="num">25.0%</td>
+<td class="num">20.8%</td>
+</tr>
+<tr>
+<td>Tool-selection rate</td>
+<td class="num">93.3%</td>
+<td class="num">91.7%</td>
+<td class="num">92.8%</td>
+<td class="num">83.1%</td>
+<td class="num">80.5%</td>
+<td class="num">78.3%</td>
+</tr>
+<tr>
+<td>Write-tool selection rate</td>
+<td class="num">84.7%</td>
+<td class="num">84.7%</td>
+<td class="num">86.2%</td>
+<td class="num">69.9%</td>
+<td class="num">67.9%</td>
+<td class="num">67.9%</td>
+</tr>
+<tr>
+<td>Argument accuracy (given selected)</td>
+<td class="num">92.8%</td>
+<td class="num">95.2%</td>
+<td class="num">91.3%</td>
+<td class="num">89.6%</td>
+<td class="num">75.7%</td>
+<td class="num">79.6%</td>
+</tr>
+<tr>
+<td>Write precision</td>
+<td class="num">88.4%</td>
+<td class="num">95.6%</td>
+<td class="num">77.3%</td>
+<td class="num">78.7%</td>
+<td class="num">15.6%</td>
+<td class="num">25.5%</td>
+</tr>
+<tr>
+<td>Policy-forbidden writes (conversations)</td>
+<td class="num">5</td>
+<td class="num">0</td>
+<td class="num">9</td>
+<td class="num">3</td>
+<td class="num">29</td>
+<td class="num">7</td>
+</tr>
+<tr>
+<td>Tool calls issued by code</td>
+<td class="num">0%</td>
+<td class="num">76.7%</td>
+<td class="num">0%</td>
+<td class="num">76.6%</td>
+<td class="num">0%</td>
+<td class="num">84.4%</td>
+</tr>
+<tr>
+<td>Turns on the fast path</td>
+<td class="num">–</td>
+<td class="num">27.6%</td>
+<td class="num">–</td>
+<td class="num">30.9%</td>
+<td class="num">–</td>
+<td class="num">25.9%</td>
+</tr>
+<tr>
+<td>Model calls per turn</td>
+<td class="num">3.01</td>
+<td class="num">1.91</td>
+<td class="num">2.50</td>
+<td class="num">1.90</td>
+<td class="num">2.17</td>
+<td class="num">1.58</td>
+</tr>
+<tr>
+<td>Agent cost per conversation</td>
+<td class="num">$0.0388</td>
+<td class="num">$0.0323</td>
+<td class="num">$0.0151</td>
+<td class="num">$0.0113</td>
+<td class="num">$0.0062</td>
+<td class="num">$0.0065</td>
+</tr>
+</tbody>
+</table></div>
+<p>Table <a href="#tab-3">3</a> gives the main results. <strong>Work moved to code.</strong> On every model, code issued 77–84% of all tool calls and the model made 24–37% fewer calls per customer turn. <strong>Consistency and safety.</strong> pass<sup>4</sup> rose on all three models, by 6, 6 and 20 points (10.7 on average): agents inside the harness solved more tasks on every one of four tries. The largest gain was on the weakest model, Gemma, whose pass<sup>4</sup> nearly doubled (0.220 to 0.420). Conversations with a policy-forbidden write fell on all three models, from 43 to 10 in total, with the largest drop on Gemma (29 to 7). <strong>Single-try accuracy.</strong> pass<sup>1</sup> rose 9.5 points on Gemma and 5.0 on Gemini 3.8 Flash and fell 2.5 on Flash-Lite. Other measures moved both ways: write precision and argument accuracy rose on most models, while the tool-selection rate fell on all three (most on Flash-Lite, 92.8% to 83.1%) and Flash-Lite’s write-tool selection fell from 86.2% to 69.9%. <strong>Cost.</strong> The harness was 17% and 25% cheaper on the two Gemini models, including Jev; on Gemma, whose calls cost little, cost was about the same (+5%).</p>
+<div class="table-wrap"><table id="tab-4">
+<caption><strong>Table 4:</strong> Reply time to first token, excluding turns with a retried call (Gemini 3.8 Flash: side-by-side 50 × 1 run, 221 and 217 turns; Flash-Lite: side-by-side 50 × 4, 955 and 922 turns; Gemma: 1,115 and 865 turns). Total wait per conversation uses only conversations without a retried call (50/48 and 184/176).</caption>
+<thead>
+<tr>
+<th></th>
+<th colspan="2">Gemini 3.8 Flash</th>
+<th colspan="2">Gemini 3.5 Flash-Lite</th>
+<th colspan="2">Gemma 4 26B A4B</th>
+</tr>
+<tr>
+<th>Reply TTFT (s)</th>
+<th>alone</th>
+<th>harness</th>
+<th>alone</th>
+<th>harness</th>
+<th>alone</th>
+<th>harness</th>
+</tr>
+</thead>
+<tbody>
+
+
+<tr>
+<td>Median</td>
+<td class="num">5.64</td>
+<td class="num">4.61</td>
+<td class="num">4.18</td>
+<td class="num">2.87</td>
+<td class="num">1.71</td>
+<td class="num">1.44</td>
+</tr>
+<tr>
+<td>Mean</td>
+<td class="num">10.14</td>
+<td class="num">10.20</td>
+<td class="num">5.73</td>
+<td class="num">3.82</td>
+<td class="num">3.30</td>
+<td class="num">2.63</td>
+</tr>
+<tr>
+<td>p90</td>
+<td class="num">22.99</td>
+<td class="num">29.28</td>
+<td class="num">12.51</td>
+<td class="num">7.05</td>
+<td class="num">6.85</td>
+<td class="num">5.21</td>
+</tr>
+<tr>
+<td>Tool-using turns, median</td>
+<td class="num">9.20</td>
+<td class="num">5.24</td>
+<td class="num">5.81</td>
+<td class="num">3.24</td>
+<td class="num">3.02</td>
+<td class="num">2.34</td>
+</tr>
+<tr>
+<td>Turns with no tool, median</td>
+<td class="num">2.40</td>
+<td class="num">2.85</td>
+<td class="num">2.30</td>
+<td class="num">2.29</td>
+<td class="num">0.82</td>
+<td class="num">0.92</td>
+</tr>
+<tr>
+<td>Total wait per conversation, mean</td>
+<td class="num">44.8</td>
+<td class="num">45.0</td>
+<td class="num">27.7</td>
+<td class="num">17.9</td>
+<td class="num">–</td>
+<td class="num">–</td>
+</tr>
+</tbody>
+</table></div>
+<figure id="fig-2">
+<img loading="lazy" src="fig/fig2-latency.png" alt="Three log-scale line charts of reply time to first token by percentile of turns, model alone versus decision-model harness, for Gemini 3.8 Flash, Gemini 3.5 Flash-Lite and Gemma 4 26B A4B" width="1376" height="475">
+<figcaption><strong>Figure 2:</strong> Reply time to first token by percentile of turns (log scale), model alone (grey) and inside the harness (blue), same runs as Table <a href="#tab-4">4</a>. Flash-Lite’s harness is faster at every percentile; Gemma’s is slightly slower below about the 33rd percentile and faster above it; Gemini 3.8 Flash’s is slightly slower below about the 22nd percentile, faster from there to about the 85th, and slower above it (Section <a href="#sec-6">6</a>).</figcaption>
+</figure>
+<p><strong>Latency.</strong> Table <a href="#tab-4">4</a> and Figure <a href="#fig-2">2</a> compare reply waits. On Flash-Lite the harness was faster at every percentile: median −31%, mean −33%, p90 −44%, and total wait per conversation −35%. Part of this may come from thinking rather than from fewer calls: at the same <em>low</em> setting, Flash-Lite produced thinking tokens on 84% of calls alone but 49% inside the harness. On Gemma the harness was faster from about the 33rd percentile up (median −16%, p90 −24%). On Gemini 3.8 Flash, tool-using turns were 43% faster at the median, and the overall median fell by 1.0 s, but the slowest 15% of turns were slower, and the mean and total wait per conversation did not change. Turns with no tool cost the same or slightly more with the harness on all three models: they need one model call either way.</p>
+<figure id="fig-3">
+<img loading="lazy" src="fig/fig3-waterfall.png" alt="Waterfall chart of the customer's wait in three turns of one conversation, model alone versus harness" width="1424" height="411">
+<figcaption><strong>Figure 3:</strong> What the customer waits for, turn by turn, in one conversation of the side-by-side Gemini 3.8 Flash runs (task 17, both agents passed, no stalled or retried call). In T2 the customer gives a user ID but no reservation code: the model alone makes eight serial calls (the user, three reservations, a flight status, a search and a calculation, then the reply), while the harness fetches the user and all four reservations in one batch and the model makes three more lookups in two calls before replying, so the wait falls from 18.8 s to 8.6 s. In T1 and T3 the harness is slower because each Gemini call took longer (Section <a href="#sec-6">6</a>).</figcaption>
+</figure>
+<p>Figure <a href="#fig-3">3</a> shows the mechanism in one conversation: where code can do the lookups, a chain of serial model calls collapses into one batch.</p>
+<div class="table-wrap"><table id="tab-5">
+<caption><strong>Table 5:</strong> Smaller open models through OpenRouter, each pair run side by side on one pinned provider. Reply time to first token excludes turns with a retried call. Bold marks pass<sup>1</sup> and latency cells where the harness is better.</caption>
+<thead>
+<tr>
+<th></th>
+<th colspan="2">Nemotron 3.5 Lightning</th>
+<th colspan="2">Gemma 4 31B</th>
+<th colspan="2">Solar Mini 4</th>
+<th colspan="2">Qwen3.6-35B-A3B</th>
+</tr>
+<tr>
+<th>50 tasks × 1 trial</th>
+<th>alone</th>
+<th>harness</th>
+<th>alone</th>
+<th>harness</th>
+<th>alone</th>
+<th>harness</th>
+<th>alone</th>
+<th>harness</th>
+</tr>
+</thead>
+<tbody>
+
+
+<tr>
+<td>pass<sup>1</sup></td>
+<td class="num">0.66</td>
+<td class="num"><strong>0.78</strong></td>
+<td class="num">0.54</td>
+<td class="num"><strong>0.60</strong></td>
+<td class="num">0.56</td>
+<td class="num"><strong>0.62</strong></td>
+<td class="num">0.80</td>
+<td class="num">0.80</td>
+</tr>
+<tr>
+<td>Tool-selection rate</td>
+<td class="num">83.8%</td>
+<td class="num">92.3%</td>
+<td class="num">75.8%</td>
+<td class="num">84.3%</td>
+<td class="num">70.4%</td>
+<td class="num">85.9%</td>
+<td class="num">97.2%</td>
+<td class="num">96.5%</td>
+</tr>
+<tr>
+<td>Policy-forbidden writes</td>
+<td class="num">3</td>
+<td class="num">3</td>
+<td class="num">3</td>
+<td class="num">1</td>
+<td class="num">5</td>
+<td class="num">1</td>
+<td class="num">2</td>
+<td class="num">0</td>
+</tr>
+<tr>
+<td>Tool calls issued by code</td>
+<td class="num">0%</td>
+<td class="num">83.1%</td>
+<td class="num">0%</td>
+<td class="num">81.8%</td>
+<td class="num">0%</td>
+<td class="num">74.4%</td>
+<td class="num">0%</td>
+<td class="num">82.4%</td>
+</tr>
+<tr>
+<td>Model calls per turn</td>
+<td class="num">2.41</td>
+<td class="num">1.84</td>
+<td class="num">1.53</td>
+<td class="num">1.41</td>
+<td class="num">1.61</td>
+<td class="num">1.59</td>
+<td class="num">2.59</td>
+<td class="num">1.67</td>
+</tr>
+<tr>
+<td>Reply TTFT, median (s)</td>
+<td class="num">5.93</td>
+<td class="num"><strong>4.61</strong></td>
+<td class="num">2.26</td>
+<td class="num"><strong>1.96</strong></td>
+<td class="num">2.50</td>
+<td class="num"><strong>2.30</strong></td>
+<td class="num">11.95</td>
+<td class="num"><strong>10.04</strong></td>
+</tr>
+<tr>
+<td>Reply TTFT, p90 (s)</td>
+<td class="num">15.23</td>
+<td class="num"><strong>12.50</strong></td>
+<td class="num">5.68</td>
+<td class="num"><strong>4.69</strong></td>
+<td class="num">8.13</td>
+<td class="num">8.91</td>
+<td class="num">27.75</td>
+<td class="num"><strong>24.74</strong></td>
+</tr>
+<tr>
+<td>Tool-using turns, median (s)</td>
+<td class="num">8.52</td>
+<td class="num"><strong>6.27</strong></td>
+<td class="num">4.25</td>
+<td class="num"><strong>3.07</strong></td>
+<td class="num">5.52</td>
+<td class="num"><strong>3.23</strong></td>
+<td class="num">15.93</td>
+<td class="num"><strong>12.38</strong></td>
+</tr>
+<tr>
+<td>Turns with no tool, median (s)</td>
+<td class="num">3.32</td>
+<td class="num">3.20</td>
+<td class="num">1.36</td>
+<td class="num">1.29</td>
+<td class="num">1.73</td>
+<td class="num">1.77</td>
+<td class="num">7.43</td>
+<td class="num">8.25</td>
+</tr>
+<tr>
+<td>Agent cost per conversation</td>
+<td class="num">$0.0070</td>
+<td class="num">$0.0065</td>
+<td class="num">$0.0120</td>
+<td class="num">$0.0121</td>
+<td class="num">$0.0022</td>
+<td class="num">$0.0038</td>
+<td class="num">$0.0166</td>
+<td class="num">$0.0180</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Smaller open models.</strong> Table <a href="#tab-5">5</a> extends the comparison to four open models of 30–35B parameters. The accuracy gains on the smaller models were substantial: pass<sup>1</sup> rose 12 points on Nemotron 3.5 Lightning (0.66 to 0.78) and 6 points on Gemma 4 31B and Solar Mini 4, in line with the 9.5-point gain on Gemma 4 26B A4B in Table <a href="#tab-3">3</a>. The gains come with better tool choice: the share of required tools the model called rose by 8–16 points on all three. Only Qwen3.6-35B-A3B, which already called the right tool 97% of the time and passed 0.80 of the tasks alone, was unchanged. Latency also improved substantially: tool-using turns were 22–41% faster on all four models, the median reply wait fell by 8–22%, and the p90 fell by 11–18% on three of the four (Solar Mini 4’s rose 10%). Turns that need no tool cost about the same, as on the Gemini models. Code issued 74–83% of all tool calls, as on the main models, and agent cost stayed within a few tenths of a cent per conversation.</p>
+</section>
+<section id="sec-6">
+<h2>6. Analysis</h2>
+<p><strong>Where the latency gain comes from.</strong> A tool-using turn costs the model alone one call per lookup it decides on, then one to reply; inside the harness, the lookups whose arguments are known, or which Jev can pick, are issued before the model runs. The turns where the model alone chains several reads (finding a reservation among many, checking flight statuses) are where the harness saves most, and turns that need no tool gain nothing. We have not ablated the components, so this attribution rests on the call counts and on examples such as Figure <a href="#fig-3">3</a>, not on controlled comparisons.</p>
+<p><strong>Why Gemini 3.8 Flash’s slowest turns did not improve.</strong> Two effects made each Gemini call slower inside the harness (median time to first token per call 2.58 s against 2.06 s, p90 10.6 s against 5.9 s), at every prompt size. First, Gemini thought more: both agents sent thinking level <em>low</em> on every call (logged for the side-by-side runs), yet 4–11% of harness calls produced thinking tokens, against none of about 3,300 calls for the model alone, and those calls took a median 3.7 s to their first token. We have not found the cause: the extra thinking is not tied to records fetched by code, to the placeholder thought signatures on code-issued calls (it occurs before the first such call), or to turns that involve prices; the one request difference from the first call on is the removed <code>calculate</code> tool. Second, when code takes over a turn, the speculative call already started is left to finish: these abandoned calls were 11% of all harness calls and add load to the shared endpoint.</p>
+<div class="table-wrap"><table id="tab-6">
+<caption><strong>Table 6:</strong> The simulated customer’s share of failures. “Customer said yes and ended the chat” is detected by a rule: a failed conversation whose last customer message says yes to the agent’s pending proposal and contains the stop token. Excluding those conversations changes which tasks have four trials, so the pass<sup>k</sup> rows are not directly comparable with Table <a href="#tab-3">3</a>. The lower rows apply τ<sup>2</sup>’s LLM conversation reviewer (Gemini 2.5 Pro as judge) to Gemini 3.8 Flash’s failures.</caption>
+<thead>
+<tr>
+<th></th>
+<th colspan="2">Gemini 3.8 Flash</th>
+<th colspan="2">Gemini 3.5 Flash-Lite</th>
+<th colspan="2">Gemma 4 26B A4B</th>
+</tr>
+<tr>
+<th></th>
+<th>alone</th>
+<th>harness</th>
+<th>alone</th>
+<th>harness</th>
+<th>alone</th>
+<th>harness</th>
+</tr>
+</thead>
+<tbody>
+
+
+<tr>
+<td>Customer said yes and ended the chat</td>
+<td class="num">7</td>
+<td class="num">7</td>
+<td class="num">7</td>
+<td class="num">12</td>
+<td class="num">8</td>
+<td class="num">11</td>
+</tr>
+<tr>
+<td>pass<sup>1</sup>, without those</td>
+<td class="num">0.835</td>
+<td class="num">0.891</td>
+<td class="num">0.778</td>
+<td class="num">0.767</td>
+<td class="num">0.470</td>
+<td class="num">0.580</td>
+</tr>
+<tr>
+<td>pass<sup>4</sup>, without those</td>
+<td class="num">0.804</td>
+<td class="num">0.870</td>
+<td class="num">0.600</td>
+<td class="num">0.714</td>
+<td class="num">0.250</td>
+<td class="num">0.525</td>
+</tr>
+<tr>
+<td>Failures reviewed by τ<sup>2</sup>’s reviewer</td>
+<td class="num">38</td>
+<td class="num">28</td>
+<td class="num">–</td>
+<td class="num">–</td>
+<td class="num">–</td>
+<td class="num">–</td>
+</tr>
+<tr>
+<td>with a critical agent error</td>
+<td class="num">18</td>
+<td class="num">19</td>
+<td class="num">–</td>
+<td class="num">–</td>
+<td class="num">–</td>
+<td class="num">–</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Part of every failure count is the simulated customer.</strong> In 7–12 failures per agent, the agent listed a change and asked for confirmation, and the simulated customer replied “yes, please proceed” and ended the chat in the same message, leaving the agent no turn in which to act (Table <a href="#tab-6">6</a>). These endings were more frequent inside the harness on Flash-Lite (12 against 7) and Gemma (11 against 8); the write gate asks the model to obtain an explicit yes, which may invite them, so they are not purely simulator noise. On Gemini 3.8 Flash, τ<sup>2</sup>’s own reviewer finds a critical agent error in 19 of the harness’s 28 failures and 18 of the model alone’s 38.</p>
+<p><strong>Jev’s cost in time, and the guardrails.</strong> The per-turn Jev call returned in a median 0.53–0.56 s, below the Gemini models’ median time to first token and close to Gemma’s (0.86–1.04 s), so on Gemma it can delay a turn. τ<sup>2</sup>’s simulated customers are polite: the abuse and injection checks never fired, and the output check, which only logs, flagged 4 replies at its 0.8 threshold (scores 0.83–0.84) and none at 0.9. The write gate blocked 2, 49 and 73 writes on the three models, mostly on policy rules, each costing another model call.</p>
+</section>
+<section id="sec-7">
+<h2>7. Further optimizations</h2>
+<p><strong>(1) Cancel the speculative call</strong> as soon as code takes over a turn, removing the 11% of abandoned calls and their load. <strong>(2) Find what makes Gemini think:</strong> restoring the <code>calculate</code> tool in the harness, and removing it from the model alone, would test the leading candidate; the lowest thinking level on turns Jev classes as routine is a direct way to cap the slow tail meanwhile. <strong>(3) A tool-free fast path:</strong> the harness already re-asks the model without tools when Jev is very sure no tool is needed (below 0.2); sending every fast-path call without tool schemas would extend this. <strong>(4) Reasoning chosen per turn.</strong> The same Jev call could decide how hard the model should think; in small pilot runs on three models, raising reasoning everywhere did not improve accuracy, and with the harness in place a model at low or no reasoning was about as accurate as at high. <strong>(5) Prompt caching for larger system prompts:</strong> τ<sup>2</sup>’s airline prompt is about 3.5k tokens, below the 4,096-token minimum for explicit caching on our endpoint; enterprise prompts are often far longer, and caching the static prefix [<a href="#ref-9">9</a>] would cut cost and prefill time on every call. <strong>(6) A decision model fine-tuned for this job.</strong> We used Jev off the shelf; a decision model trained on this domain’s questions would clear the thresholds more often, so code would issue more calls and more turns would take the fast path.</p>
+</section>
+<section id="sec-8">
+<h2>8. Limitations and conclusion</h2>
+<p><strong>Limitations.</strong> We study one benchmark domain (airline), three agent models and one cloud provider, with 50 tasks. We did not ablate the harness’s components, so we cannot attribute the accuracy, write and latency changes to any one of them; the harness also removes the <code>calculate</code> tool, which changes the model’s tool list. Some of the harness’s reads go directly to the environment rather than through recorded tool calls: building Jev’s reservation options reads the customer’s profile and reservations, and the ID checks and the write gate read records as well. These reads are not counted in the tool-call figures, and because τ<sup>2</sup>’s tools run in memory they add no time to the reported latency.</p>
+<p><strong>Conclusion.</strong> A typed decision model working beside a tool-calling LLM moved three-quarters or more of all tool calls to code and cut model calls per turn by 24–37% on every model we tried. It made agents more consistent (pass<sup>4</sup> +10.7 points on average, and 0.22 to 0.42 on the weakest model), cut policy-forbidden writes from 43 to 10, cut cost by 17–25% on the two Gemini models, and cut reply latency throughout on Flash-Lite; on Gemini 3.8 Flash it sped up tool-using turns but not its slowest ones. On smaller open models the accuracy gains were larger: pass<sup>1</sup> rose 6–12 points on the three weaker models, and tool-using turns were 22–41% faster on all four. The principle is that System 1 never sits in front of System 2: Jev runs in parallel with a speculative model call, and only decisions with exact answers are taken from the model.</p>
+<p><strong>Code and data.</strong> The harness, evaluation scripts, all sixteen runs used here (transcripts and per-call event logs) and the figure scripts are at <a href="https://github.com/vamshibobby/jev-tau2-harness" class="uri">https://github.com/vamshibobby/jev-tau2-harness</a> (MIT licence).</p>
+<p><strong>Use of AI tools.</strong> AI coding assistants were used to help write the experiment and analysis code and to edit and proofread the manuscript. The agents under test are themselves language models, as described in Section <a href="#sec-3">3</a>. The author designed the study, checked every reported number against the saved run logs, and takes full responsibility for the content.</p>
+<p><strong>Conflicts of Interest.</strong> The author declares no conflicts of interest and has no affiliation with TypeSafe, OpenRouter or Google.</p>
+<p><strong>Ethics.</strong> All conversations are between an agent and a simulated customer on synthetic airline data; no human participants or personal data were involved.</p>
+
+</section>
+<section id="references">
+<h2>References</h2>
+<ol>
+<li id="ref-1">P. Aggarwal et al. AutoMix: Automatically mixing language models. In <em>NeurIPS</em>, 2024.</li>
+<li id="ref-2">V. Barres et al. τ<sup>2</sup>-Bench: Evaluating conversational agents in a dual-control environment. 2025.</li>
+<li id="ref-3">P. Belcak et al. Small language models are the future of agentic AI. 2025.</li>
+<li id="ref-4">L. Chen, M. Zaharia, J. Zou. FrugalGPT: How to use large language models while reducing cost and improving performance. <em>Transactions on Machine Learning Research</em>, 2024.</li>
+<li id="ref-5">K. Christakopoulou et al. Agents thinking fast and slow: A talker-reasoner architecture. 2024.</li>
+<li id="ref-6">J. Dean, L. A. Barroso. The tail at scale. <em>Communications of the ACM</em> 56(2):74–80, 2013.</li>
+<li id="ref-7">D. Ding et al. Hybrid LLM: Cost-efficient and quality-aware query routing. In <em>ICLR</em>, 2024.</li>
+<li id="ref-8">L. E. Erdogan et al. TinyAgent: Function calling at the edge. In <em>EMNLP: System Demonstrations</em>, 2024.</li>
+<li id="ref-9">I. Gim et al. Prompt Cache: Modular attention reuse for low-latency inference. In <em>MLSys</em>, 2024.</li>
+<li id="ref-10">H. Inan et al. Llama Guard: LLM-based input-output safeguard for human-AI conversations. 2023.</li>
+<li id="ref-11">TypeSafe. Jev, a typed decision model (<code> typesafe/jev-latest</code>), served through OpenRouter’s decisions API, <a href="https://openrouter.ai/api/alpha/decisions" class="uri">https://openrouter.ai/api/alpha/decisions</a>, accessed October 2026.</li>
+<li id="ref-12">D. Kahneman. <em>Thinking, Fast and Slow</em>. Farrar, Straus and Giroux, 2011.</li>
+<li id="ref-13">S. Kim et al. An LLM compiler for parallel function calling. In <em>ICML</em>, 2024.</li>
+<li id="ref-14">Y. Leviathan, M. Kalman, Y. Matias. Fast inference from transformers via speculative decoding. In <em>ICML</em>, 2023.</li>
+<li id="ref-15">M. Li et al. API-Bank: A comprehensive benchmark for tool-augmented LLMs. In <em>EMNLP</em>, 2023.</li>
+<li id="ref-16">B. Y. Lin et al. SwiftSage: A generative agent with fast and slow thinking for complex interactive tasks. In <em>NeurIPS</em>, 2023.</li>
+<li id="ref-17">J. Lu et al. ToolSandbox: A stateful, conversational, interactive evaluation benchmark for LLM tool use capabilities. In <em>Findings of NAACL</em>, 2025.</li>
+<li id="ref-18">X. Ning et al. Skeleton-of-Thought: Prompting LLMs for efficient parallel generation. In <em>ICLR</em>, 2024.</li>
+<li id="ref-19">I. Ong et al. RouteLLM: Learning to route LLMs with preference data. In <em>ICLR</em>, 2025.</li>
+<li id="ref-20">OpenRouter. τ<sup>2</sup>-Bench Airline leaderboard. <a href="https://openrouter.ai/benchmarks/tau2-bench-airline" class="uri">https://openrouter.ai/benchmarks/tau2-bench-airline</a>, accessed 2026-10-05.</li>
+<li id="ref-21">S. G. Patil et al. Gorilla: Large language model connected with massive APIs. In <em>NeurIPS</em>, 2024.</li>
+<li id="ref-22">Y. Qin et al. ToolLLM: Facilitating large language models to master 16000+ real-world APIs. In <em>ICLR</em>, 2024.</li>
+<li id="ref-23">T. Rebedea et al. NeMo Guardrails: A toolkit for controllable and safe LLM applications with programmable rails. In <em>EMNLP: System Demonstrations</em>, 2023.</li>
+<li id="ref-24">T. Schick et al. Toolformer: Language models can teach themselves to use tools. In <em>NeurIPS</em>, 2023.</li>
+<li id="ref-25">H. Trivedi et al. AppWorld: A controllable world of apps and people for benchmarking interactive coding agents. In <em>ACL</em>, 2024.</li>
+<li id="ref-26">B. T. Willard, R. Louf. Efficient guided generation for large language models. 2023.</li>
+<li id="ref-27">S. Yao et al. ReAct: Synergizing reasoning and acting in language models. In <em>ICLR</em>, 2023.</li>
+<li id="ref-28">S. Yao et al. τ-bench: A benchmark for tool-agent-user interaction in real-world domains. 2024.</li>
+<li id="ref-29">L. Zheng et al. SGLang: Efficient execution of structured language model programs. In <em>NeurIPS</em>, 2024.</li>
+</ol>
+</section>
+<section id="cite"><h2>Cite this paper</h2>
+<p>Atukuri, S. V. (2026). System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline. Preprint submitted to Preprints.org, DOI pending. https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/</p>
+<pre><code>@misc{atukuri2026system1,
+  author       = {Atukuri, Sai Vamshi},
+  title        = {{System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on $\tau^2$-Bench Airline}},
+  year         = {2026},
+  month        = nov,
+  howpublished = {Preprint, submitted to Preprints.org (ID 245718)},
+  url          = {https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/},
+  note         = {Preprints.org, 2026, DOI pending}
+}</code></pre>
+<p class="note">Full text: <a href="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/">https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/</a> · PDF: <a href="system1-orchestration-tau2-airline.pdf">https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/system1-orchestration-tau2-airline.pdf</a> · Code: <a href="https://github.com/vamshibobby/jev-tau2-harness">https://github.com/vamshibobby/jev-tau2-harness</a> · Licence: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+</section>
+</article>
+</main>
+<footer class="site-foot"><p>© 2026 Sai Vamshi Atukuri. Text licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. <a href="../../">All papers</a> · <a href="../../llms.txt">llms.txt</a></p></footer>
+</body>
+</html>

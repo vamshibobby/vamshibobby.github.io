@@ -1,72 +1,171 @@
----
-layout: page
-title: "Hi There!"
-subtitle: "Vamshi's Articles"
-use-site-title: true
----
-
-<div class="posts-list">
-  {% for post in paginator.posts %}
-  <article class="post-preview">
-    <a href="{{ post.url | relative_url }}">
-	  <h2 class="post-title">{{ post.title }}</h2>
-
-	  {% if post.subtitle %}
-	  <h3 class="post-subtitle">
-	    {{ post.subtitle }}
-	  </h3>
-	  {% endif %}
-    </a>
-
-    <p class="post-meta">
-      Posted on {{ post.date | date: "%B %-d, %Y" }}
-    </p>
-
-    <div class="post-entry-container">
-      {% if post.image %}
-      <div class="post-image">
-        <a href="{{ post.url | relative_url }}">
-          <img src="{{ post.image | relative_url }}">
-        </a>
-      </div>
-      {% endif %}
-      <div class="post-entry">
-        {{ post.excerpt | strip_html | xml_escape | truncatewords: site.excerpt_length }}
-        {% assign excerpt_word_count = post.excerpt | number_of_words %}
-        {% if post.content != post.excerpt or excerpt_word_count > site.excerpt_length %}
-          <a href="{{ post.url | relative_url }}" class="post-read-more">[Read&nbsp;More]</a>
-        {% endif %}
-      </div>
-    </div>
-
-    {% if post.tags.size > 0 %}
-    <div class="blog-tags">
-      Tags:
-      {% if site.link-tags %}
-      {% for tag in post.tags %}
-      <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
-      {% endfor %}
-      {% else %}
-        {{ post.tags | join: ", " }}
-      {% endif %}
-    </div>
-    {% endif %}
-
-   </article>
-  {% endfor %}
-</div>
-
-{% if paginator.total_pages > 1 %}
-<ul class="pager main-pager">
-  {% if paginator.previous_page %}
-  <li class="previous">
-    <a href="{{ paginator.previous_page_path | relative_url }}">&larr; Newer Posts</a>
-  </li>
-  {% endif %}
-  {% if paginator.next_page %}
-  <li class="next">
-    <a href="{{ paginator.next_page_path | relative_url }}">Older Posts &rarr;</a>
-  </li>
-  {% endif %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sai Vamshi Atukuri — Research papers</title>
+<meta name="description" content="Sai Vamshi Atukuri, independent researcher (USA) working on decision models, LLM agents and evaluation. Full-text HTML and PDF of his research papers.">
+<meta name="author" content="Sai Vamshi Atukuri">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="canonical" href="https://vamshibobby.github.io/">
+<link rel="icon" href="data:,">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Sai Vamshi Atukuri — Research papers">
+<meta property="og:description" content="Sai Vamshi Atukuri, independent researcher (USA) working on decision models, LLM agents and evaluation. Full-text HTML and PDF of his research papers.">
+<meta property="og:url" content="https://vamshibobby.github.io/">
+<meta property="profile:first_name" content="Sai Vamshi">
+<meta property="profile:last_name" content="Atukuri">
+<meta name="twitter:card" content="summary">
+<link rel="me" href="https://orcid.org/0009-0003-3111-7148">
+<link rel="me" href="https://github.com/vamshibobby">
+<link rel="alternate" type="text/plain" href="https://vamshibobby.github.io/llms.txt" title="llms.txt">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Person",
+   "@id": "https://orcid.org/0009-0003-3111-7148",
+   "name": "Sai Vamshi Atukuri",
+   "givenName": "Sai Vamshi",
+   "familyName": "Atukuri",
+   "url": "https://vamshibobby.github.io/",
+   "email": "mailto:vamshibobby1996@gmail.com",
+   "description": "Independent researcher working on decision models, LLM agents and evaluation",
+   "jobTitle": "Independent Researcher",
+   "knowsAbout": [
+    "decision models",
+    "LLM agents",
+    "tool-calling agents",
+    "evaluation",
+    "benchmarks",
+    "intent classification"
+   ],
+   "identifier": {
+    "@type": "PropertyValue",
+    "propertyID": "ORCID",
+    "value": "0009-0003-3111-7148"
+   },
+   "sameAs": [
+    "https://orcid.org/0009-0003-3111-7148",
+    "https://github.com/vamshibobby"
+   ]
+  },
+  {
+   "@type": "WebSite",
+   "@id": "https://vamshibobby.github.io/#website",
+   "url": "https://vamshibobby.github.io/",
+   "name": "Sai Vamshi Atukuri — Research",
+   "author": {
+    "@id": "https://orcid.org/0009-0003-3111-7148"
+   }
+  },
+  {
+   "@type": "ItemList",
+   "name": "Research papers",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "url": "https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/",
+     "name": "System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "url": "https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/",
+     "name": "Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<style>:root{--bg:#fdfcf9;--fg:#1d1d1b;--muted:#5d5d57;--line:#dedbd2;--accent:#1f5fae;--box:#f3f1ea;--code:#f1efe8}
+@media (prefers-color-scheme:dark){:root{--bg:#16171a;--fg:#e6e4de;--muted:#a3a19a;--line:#34363b;--accent:#8ab8f0;--box:#1f2125;--code:#22252a}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.62 Charter,"Bitstream Charter","Sitka Text",Cambria,Georgia,serif}
+main,.site-head,.site-foot{max-width:46rem;margin:0 auto;padding:0 16px}
+.site-head{padding-top:18px;font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+.site-head a{color:var(--muted);text-decoration:none}
+.site-foot{margin-top:3rem;padding-bottom:2rem;border-top:1px solid var(--line);color:var(--muted);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25}
+h1{font-size:1.75rem;margin:1.4rem 0 .5rem}
+h1 .subtitle{display:block;font-size:1.15rem;font-weight:500;color:var(--muted);margin-top:.35rem}
+h2{font-size:1.3rem;margin:2.2rem 0 .6rem;padding-bottom:.25rem;border-bottom:1px solid var(--line)}
+h3{font-size:1.08rem;margin:1.6rem 0 .4rem}
+h4{font-size:1rem;margin:1.2rem 0 .3rem}
+.kicker,.byline,.status,.linkbar,.meta{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.kicker{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin:1.6rem 0 0}
+.byline{margin:.4rem 0;font-size:.98rem}
+.status{color:var(--muted);font-size:.9rem;margin:.3rem 0}
+.linkbar{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 0;padding:0;list-style:none;font-size:.92rem}
+.linkbar a{display:inline-block;padding:.28rem .7rem;border:1px solid var(--line);border-radius:6px;text-decoration:none;background:var(--box)}
+#abstract{background:var(--box);border-radius:8px;padding:.2rem 1.1rem .6rem;margin-top:1.5rem}
+#abstract h2{border:0;margin-top:1rem}
+.table-wrap{overflow-x:auto;margin:1.2rem 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;min-width:60%}
+caption{caption-side:bottom;text-align:left;color:var(--muted);font-size:13.5px;padding-top:.5rem;line-height:1.45}
+th,td{border-bottom:1px solid var(--line);padding:.35rem .55rem;text-align:left;vertical-align:top}
+thead th{border-bottom:2px solid var(--fg)}
+th[colspan]{text-align:center}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+figure{margin:1.6rem 0}
+figure img{display:block;max-width:100%;height:auto;margin:0 auto;background:#fff;border-radius:4px;padding:6px}
+figcaption{color:var(--muted);font-size:.9rem;margin-top:.5rem;line-height:1.5}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em}
+code{background:var(--code);padding:0 .2em;border-radius:3px;word-break:break-word}
+pre{background:var(--code);padding:.8rem 1rem;border-radius:6px;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0}
+#cite pre{white-space:pre-wrap}
+#references ol,#references ul{padding-left:1.6rem;font-size:.92rem}
+#references li{margin-bottom:.35rem}
+.papers{list-style:none;padding:0}
+.papers li{margin:0 0 1.8rem}
+.papers h3{margin:0 0 .25rem;font-size:1.12rem}
+.papers h3 a{text-decoration:none}
+.papers .meta{color:var(--muted);font-size:.88rem;margin:0 0 .35rem}
+.papers p{margin:.25rem 0}
+.papers .linkbar{margin-top:.5rem;font-size:.85rem}
+.note{color:var(--muted);font-size:.92rem}
+@media (max-width:540px){body{font-size:16px}h1{font-size:1.45rem}}</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Sai Vamshi Atukuri</h1>
+<p class="byline">Independent researcher working on decision models, LLM agents and evaluation. Based in the USA.</p>
+<ul class="linkbar">
+<li><a href="https://orcid.org/0009-0003-3111-7148" rel="me">ORCID 0009-0003-3111-7148</a></li>
+<li><a href="https://github.com/vamshibobby" rel="me">GitHub @vamshibobby</a></li>
+<li><a href="mailto:vamshibobby1996@gmail.com">vamshibobby1996@gmail.com</a></li>
 </ul>
-{% endif %}
+</header>
+<section id="papers">
+<h2>Papers</h2>
+<ul class="papers">
+<li>
+<h3><a href="papers/system1-orchestration-tau2-airline/">System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline</a></h3>
+<p class="meta">Preprint, November 2026 · submitted to Preprints.org, DOI pending</p>
+<p>A typed decision model (Jev) running beside the agent's LLM on τ²-Bench Airline let code issue 77–84% of tool calls, cut model calls per turn by 24–37%, raised pass<sup>4</sup> on all three agent models (+10.7 points on average; 0.220 → 0.420 on Gemma 4 26B A4B) and cut conversations with a policy-forbidden write from 43 to 10.</p>
+<ul class="linkbar"><li><a href="papers/system1-orchestration-tau2-airline/">Full text (HTML)</a></li><li><a href="papers/system1-orchestration-tau2-airline/system1-orchestration-tau2-airline.pdf" type="application/pdf">PDF</a></li><li><a href="https://github.com/vamshibobby/jev-tau2-harness">Code</a></li></ul>
+</li>
+<li>
+<h3><a href="papers/affordable-models-for-serial-fiction/">Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory</a></h3>
+<p class="meta">Preprint, September 2026 · Zenodo, DOI 10.5281/zenodo.22977925</p>
+<p>Across 687 chapter-generation attempts with six models priced below $1 per million tokens, detailed causal briefs raised reference-event coverage from 4.7% (vague) to 90.7%, numbering the same instructions gave 88.9% with no consistent gain, and the best model depended on the role: GLM 5.3 Flash for balanced creative scenes, DeepSeek V3.2 for detailed plans, Tencent Hy3 (reasoning off) for dependable low-cost drafts.</p>
+<ul class="linkbar"><li><a href="papers/affordable-models-for-serial-fiction/">Full text (HTML)</a></li><li><a href="papers/affordable-models-for-serial-fiction/affordable-models-for-serial-fiction.pdf" type="application/pdf">PDF</a></li><li><a href="https://github.com/vamshibobby/webnovel-harness">Code</a></li><li><a href="https://doi.org/10.5281/zenodo.22977925">DOI 10.5281/zenodo.22977925</a></li><li><a href="https://zenodo.org/records/22977925">Zenodo record</a></li></ul>
+</li>
+</ul>
+</section>
+<section id="machine-readable">
+<h2>For search engines and AI agents</h2>
+<p class="note">Every paper has a full-text HTML page with Google Scholar (Highwire Press), Dublin Core and schema.org metadata, the PDF on this site, and a BibTeX entry. Plain-text summaries: <a href="llms.txt">llms.txt</a> and <a href="llms-full.txt">llms-full.txt</a>. Sitemap: <a href="sitemap.xml">sitemap.xml</a>.</p>
+</section>
+</main>
+<footer class="site-foot"><p>© 2026 Sai Vamshi Atukuri. Paper texts licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. No trackers, no analytics.</p></footer>
+</body>
+</html>

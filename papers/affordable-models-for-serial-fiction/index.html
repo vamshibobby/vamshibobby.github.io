@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory</title>
+<meta name="description" content="Our goal is to identify an affordable set of language models and prompting practices that can help a broad community of authors begin and sustain…">
+<meta name="author" content="Sai Vamshi Atukuri">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="canonical" href="https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/">
+<link rel="icon" href="data:,">
+<meta name="color-scheme" content="light dark">
+
+<!-- Highwire Press tags for Google Scholar -->
+<meta name="citation_title" content="Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory">
+<meta name="citation_author" content="Atukuri, Sai Vamshi">
+<meta name="citation_author_institution" content="Independent Researcher">
+<meta name="citation_author_orcid" content="https://orcid.org/0009-0003-3111-7148">
+<meta name="citation_author_email" content="vamshibobby1996@gmail.com">
+<meta name="citation_publication_date" content="2026/09/26">
+<meta name="citation_online_date" content="2026/09/26">
+<meta name="citation_pdf_url" content="https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/affordable-models-for-serial-fiction.pdf">
+<meta name="citation_abstract_html_url" content="https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/">
+<meta name="citation_fulltext_html_url" content="https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/">
+<meta name="citation_language" content="en">
+<meta name="citation_keywords" content="LLM creative writing; serial fiction; instruction following; story bible; long-context memory; model selection; affordable language models; AI-assisted writing">
+<meta name="citation_publisher" content="Zenodo">
+<meta name="citation_doi" content="10.5281/zenodo.22977925">
+
+<!-- Dublin Core -->
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.title" content="Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory">
+<meta name="DC.creator" content="Atukuri, Sai Vamshi">
+<meta name="DC.date" content="2026-09-26">
+<meta name="DC.identifier" content="https://doi.org/10.5281/zenodo.22977925">
+<meta name="DC.description" content="Our goal is to identify an affordable set of language models and prompting practices that can help a broad community of authors begin and sustain…">
+<meta name="DC.language" content="en">
+<meta name="DC.type" content="Text.Preprint">
+<meta name="DC.rights" content="https://creativecommons.org/licenses/by/4.0/">
+<meta name="DC.identifier" content="doi:10.5281/zenodo.22977925">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory">
+<meta property="og:description" content="Our goal is to identify an affordable set of language models and prompting practices that can help a broad community of authors begin and sustain…">
+<meta property="og:url" content="https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/">
+<meta property="og:site_name" content="Sai Vamshi Atukuri — Research">
+<meta property="article:published_time" content="2026-09-26">
+<meta property="article:author" content="Sai Vamshi Atukuri">
+<meta property="article:tag" content="LLM creative writing">
+<meta property="article:tag" content="serial fiction">
+<meta property="article:tag" content="instruction following">
+<meta property="article:tag" content="story bible">
+<meta property="article:tag" content="long-context memory">
+<meta property="article:tag" content="model selection">
+<meta property="article:tag" content="affordable language models">
+<meta property="article:tag" content="AI-assisted writing">
+<meta property="og:image" content="https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/fig/fig3-event-coverage.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/fig/fig3-event-coverage.png">
+<meta name="twitter:title" content="Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory">
+<meta name="twitter:description" content="Our goal is to identify an affordable set of language models and prompting practices that can help a broad community of authors begin and sustain…">
+<link rel="alternate" type="application/pdf" href="https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/affordable-models-for-serial-fiction.pdf" title="PDF">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "ScholarlyArticle",
+ "@id": "https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/#article",
+ "headline": "Choosing Affordable Language Models for Serial Fiction",
+ "name": "Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory",
+ "author": {
+  "@type": "Person",
+  "@id": "https://orcid.org/0009-0003-3111-7148",
+  "name": "Sai Vamshi Atukuri",
+  "url": "https://vamshibobby.github.io/",
+  "affiliation": {
+   "@type": "Organization",
+   "name": "Independent Researcher"
+  },
+  "sameAs": [
+   "https://orcid.org/0009-0003-3111-7148",
+   "https://github.com/vamshibobby"
+  ]
+ },
+ "datePublished": "2026-09-26",
+ "abstract": "Our goal is to identify an affordable set of language models and prompting practices that can help a broad community of authors begin and sustain AI-assisted serial fiction. We compare six models priced below one US dollar per million input and output tokens through 687 chapter-generation attempts, covering instruction detail, output constraints, reasoning settings, story bibles, retrieval, history compression and sequential continuation. A selected novel provides a common reference. We distinguish following the author’s brief from resembling the reference and from writing an engaging scene. In a 144-attempt instruction-design comparison, 108 drafts were usable, but only 44 also met the length requirement. Reference-event coverage increased from 4.7% with vague direction to 90.7% with detailed prose instructions; numbering the same instructions yielded 88.9% and no consistent advantage across scenes. DeepSeek V3.2 led the selected detailed-instruction checks, GLM 5.3 Flash was the most balanced creative-scene candidate in exploratory AI readings, and Tencent Hy3 was the most reliable writer in that comparison. Story-bible updates introduced different risks, including retained contradictions and unexecuted repairs. The findings support choosing models by role, specifying causal requirements and creative freedom separately, and validating both chapters and memory updates. They are practical starting points from a single-novel study, not a universal literary ranking.",
+ "description": "Our goal is to identify an affordable set of language models and prompting practices that can help a broad community of authors begin and sustain…",
+ "keywords": [
+  "LLM creative writing",
+  "serial fiction",
+  "instruction following",
+  "story bible",
+  "long-context memory",
+  "model selection",
+  "affordable language models",
+  "AI-assisted writing"
+ ],
+ "inLanguage": "en",
+ "url": "https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/",
+ "mainEntityOfPage": "https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/",
+ "isAccessibleForFree": true,
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "encoding": {
+  "@type": "MediaObject",
+  "contentUrl": "https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/affordable-models-for-serial-fiction.pdf",
+  "encodingFormat": "application/pdf",
+  "name": "affordable-models-for-serial-fiction.pdf"
+ },
+ "isBasedOn": {
+  "@type": "SoftwareSourceCode",
+  "codeRepository": "https://github.com/vamshibobby/webnovel-harness",
+  "url": "https://github.com/vamshibobby/webnovel-harness"
+ },
+ "sameAs": "https://doi.org/10.5281/zenodo.22977925",
+ "identifier": {
+  "@type": "PropertyValue",
+  "propertyID": "DOI",
+  "value": "10.5281/zenodo.22977925"
+ },
+ "publisher": {
+  "@type": "Organization",
+  "name": "Zenodo"
+ }
+}
+</script>
+<style>:root{--bg:#fdfcf9;--fg:#1d1d1b;--muted:#5d5d57;--line:#dedbd2;--accent:#1f5fae;--box:#f3f1ea;--code:#f1efe8}
+@media (prefers-color-scheme:dark){:root{--bg:#16171a;--fg:#e6e4de;--muted:#a3a19a;--line:#34363b;--accent:#8ab8f0;--box:#1f2125;--code:#22252a}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.62 Charter,"Bitstream Charter","Sitka Text",Cambria,Georgia,serif}
+main,.site-head,.site-foot{max-width:46rem;margin:0 auto;padding:0 16px}
+.site-head{padding-top:18px;font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+.site-head a{color:var(--muted);text-decoration:none}
+.site-foot{margin-top:3rem;padding-bottom:2rem;border-top:1px solid var(--line);color:var(--muted);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25}
+h1{font-size:1.75rem;margin:1.4rem 0 .5rem}
+h1 .subtitle{display:block;font-size:1.15rem;font-weight:500;color:var(--muted);margin-top:.35rem}
+h2{font-size:1.3rem;margin:2.2rem 0 .6rem;padding-bottom:.25rem;border-bottom:1px solid var(--line)}
+h3{font-size:1.08rem;margin:1.6rem 0 .4rem}
+h4{font-size:1rem;margin:1.2rem 0 .3rem}
+.kicker,.byline,.status,.linkbar,.meta{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.kicker{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin:1.6rem 0 0}
+.byline{margin:.4rem 0;font-size:.98rem}
+.status{color:var(--muted);font-size:.9rem;margin:.3rem 0}
+.linkbar{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 0;padding:0;list-style:none;font-size:.92rem}
+.linkbar a{display:inline-block;padding:.28rem .7rem;border:1px solid var(--line);border-radius:6px;text-decoration:none;background:var(--box)}
+#abstract{background:var(--box);border-radius:8px;padding:.2rem 1.1rem .6rem;margin-top:1.5rem}
+#abstract h2{border:0;margin-top:1rem}
+.table-wrap{overflow-x:auto;margin:1.2rem 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;min-width:60%}
+caption{caption-side:bottom;text-align:left;color:var(--muted);font-size:13.5px;padding-top:.5rem;line-height:1.45}
+th,td{border-bottom:1px solid var(--line);padding:.35rem .55rem;text-align:left;vertical-align:top}
+thead th{border-bottom:2px solid var(--fg)}
+th[colspan]{text-align:center}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+figure{margin:1.6rem 0}
+figure img{display:block;max-width:100%;height:auto;margin:0 auto;background:#fff;border-radius:4px;padding:6px}
+figcaption{color:var(--muted);font-size:.9rem;margin-top:.5rem;line-height:1.5}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em}
+code{background:var(--code);padding:0 .2em;border-radius:3px;word-break:break-word}
+pre{background:var(--code);padding:.8rem 1rem;border-radius:6px;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0}
+#cite pre{white-space:pre-wrap}
+#references ol,#references ul{padding-left:1.6rem;font-size:.92rem}
+#references li{margin-bottom:.35rem}
+.papers{list-style:none;padding:0}
+.papers li{margin:0 0 1.8rem}
+.papers h3{margin:0 0 .25rem;font-size:1.12rem}
+.papers h3 a{text-decoration:none}
+.papers .meta{color:var(--muted);font-size:.88rem;margin:0 0 .35rem}
+.papers p{margin:.25rem 0}
+.papers .linkbar{margin-top:.5rem;font-size:.85rem}
+.note{color:var(--muted);font-size:.92rem}
+@media (max-width:540px){body{font-size:16px}h1{font-size:1.45rem}}</style>
+</head>
+<body>
+<header class="site-head"><a href="../../">← Sai Vamshi Atukuri · Research papers</a></header>
+<main>
+<article itemscope itemtype="https://schema.org/ScholarlyArticle">
+<header>
+<p class="kicker">Preprint · September 2026</p>
+<h1 itemprop="name">Choosing Affordable Language Models for Serial Fiction<span class="subtitle">Instruction Following, Creative Writing, and Story Memory</span></h1>
+<p class="byline"><a href="../../" rel="author" itemprop="author">Sai Vamshi Atukuri</a> · Independent Researcher, USA · <a href="https://orcid.org/0009-0003-3111-7148">ORCID 0009-0003-3111-7148</a></p>
+<p class="status">Published on Zenodo on 26 September 2026, DOI <a href="https://doi.org/10.5281/zenodo.22977925">10.5281/zenodo.22977925</a>.</p>
+<ul class="linkbar"><li><a href="affordable-models-for-serial-fiction.pdf" type="application/pdf">PDF</a></li><li><a href="https://github.com/vamshibobby/webnovel-harness">Code</a></li><li><a href="https://doi.org/10.5281/zenodo.22977925">DOI 10.5281/zenodo.22977925</a></li><li><a href="https://zenodo.org/records/22977925">Zenodo record</a></li><li><a href="#cite">Cite</a></li></ul>
+</header>
+<section id="abstract"><h2>Abstract</h2>
+<p>Our goal is to identify an affordable set of language models and prompting practices that can help a broad community of authors begin and sustain AI-assisted serial fiction. We compare six models priced below one US dollar per million input and output tokens through 687 chapter-generation attempts, covering instruction detail, output constraints, reasoning settings, story bibles, retrieval, history compression and sequential continuation. A selected novel provides a common reference.</p>
+<p>We distinguish following the author’s brief from resembling the reference and from writing an engaging scene. In a 144-attempt instruction-design comparison, 108 drafts were usable, but only 44 also met the length requirement. Reference-event coverage increased from 4.7% with vague direction to 90.7% with detailed prose instructions; numbering the same instructions yielded 88.9% and no consistent advantage across scenes. DeepSeek V3.2 led the selected detailed-instruction checks, GLM 5.3 Flash was the most balanced creative-scene candidate in exploratory AI readings, and Tencent Hy3 was the most reliable writer in that comparison. Story-bible updates introduced different risks, including retained contradictions and unexecuted repairs. The findings support choosing models by role, specifying causal requirements and creative freedom separately, and validating both chapters and memory updates. They are practical starting points from a single-novel study, not a universal literary ranking.</p>
+</section>
+<section id="key-results"><h2>Key results</h2>
+<table><thead><tr><th scope="col">Result (one selected novel, six models under $1/M tokens)</th><th scope="col">Value reported in the paper</th></tr></thead><tbody>
+<tr><th scope="row">Writing attempts in the study</th><td>687 across five experiment groups</td></tr>
+<tr><th scope="row">Instruction-design test: usable drafts / also met length</th><td>108 of 144 usable; 44 met the 1,233–1,667-word band</td></tr>
+<tr><th scope="row">Original events supported, by brief</th><td>Vague 4.7%; concise 32.7%; detailed prose 90.7%; numbered 88.9%</td></tr>
+<tr><th scope="row">Numbering the same instructions (paired, scenes A/B/C)</th><td>−4.2, −4.8 and +3.7 percentage points: no consistent advantage</td></tr>
+<tr><th scope="row">Full-brief requirements supported (detailed + numbered)</th><td>DS3.2 97.0% (12 of 12 usable); Hy3 93.3% (12 of 12 usable)</td></tr>
+<tr><th scope="row">Hy3 with reasoning disabled vs a 1,024-token reasoning hint</th><td>Usable 2/8 → 8/8; met length 0/8 → 6/8; median time about 80 → 18 s</td></tr>
+<tr><th scope="row">Exact output constraints, all six rules together</th><td>1 of 36 stress-test attempts (a DS4 draft)</td></tr>
+<tr><th scope="row">Summary-heavy vs full history (50 prior chapters), cost per usable chapter</th><td>−80% Gemini Lite; −56% GLM; −71% DS3.2</td></tr>
+</tbody></table>
+<p class="note">Numbers from the abstract, Tables 2, 4, 5, 6, 8, 9 and 15, and Section 3.3. Literary judgments in the paper are exploratory AI readings, not a human reader panel.</p>
+</section>
+<aside id="practical-takeaways" class="callout">
+<h2>Practical takeaways</h2>
+<p>Start with GLM 5.3 Flash for balanced scenes (reasoning enabled), DeepSeek V3.2 for detailed plans, or Tencent Hy3 for dependable drafts <em>with reasoning disabled</em>. Specify completed actions, motives and the ending; numbering alone did not consistently help. A vague brief permits a different plot. Check old bible errors as well as new facts. Eight-chapter completion was tested; reliable long novels and genre-wide winners remain unestablished. <a href="#sec-6">Section 6</a> gives settings and a copyable prompt.</p>
+</aside>
+
+<section id="sec-1">
+<h2>1. Introduction</h2>
+<p>An author needs more than fluent paragraphs from a chapter-writing assistant. The model must carry out planned events, respect what characters know, sustain a useful voice, write responsive dialogue, and leave the story in the intended state. It must also complete the chapter at a predictable length and preserve facts for future installments. An inexpensive model that produces attractive prose but regularly stops early may be less useful than a slightly slower model that reliably finishes.</p>
+<p>This paper asks which affordable models suit those different responsibilities and how authors should instruct them. We examine five practical questions: how much detail a brief needs; whether its structure matters; which models are promising for different writing roles; whether a story bible actually preserves correct information; and how cost and completion change with longer histories and repeated continuation.</p>
+<p>We use a common writing application with access to preceding chapters and a structured <em>story bible</em>. A story bible is a persistent record of characters, relationships, capabilities, locations and unresolved events. The application can retrieve relevant history and write updates to this record. It is the surrounding software, rather than the model alone, that stores that information and calls those tools. This setting measures the model together with its configuration and tools, closer to an author’s workflow than a single isolated prompt.</p>
+<p>The central distinction is between three outcomes. <strong>Instruction compliance</strong> asks whether the draft does what the author requested. <strong>Reference distance</strong> asks how much it differs from the selected source chapter. <strong>Writing quality</strong> asks whether the resulting scene is effective. A vague brief can legitimately produce a very different plot; a detailed brief can produce the right events in dull prose. Treating those outcomes as interchangeable leads to misleading recommendations.</p>
+</section>
+
+<section id="sec-2">
+<h2>2. Related work: LLMs and creative writing</h2>
+<section id="sec-2-1">
+<h3>2.1 Creative assistance and literary quality</h3>
+<p>Evidence about AI-assisted human writing and fully model-generated fiction answers different questions. Doshi and Hauser found that access to AI-generated ideas improved evaluations of human-written short stories, particularly for writers with lower baseline creativity, while making stories more similar to one another <a href="#ref-5">[5]</a>. The result suggests a useful role for ideation support, alongside a risk of converging on familiar ideas. It does not establish that an autonomous model can sustain a distinctive novel over many chapters.</p>
+<p>For model-generated stories, Chakrabarty et al.’s Torrance Test of Creative Writing (TTCW) uses fourteen tests covering fluency, flexibility, originality and elaboration. In their expert assessment of 48 stories, the tested LLMs lagged professional authors, and automated assessors did not positively correlate with expert judgments <a href="#ref-2">[2]</a>. These findings concern the models and tasks studied, rather than a permanent limit on all later systems. They show why readable prose alone is insufficient evidence of literary success. In our evaluation, creative completion, character portrayal, dialogue and scene construction therefore remain separate dimensions rather than being inferred from event coverage.</p>
+</section>
+<section id="sec-2-2">
+<h3>2.2 Controlling stories and sustaining context</h3>
+<p>CS4 examines story generation under varying numbers of writing constraints <a href="#ref-1">[1]</a>. It motivates treating constraint satisfaction as a distinct part of creative performance. Our instruction comparison separates adding required content from reorganizing the same content: a detailed brief can narrow plot freedom while leaving dialogue, imagery and scene realization open. A model’s divergence from a reference is consequently meaningful only in relation to what the author actually specified.</p>
+<p>Long-form generation also depends on the surrounding workflow. Re3 combines an overarching plan, repeated prompting with the plan and current story state, candidate selection and consistency revision. Human evaluations found improvements in plot coherence and relevance to the premise over direct generation with the same base model <a href="#ref-6">[6]</a>. This supports evaluating planning and revision alongside model choice. It does not establish the effectiveness of our particular bible or retrieval implementation.</p>
+<p>Memory introduces its own errors. Lost in the Middle reports that models’ use of relevant information can depend on its position in a long context <a href="#ref-3">[3]</a>. FABLES studies book-length summarization rather than chapter generation: its human annotations identify unfaithful claims about events and character states, while the tested automated raters correlate weakly with human faithfulness judgments <a href="#ref-7">[7]</a>. For serial fiction, this motivates checking whether summaries and bible updates preserve the facts needed later. A longer context window or a successfully saved summary is not itself a validated measure of narrative consistency.</p>
+</section>
+<section id="sec-2-3">
+<h3>2.3 Evaluating creative writing reliably</h3>
+<p>LitBench evaluates automated creative-writing judges against 2,480 human-labeled story comparisons. Its strongest tested off-the-shelf judge agreed with human preferences on 73% of comparisons; trained reward models reached 78% <a href="#ref-8">[8]</a>. These are judge-agreement results, not rankings of the best fiction-writing models. They illustrate both progress in automated evaluation and the remaining gap between a convenient score and human preference.</p>
+<p>Taken together, these studies support a practical but qualified view: LLMs can assist ideation and draft production, while sustained coherence, distinctive choices and dependable evaluation require separate attention. Our contribution is an affordable-model comparison within a chapter-writing workflow, with explicit separation of output reliability, instruction adherence, reference-event coverage and exploratory literary assessment. Our AI readings cannot establish reader preference, and the external studies do not independently validate our model recommendations. OpenRouter usage rankings guide the model sample; popularity is not evidence of literary quality <a href="#ref-4">[4]</a>.</p>
+</section>
+</section>
+
+<section id="sec-3">
+<h2>3. Study design</h2>
+<section id="sec-3-1">
+<h3>3.1 Selected text and chapter tasks</h3>
+<p>We selected one novel as the common basis for controlled continuation tasks in English. Eight evaluation positions span the available narrative history. Three focal scenes, labeled A, B and C, support the more detailed instruction-design comparison. They vary in their balance of external action, internal reasoning and social interaction, but they remain cases within one novel, not independent genres.</p>
+<p>For reconstruction tasks, writers receive two preceding reference chapters and a shared brief derived from the target chapter. The target prose is withheld. This tests realization of a supplied plan, not prediction of an unknown author’s next chapter. Some briefs and summaries are model-assisted annotations, with direct inspection of selected facts and disagreements. They are not comprehensive human gold labels. The text had informed application development, and possible exposure during model training is unknown.</p>
+<p>The usual target length is 1,450 words, with an acceptable band of 1,233–1,667, including the heading. Shared requirements specify English prose, past tense, a restricted third-person viewpoint, and a first line in the form <code>Chapter N: Title</code>. Continuation paths instead request approximately 1,000 words per step. The results are reported at the level of requirements and model behavior.</p>
+<p>Scene labels refer to different task emphases: <strong>A</strong> centers on external actions and their motives, <strong>B</strong> on internal reasoning and capability limits, and <strong>C</strong> on social interaction and changing reactions. They are three cases from one novel, not different genres or amounts of history. All three receive two preceding chapters in the instruction-design experiment. <a href="#fig-1">Figure 1</a> shows what the writer receives and what is withheld.</p>
+<figure id="fig-1">
+<img loading="lazy" src="fig/fig1-instruction-design.png" alt="Diagram of the instruction-design setup. Three focal scenes from one selected novel: A, external action (actions and motives, unresolved endpoint); B, internal reasoning (decisions and causes, capability limits); C, social interaction (dialogue and reactions, relationship changes). Shared context (two prior chapters plus curated bible) and one of four briefs (vague, concise, detailed, numbered) feed the writing application (one of six models, two samples per condition), which produces a generated chapter checked for completion and length, events and selected readings. The original target is withheld: the writer receives its brief, not its prose, and selected events are compared with the draft. 6 models × 3 scenes × 4 brief types × 2 samples = 144 writing attempts." width="1340" height="1006">
+<figcaption>Figure 1: Instruction-design setup and the meaning of A/B/C. The writer sees preceding chapters, a curated bible and one brief. The original target prose is withheld. Its selected events provide an evaluation reference. The diagram describes the 144-attempt instruction-design experiment; history-depth and continuation experiments change the context separately.</figcaption>
+</figure>
+</section>
+<section id="sec-3-2">
+<h3>3.2 Models, prices and inference settings</h3>
+<p>The model sample is purposive: six inexpensive models selected with reference to OpenRouter usage rankings and available prices. At the 25 September snapshot, GLM Flash, DS4 Flash, MiMo and Hy3 appeared at ranks 1, 4, 6 and 8 in the displayed trailing-30-day ranking. Gemini Lite and DS3.2 are comparison models rather than members of that displayed top ten. We do not claim an exhaustive search of every inexpensive endpoint.</p>
+<div class="table-wrap"><table id="table-1">
+<caption>Table 1: Catalog prices in US dollars per million tokens, observed 25 September 2026. Input and output prices are shown separately. Actual routing and caching affect charges.</caption>
+<thead><tr><th scope="col">Short name</th><th scope="col">OpenRouter model ID</th><th scope="col" class="num">Input</th><th scope="col" class="num">Output</th></tr></thead>
+<tbody>
+<tr><th scope="row">DS4 Flash <a href="#ref-9">[9]</a></th><td><code>deepseek/deepseek-v4-flash-0731</code></td><td class="num">0.030</td><td class="num">0.320</td></tr>
+<tr><th scope="row">GLM Flash <a href="#ref-10">[10]</a></th><td><code>z-ai/glm-5.3-flash</code></td><td class="num">0.045</td><td class="num">0.140</td></tr>
+<tr><th scope="row">MiMo <a href="#ref-11">[11]</a></th><td><code>xiaomi/mimo-v2.5</code></td><td class="num">0.140</td><td class="num">0.280</td></tr>
+<tr><th scope="row">Hy3 <a href="#ref-12">[12]</a></th><td><code>tencent/hy3</code></td><td class="num">0.132</td><td class="num">0.528</td></tr>
+<tr><th scope="row">Gemini Lite <a href="#ref-13">[13]</a></th><td><code>google/gemini-2.5-flash-lite</code></td><td class="num">0.100</td><td class="num">0.400</td></tr>
+<tr><th scope="row">DS3.2 <a href="#ref-14">[14]</a></th><td><code>deepseek/deepseek-v3.2</code></td><td class="num">0.269</td><td class="num">0.400</td></tr>
+</tbody>
+</table></div>
+<p>The short names in <a href="#table-1">Table 1</a> are used throughout. Endpoint documentation is cited for each exact model identifier; it documents the served model, not independent evidence of creative-writing quality. Live catalog prices can differ from the recorded study rates. Prices and routing conditions are time-sensitive. Requests enforce provider input and output rates below $1/M, allow provider fallback within the requested model, and do not substitute another model. Experiments were collected in September 2026; a model’s observed behavior can vary with the serving route and collection window.</p>
+<p>Generation uses temperature 0.7 and top_p 0.95. The application retains its retrieval tools and tool-round limits except in the explicit tools-disabled comparison. A chapter attempt can contain several API calls. The reconstruction benchmark requests a 1,024-token reasoning allowance, which is a provider-dependent hint. Separate tests examine application defaults and disabled reasoning. The instruction-design benchmark uses disabled reasoning for five models and a 1,024-token allowance for GLM, whose endpoint requires reasoning. Comparisons therefore concern model–configuration combinations, not model architecture alone.</p>
+<p>Requests allow at most 8,192 output tokens; individual application calls can have smaller budgets. Full-attempt time includes tool rounds and ordinary application retries. Batches use bounded concurrency, while each continuation path proceeds sequentially. Task order is shuffled where applicable, and failed attempts remain in the results. Replicates are stochastic samples, not guaranteed identical-seed reproductions.</p>
+</section>
+<section id="sec-3-3">
+<h3>3.3 Experiment inventory</h3>
+<p>The study contains 687 writing attempts across five groups. These are different tasks, not a denominator for one pooled quality score:</p>
+<ul>
+<li><strong>Writing and instructions (300):</strong> reconstruction (96), instruction detail and format (144), exact output constraints (36), and briefs without enumerated events (24).</li>
+<li><strong>Model settings (84):</strong> reasoning defaults and disabled reasoning (72), plus configuration checks (12).</li>
+<li><strong>Memory and retrieval (183):</strong> bible conditions (48), history depth (60), summary compression (24), retrieval disabled (24), canon placement (24), and recovery repeats (3).</li>
+<li><strong>Independent continuation checkpoints (24):</strong> supplied reference history rather than the model’s own previous drafts.</li>
+<li><strong>Repeated continuation (96):</strong> twelve short paths (89 observed attempts) and one planned 50-step path (7 observed attempts).</li>
+</ul>
+<p>Shared controls are reused where specified rather than counted again. Paths stop on defined failures, so attempts can fall short of planned chapter counts. Annotation, evaluation and bible-update calls are separate from these writing attempts.</p>
+<p>The memory and continuation comparisons use GLM, Gemini Lite and DS3.2, selected after reconstruction using completion, length, an event diagnostic and cost. That event diagnostic subsequently failed validation. This selection limits those comparisons; they should not be read as proof that excluded models are worse at memory.</p>
+<p>The instruction-design test crosses six models, three focal scenes, four brief types and two samples: 6 × 3 × 4 × 2 = 144 attempts. All receive the same two preceding reference chapters and the same compact, curated three-entry bible for the relevant scene. The target outcome is absent from that bible.</p>
+<p>The four briefs differ as follows:</p>
+<ul>
+<li><strong>Vague:</strong> one direction sentence, plus shared context and output rules.</li>
+<li><strong>Concise:</strong> the direction plus four selected plot-development units.</li>
+<li><strong>Detailed prose:</strong> all twelve units, including actions, motives, limits and the endpoint.</li>
+<li><strong>Numbered:</strong> exactly the same twelve sentences as detailed prose, numbered on separate lines.</li>
+</ul>
+<p>Every condition allows compatible dialogue, sensory detail and connective action. A development unit can contain several independently checkable requirements.</p>
+<p>Vague-to-detailed comparisons add specific information as well as words. They cannot identify an optimal word count. Detailed-versus-numbered comparison holds sentence content constant and tests organization, spacing and numbering together.</p>
+</section>
+<section id="sec-3-4">
+<h3>3.4 Memory and continuation tasks</h3>
+<p>Bible conditions compare no separate bible with an evidence-anchored record and an automatically constructed record. Automatic construction uses a fixed updater. A separate controlled updater test substitutes each of the six models into the same tools and validation rules: two fresh stores per model, each receiving three consecutive reference chapters, for 36 invocations. Before-and-after stores establish whether a real write occurred. Fifty-two additional updater invocations observed during memory construction and continuation provide complementary tool-execution diagnostics.</p>
+<p>History-depth tests supply 2, 5, 10, 25 or 50 preceding reference chapters at two evaluation positions. The application’s normal compaction remains active. Full-history and summary-heavy conditions then test alternative representations. A controlled memory task places an author-defined recognition phrase, knowledge boundary and promise in the bible or in early, middle or late history. Exact phrase use is a narrow retrieval check, not a comprehensive consistency test.</p>
+<p>Twelve short continuation paths cross three models, two bible conditions and two samples, with eight steps planned per path. Each starts from two reference chapters and thereafter consumes its own generated prose and rolling summaries. The next-chapter brief remains supplied, so the task is guided continuation rather than autonomous plot planning. A path stops on a generation error, truncation or output below 500 words. A separate 50-step path tests the fastest reconstruction finalist, Gemini Lite. Reference-history checkpoints provide 24 independent control attempts. Differences in context and stopping policy remain explicit when interpreting these results.</p>
+</section>
+</section>
+
+<section id="sec-4">
+<h2>4. What the measurements mean</h2>
+<aside id="how-much-to-trust" class="callout">
+<h3>How much to trust these results</h3>
+<p><strong>Strongest evidence:</strong> returned drafts, length and format checks, recorded time and API charges. <strong>Narrow evidence:</strong> selected event checks with text evidence and checks of actual bible changes. <strong>Exploratory evidence:</strong> creative-writing judgments by an AI reviewer, without an independent human reader panel.</p>
+<p>All tasks use one selected novel. Treat model choices as starting configurations to try, not universal literary rankings. Supplying 50 existing chapters tests available history; it does not demonstrate 50 successful generated chapters.</p>
+</aside>
+<aside id="terms" class="callout">
+<h3>Terms used in this paper</h3>
+<dl>
+<dt>Story bible / canon</dt><dd>A saved record of the story’s established facts; canon means the facts the writer must respect.</dd>
+<dt>Proposition / probe</dt><dd>One checkable statement, such as whether a requested action actually happens. A probe is the check used to assess it.</dd>
+<dt>Coverage</dt><dd>The fraction of selected checks supported by the draft; it is not a percentage of overall writing quality.</dd>
+<dt>Reference distance</dt><dd>Here, the share of selected original-chapter events not established in the new draft, with uncertainty reported separately.</dd>
+<dt>Usable draft</dt><dd>At least 500 words, returned without an error or truncation; it may still be too short or need substantial editing.</dd>
+<dt>Compaction</dt><dd>Replacing older chapter text with shorter summaries to fit the available context.</dd>
+<dt>Retrieval</dt><dd>Looking up selected older passages or saved facts while writing.</dd>
+<dt>Reasoning allowance</dt><dd>A request to reserve tokens for the model’s internal reasoning; endpoint support and behavior vary.</dd>
+<dt>Supersession</dt><dd>Explicitly replacing or retiring an old wrong fact so it is no longer treated as current.</dd>
+<dt>Pseudo-tool markup</dt><dd>Text that looks like a tool command but never executes a real database update.</dd>
+</dl>
+</aside>
+<section id="sec-4-1">
+<h3>4.1 Completion and the output contract</h3>
+<p>A draft is <em>usable</em> when it contains at least 500 whitespace-delimited words and returns without an error or truncation. This is a minimum operating criterion, not a quality judgment or guarantee of a satisfying ending. Length and exact-heading compliance are separate checks. The stress test additionally requires a scene count, a required phrase, absence of a banned word and an exact ending. Passing each rule often is different from passing all rules together.</p>
+<p>Cost per usable output includes known failed writer calls and tool continuations. It excludes shared evaluation work. If an ambiguous timeout lacks reported usage, the tabulated cost is a lower bound. Reported costs sum the API-returned charges for writer calls, including tool rounds, at the routes and cache discounts actually used; they are not reconstructed by multiplying all prompt tokens by the catalog rate in <a href="#table-1">Table 1</a>. Prompt-token totals include cached tokens. Time measures the complete attempt rather than time to first token. A quick error is not a fast completed chapter.</p>
+</section>
+<section id="sec-4-2">
+<h3>4.2 Instruction coverage and distance from the reference</h3>
+<p><strong>Read the two scores as two questions.</strong> Reference coverage asks, “How many selected events from the original chapter appear here?” Instruction coverage asks, “How many supplied requirements did the draft satisfy?” In Tables <a href="#table-6">6</a> and <a href="#table-7">7</a>, <em>supported</em> means the checker found evidence in the generated text; it does not mean every aspect of the scene is correct. A requirement to leave something unresolved can improve instruction coverage without adding an original event.</p>
+<p>For each focal scene, selected propositions describe checkable source events and endpoint conditions. Each judgment is supported, unsupported or unknown. A proposition can require the correct actor, completed action, location or order. A statement of intention does not count as a performed action.</p>
+<p>Let <var>Q</var> contain all selected probes, including positive events and negative endpoint constraints (requirements that something must not happen). Let <var>N</var> contain the negative endpoint probes and <var>P</var> = <var>Q</var> \ <var>N</var> the positive reference-event probes. The supplied-instruction set is <var>I</var><sub><var>a</var></sub> = {<var>q</var> ∈ <var>Q</var> : the parent instruction of <var>q</var> is supplied in brief <var>a</var>}. Thus <var>I</var><sub><var>a</var></sub> is a subset of <var>Q</var>, not necessarily of <var>P</var>. Coverage is</p>
+<p class="equation"><var>C</var><sub><var>P</var></sub> = (supported propositions in <var>P</var>) / |<var>P</var>|, &#8195; <var>C</var><sub><var>I</var></sub> = (supported supplied propositions) / |<var>I</var><sub><var>a</var></sub>|.</p>
+<p>Unknown judgments are retained: a possible-coverage upper bound adds them to the numerator. For positive source events, reference distance is <var>D</var> = 1 − <var>C</var><sub><var>P</var></sub>. With unknowns it is an interval, not a confirmed missing-event rate. A distance of 0.20 means 20% of selected source events were not established by the lower-bound checks; some may be unjudgeable rather than absent.</p>
+<p>Vague briefs contain no enumerated plot units, so their supplied-event score is undefined, not zero. Their broad goal, canon and output rules still apply. Negative endpoint constraints are excluded from reference-event distance but included in instruction coverage whenever their parent instruction is supplied. Scenes A, B and C contain respectively 15, 12 and 15 positive event probes, plus 1, 2 and 2 negative endpoint probes. The detailed and numbered briefs supply all twelve units, so their instruction denominators are 16, 14 and 17 probes; their reference-event denominators remain 15, 12 and 15. No positive reference event lies outside those twelve units. Tables <a href="#table-6">6</a> and <a href="#table-7">7</a> average per-draft fractions over the same usable drafts, but these different denominators explain why their detailed-brief scores differ. For example, 14 of 15 positive events plus one satisfied negative constraint gives 93.3% reference coverage and 15/16 = 93.8% instruction coverage. This is an illustrative calculation, not an additional experiment. Word-level matching-block similarity and five-word phrase overlap provide surface comparisons; neither measures literary quality, semantic correctness or originality relative to training data.</p>
+</section>
+<section id="sec-4-3">
+<h3>4.3 Evidence quality and literary assessment</h3>
+<p><strong>Why the checking procedure matters.</strong> An early automated grader sometimes gave credit for an action that never happened. We retained only the narrower event checks for the two-chapter instruction comparison, required supporting text, and recorded uncertain cases separately. The checks below describe how that procedure was tested; their small pass counts are not the models’ writing scores. Readers seeking practical guidance can continue to <a href="#sec-5">Results</a> or <a href="#sec-6">Section 6</a>.</p>
+<p>We report semantic event checks only for the fixed-two-chapter instruction-design comparison. Broad automated graders credited omitted actions and partial requirements in full drafts, so their aggregate semantic rankings are excluded. History-length and retrieval comparisons report operating outcomes only. The narrower event checker uses explicit completion criteria and evidence-first judgments. Returned quotations are mechanically matched to the draft, with whitespace and typographic normalization; if separated fragments are returned, every fragment must match. An unsupported affirmative quotation becomes unknown. Matching text is necessary evidence, not proof that the text entails the judgment.</p>
+<p>The final GLM event checker passed 12/12 calibration propositions and 4/4 selected new-draft event controls. It scored 8/9 across a broader diagnostic set, with an ambiguous attribution case excluded from qualification of the event measure. On complete reference texts, affirmative counts were 16/16, 14/14 and 15/17. These checks were iteratively developed and refined; they are not independent held-out validation. Accordingly, coverage is a provisional measure of selected requirements, not a certified comprehensive score. Canon-risk screens do not support an automated overall consistency ranking. The checker is also one of the writer models, leaving possible self-model bias.</p>
+<p>Six reconstruction drafts were directly inspected for diagnostic failures. A separate exploratory literary review selected eighteen instruction-design attempts, including failed outputs: one sample from every model for a vague scene and two numbered scenes. Twelve were selected before reading, with six added after initial inspection to compare vague and numbered versions of the same scene. Model labels were masked, but styles can reveal identity. The reviewer was an AI research assistant, not a human panel.</p>
+<p>Five dimensions use anchored 1–5 scores: creative completion, character portrayal, dialogue, scene construction and prose effectiveness. A score of 1 indicates incompatible, incoherent or ineffective realization; 3 indicates functional but familiar or mechanical writing; 5 requires specific, controlled and causally useful choices. Dialogue is judged for goals, responsiveness and subtext, not its mere presence. Creative additions are rewarded inside the permitted space, not for replacing required events. Scene craft includes blocking, cause and effect, changing stakes and earned endings; this is relevant to screenwriting but does not test screenplay format. Missing output receives no literary score.</p>
+</section>
+</section>
+
+<section id="sec-5">
+<h2>5. Results</h2>
+<section id="sec-5-1">
+<h3>5.1 Completion, length and operating cost</h3>
+<p>The reconstruction benchmark produced 78 usable drafts in 96 attempts; 39 also met the length band. GLM, Gemini Lite and DS3.2 each completed 16/16, with GLM meeting the band in 13/16. In the instruction-design benchmark, 108/144 were usable and 44 met the band. These are distinct task families, so their rates should not be pooled into a single model ranking.</p>
+<figure id="fig-2">
+<img loading="lazy" src="fig/fig2-usable-vs-length.png" alt="Horizontal bar chart, attempts out of 24 per model in the instruction-design test. Usable versus met length: Hy3 24/24 usable, 6/24 met length; DS3.2 22/24 usable, 8/24 met length; GLM Flash 21/24 usable, 12/24 met length; Gemini Lite 18/24 usable, 5/24 met length; MiMo 15/24 usable, 6/24 met length; DS4 Flash 8/24 usable, 7/24 met length." width="1334" height="827">
+<figcaption>Figure 2: Usable drafts versus drafts that also meet the requested word-count band in the instruction-design test. Each model has 24 attempts. Each bar is labeled directly. Met length requires a usable draft and the requested word-count band; the two counts must not be added. Hy3 completed most reliably; GLM met the length requirement most often.</figcaption>
+</figure>
+<div class="table-wrap"><table id="table-2">
+<caption>Table 2: Completion and length compliance are different hurdles. Reconstruction has 16 attempts per model; the instruction-design (brief) test has 24. Met length requires usable output within 1,233–1,667 words. Reconstruction used a 1,024-token reasoning hint for all models; the brief test disabled reasoning except for GLM. These are different tasks, not a matched settings comparison.</caption>
+<thead><tr><th scope="col">Model</th><th scope="col">Reconstruction: usable</th><th scope="col">Reconstruction: met length</th><th scope="col">Brief test: usable</th><th scope="col">Brief test: met length</th></tr></thead>
+<tbody>
+<tr><th scope="row">DS4 Flash</th><td class="num">14 of 16</td><td class="num">4 of 16</td><td class="num">8 of 24</td><td class="num">7 of 24</td></tr>
+<tr><th scope="row">GLM Flash</th><td class="num">16 of 16</td><td class="num">13 of 16</td><td class="num">21 of 24</td><td class="num">12 of 24</td></tr>
+<tr><th scope="row">MiMo</th><td class="num">11 of 16</td><td class="num">2 of 16</td><td class="num">15 of 24</td><td class="num">6 of 24</td></tr>
+<tr><th scope="row">Hy3</th><td class="num">5 of 16</td><td class="num">0 of 16</td><td class="num">24 of 24</td><td class="num">6 of 24</td></tr>
+<tr><th scope="row">Gemini Lite</th><td class="num">16 of 16</td><td class="num">10 of 16</td><td class="num">18 of 24</td><td class="num">5 of 24</td></tr>
+<tr><th scope="row">DS3.2</th><td class="num">16 of 16</td><td class="num">10 of 16</td><td class="num">22 of 24</td><td class="num">8 of 24</td></tr>
+</tbody>
+</table></div>
+<p>Hy3 completed every instruction-design attempt, while GLM offered the strongest length adherence in that family: 12/24, or half of scheduled attempts. DS3.2 was also reliable at returning prose but rarely obeyed the exact first-line format. MiMo’s attractive writing examples coexisted with tool-related failures. DS4’s instruction-design completion fell to 8/24 despite 14/16 in reconstruction; route/configuration sensitivity prevents treating either number as a permanent model property.</p>
+<p>Median attempt times were 8 seconds for Gemini Lite, 30 for GLM, 33 for Hy3, 58 for DS3.2, 69 for MiMo and 245 for DS4. These include failures. Gemini Lite was fastest in median attempt time, but five instruction-design attempts encountered upstream rate errors and another truncated. DS4 encountered frequent timeouts. These are operating failures, not evidence that the underlying prose is necessarily poor. Hy3 had the lowest known cost per usable instruction-design output (about $0.0011), but often produced chapters below the requested length. Authors should compare cost per <em>accepted</em> draft after revision, not token price alone; editorial labor is not measured here.</p>
+<div class="table-wrap"><table id="table-3">
+<caption>Table 3: Gemini Lite was fastest, while Hy3 had the lowest known cost per usable draft. Instruction-design results; each model had 24 attempts. Time includes failed attempts, and cost includes known failed calls and tool rounds. Unresolved timeout charges can make cost a lower bound. Exact heading is a separate format requirement, not literary quality.</caption>
+<thead><tr><th scope="col">Model</th><th scope="col">Median attempt time</th><th scope="col">Cost per usable draft</th><th scope="col">Exact heading</th></tr></thead>
+<tbody>
+<tr><th scope="row">DS4 Flash</th><td class="num">245 seconds</td><td class="num">$0.0020</td><td class="num">3 of 24</td></tr>
+<tr><th scope="row">GLM Flash</th><td class="num">30 seconds</td><td class="num">$0.0026</td><td class="num">21 of 24</td></tr>
+<tr><th scope="row">MiMo</th><td class="num">69 seconds</td><td class="num">$0.0018</td><td class="num">15 of 24</td></tr>
+<tr><th scope="row">Hy3</th><td class="num">33 seconds</td><td class="num">$0.0011</td><td class="num">24 of 24</td></tr>
+<tr><th scope="row">Gemini Lite</th><td class="num">8 seconds</td><td class="num">$0.0013</td><td class="num">17 of 24</td></tr>
+<tr><th scope="row">DS3.2</th><td class="num">58 seconds</td><td class="num">$0.0028</td><td class="num">1 of 24</td></tr>
+</tbody>
+</table></div>
+</section>
+<section id="sec-5-2">
+<h3>5.2 Reasoning configuration</h3>
+<div class="table-wrap"><table id="table-4">
+<caption>Table 4: Hy3 benefited from disabling reasoning; GLM rejected that setting. Each column uses eight matched cases. On means a 1,024-token reasoning hint; off is a request to disable reasoning. Met length also requires a usable draft. Configuration compatibility must be checked before comparing model quality.</caption>
+<thead><tr><th scope="col">Model</th><th scope="col">Reasoning on: usable</th><th scope="col">Reasoning off: usable</th><th scope="col">On: met length</th><th scope="col">Off: met length</th></tr></thead>
+<tbody>
+<tr><th scope="row">DS4 Flash</th><td class="num">7 of 8</td><td class="num">7 of 8</td><td class="num">2 of 8</td><td class="num">3 of 8</td></tr>
+<tr><th scope="row">GLM Flash</th><td class="num">8 of 8</td><td class="num">0 of 8</td><td class="num">6 of 8</td><td class="num">0 of 8</td></tr>
+<tr><th scope="row">MiMo</th><td class="num">4 of 8</td><td class="num">5 of 8</td><td class="num">1 of 8</td><td class="num">1 of 8</td></tr>
+<tr><th scope="row">Hy3</th><td class="num">2 of 8</td><td class="num">8 of 8</td><td class="num">0 of 8</td><td class="num">6 of 8</td></tr>
+<tr><th scope="row">Gemini Lite</th><td class="num">8 of 8</td><td class="num">8 of 8</td><td class="num">7 of 8</td><td class="num">6 of 8</td></tr>
+<tr><th scope="row">DS3.2</th><td class="num">8 of 8</td><td class="num">8 of 8</td><td class="num">5 of 8</td><td class="num">6 of 8</td></tr>
+</tbody>
+</table></div>
+<p>In eight matched cases, turning reasoning off improved Hy3 completion from 2/8 to 8/8 and length adherence from 0/8 to 6/8; median attempt time fell from about 80 to 18 seconds. GLM rejected every disabled-reasoning request. The default-settings comparison was also fragile: GLM and Hy3 each returned no usable output in four attempts, whereas Gemini Lite and DS3.2 returned four. A default endpoint setting is therefore not a fair universal configuration.</p>
+<p>The practical lesson is to qualify a <em>configuration</em>, not just a model name. Check that reasoning settings are supported, enough output budget remains for prose, and tool calls finish. The measured Hy3 benefit does not prove that disabled reasoning is always best for creative work; it shows a large application-specific effect that would otherwise distort model selection.</p>
+</section>
+<section id="sec-5-3">
+<h3>5.3 Exact output constraints</h3>
+<p>The stress test uses three target cases, two samples per model, two preceding reference chapters and no separate bible. All six models receive a 1,024-token reasoning allowance hint, temperature 0.7 and top_p 0.95; the recorded writer calls have a 4,820-token output cap. Retrieval remains available, with some application fallback calls omitting tools. This differs from the instruction-design test, which disables reasoning for Hy3 and four other models. The stress-test results therefore describe a different model–configuration combination.</p>
+<div class="table-wrap"><table id="table-5">
+<caption>Table 5: Passes out of six scheduled attempts. Every rule column requires a usable draft AND that rule; unusable attempts count as failures on every rule, including banned-word avoidance. All six requires all rules together. All models receive a 1,024-token reasoning hint in this test. Hy3 has only one usable draft, which contains a banned word; 0/6 does not mean six observed banned-word violations.</caption>
+<thead><tr><th scope="col">Model</th><th scope="col">Usable</th><th scope="col">Length</th><th scope="col">Heading</th><th scope="col">Scenes</th><th scope="col">Phrase</th><th scope="col">No banned word</th><th scope="col">Ending</th><th scope="col">All six</th></tr></thead>
+<tbody>
+<tr><th scope="row">DS4 Flash</th><td class="num">6/6</td><td class="num">2/6</td><td class="num">4/6</td><td class="num">3/6</td><td class="num">3/6</td><td class="num">6/6</td><td class="num">6/6</td><td class="num">1/6</td></tr>
+<tr><th scope="row">GLM Flash</th><td class="num">6/6</td><td class="num">4/6</td><td class="num">4/6</td><td class="num">5/6</td><td class="num">3/6</td><td class="num">5/6</td><td class="num">6/6</td><td class="num">0/6</td></tr>
+<tr><th scope="row">MiMo</th><td class="num">3/6</td><td class="num">1/6</td><td class="num">3/6</td><td class="num">1/6</td><td class="num">1/6</td><td class="num">2/6</td><td class="num">3/6</td><td class="num">0/6</td></tr>
+<tr><th scope="row">Hy3</th><td class="num">1/6</td><td class="num">0/6</td><td class="num">1/6</td><td class="num">1/6</td><td class="num">1/6</td><td class="num">0/6</td><td class="num">1/6</td><td class="num">0/6</td></tr>
+<tr><th scope="row">Gemini Lite</th><td class="num">6/6</td><td class="num">3/6</td><td class="num">6/6</td><td class="num">5/6</td><td class="num">4/6</td><td class="num">4/6</td><td class="num">6/6</td><td class="num">0/6</td></tr>
+<tr><th scope="row">DS3.2</th><td class="num">6/6</td><td class="num">4/6</td><td class="num">0/6</td><td class="num">5/6</td><td class="num">4/6</td><td class="num">4/6</td><td class="num">6/6</td><td class="num">0/6</td></tr>
+</tbody>
+</table></div>
+<p>Every rule count in <a href="#table-5">Table 5</a> requires a usable draft as well as a passed rule. Hy3 returned one usable draft out of six: four attempts returned no chapter and one was truncated at 293 words. Its sole usable draft passed the heading check but contained one banned-word occurrence. Accordingly, 0/6 for banned-word avoidance means zero usable, compliant attempts, not six observed chapters containing banned words. Its 1/6 heading result and 24/24 in instruction design use different prompts and reasoning settings; they are not a controlled estimate of a reasoning effect.</p>
+<p>Only one of 36 stress-test attempts (a DS4 draft) passed all six constraints together. Ending rules were often satisfied even when length or heading failed. This distinction matters to publishing workflows: an author who needs every requirement met cannot rely on high average compliance with individual rules.</p>
+<p>The detailed and numbered instruction conditions showed the same issue. Only two of 72 attempts satisfied every selected supplied-event probe and the length band; both were DS3.2, and neither met the exact heading contract. This does not mean the other drafts were worthless. It means acceptance needs separate checks for content and presentation rather than a single reassuring average.</p>
+</section>
+<section id="sec-5-4">
+<h3>5.4 Instruction detail and distance from the original chapter</h3>
+<p><strong>Two different questions need two different comparisons.</strong> <a href="#table-6">Table 6</a> asks how much of the original chapter’s selected events is established in the generated chapter. <a href="#table-7">Table 7</a> asks how well the writer follows the events explicitly supplied in its brief. A vague instruction can be followed while producing a plot unlike the original.</p>
+<div class="table-wrap"><table id="table-6">
+<caption>Table 6: Distance from the original chapter at the event level. Supported and not established sum to 100%; unclear evidence is a subset of not established, expressed in percentage points of all checked events. Averages use 29, 26, 27 and 26 usable drafts, respectively. These are selected positive plot events; negative endpoint constraints are excluded here but included in Table 7 when supplied. They are not all content or wording. Vague briefs leave most original events unspecified, so distance is not an instruction-failure rate.</caption>
+<thead><tr><th scope="col">Brief</th><th scope="col">Original events supported</th><th scope="col">Original events not established</th><th scope="col">Unclear subset (percentage points)</th></tr></thead>
+<tbody>
+<tr><th scope="row">Vague</th><td class="num">4.7%</td><td class="num">95.3%</td><td class="num">0.7</td></tr>
+<tr><th scope="row">Concise</th><td class="num">32.7%</td><td class="num">67.3%</td><td class="num">2.9</td></tr>
+<tr><th scope="row">Detailed prose</th><td class="num">90.7%</td><td class="num">9.3%</td><td class="num">5.2</td></tr>
+<tr><th scope="row">Numbered</th><td class="num">88.9%</td><td class="num">11.1%</td><td class="num">6.4</td></tr>
+</tbody>
+</table></div>
+<figure id="fig-3">
+<img loading="lazy" src="fig/fig3-event-coverage.png" alt="Stacked horizontal bar chart of the share of selected original-chapter events (%) by brief: matched original events, unclear evidence, and not matched by checks. Matched: vague 4.7%, concise 32.7%, detailed prose 90.7%, numbered 88.9%." width="1334" height="585">
+<figcaption>Figure 3: What happened to the original chapter’s selected events? Green is confirmed matching content, amber is unclear evidence, and gray is content not matched by the checks. Bars average usable drafts for each brief. Unspecified original events are still in this reference comparison, so the large gray area for vague briefs is expected and is not a failure to follow instructions.</figcaption>
+</figure>
+<p><strong>How to read the distance result.</strong> For detailed prose, 90.7% of selected original events were confirmed. The remaining 9.3% were not confirmed: 5.2 percentage points were unclear and 4.1 were not matched by the checks. Thus the supported event-distance range is approximately 4.1–9.3%. It is not a claim that 9.3% of the whole chapter is wrong.</p>
+<p>Vague briefs confirm only 4.7% because most original events were not specified. This measures resemblance to a particular plot, not creativity, prose quality or overall instruction compliance.</p>
+<div class="table-wrap"><table id="table-7">
+<caption>Table 7: Following the brief is separate from matching the original chapter. Counts use all 36 attempts per brief; percentages average confirmed supplied-probe coverage among usable drafts, including supplied negative endpoint constraints. Vague briefs contain no enumerated event list, so this event-specific score is not defined. General direction, canon and format rules still apply.</caption>
+<thead><tr><th scope="col">Brief</th><th scope="col">Usable drafts</th><th scope="col">Met requested length</th><th scope="col">Supplied requirements supported</th></tr></thead>
+<tbody>
+<tr><th scope="row">Vague</th><td class="num">29 of 36</td><td class="num">17 of 36</td><td>Not defined</td></tr>
+<tr><th scope="row">Concise</th><td class="num">26 of 36</td><td class="num">11 of 36</td><td class="num">79.1%</td></tr>
+<tr><th scope="row">Detailed prose</th><td class="num">27 of 36</td><td class="num">10 of 36</td><td class="num">91.2%</td></tr>
+<tr><th scope="row">Numbered</th><td class="num">26 of 36</td><td class="num">6 of 36</td><td class="num">89.7%</td></tr>
+</tbody>
+</table></div>
+<p>Adding target information substantially increased reference-event coverage. Vague briefs established about 5% of selected source events, concise briefs 33%, detailed prose 91%, and numbered instructions 89%. The low vague score is expected: most of those events were not requested. It should not be described as a 95% instruction-failure rate.</p>
+<p>Detailed briefs were much better for reproducing a planned sequence because they supplied the intended actions, motives and endpoint. They did not guarantee a fully compliant draft or improve length adherence. Vague prompts more often left room for expansion, but also handed causal decisions to the model. The useful question is therefore not “How many words should every prompt contain?” but “Which decisions must remain the author’s?”</p>
+<div class="table-wrap"><table id="table-8">
+<caption>Table 8: DS3.2 and Hy3 led the selected detailed-plan checks. Twelve scheduled attempts per model combine detailed and numbered briefs. Coverage averages usable drafts only; unknown judgments are excluded from confirmed coverage and credited in the next column. The range represents unresolved checks. Counts retain all 12 scheduled attempts. All events means every selected probe, not every possible instruction.</caption>
+<thead><tr><th scope="col">Model</th><th scope="col">Usable drafts</th><th scope="col">Requirements supported</th><th scope="col">If unknowns pass</th><th scope="col">All events met</th><th scope="col">All events + length</th></tr></thead>
+<tbody>
+<tr><th scope="row">DS4 Flash</th><td class="num">2 of 12</td><td class="num">76.5%</td><td class="num">85.3%</td><td class="num">0 of 12</td><td class="num">0 of 12</td></tr>
+<tr><th scope="row">GLM Flash</th><td class="num">10 of 12</td><td class="num">89.1%</td><td class="num">94.0%</td><td class="num">1 of 12</td><td class="num">0 of 12</td></tr>
+<tr><th scope="row">MiMo</th><td class="num">8 of 12</td><td class="num">81.8%</td><td class="num">91.6%</td><td class="num">0 of 12</td><td class="num">0 of 12</td></tr>
+<tr><th scope="row">Hy3</th><td class="num">12 of 12</td><td class="num">93.3%</td><td class="num">98.4%</td><td class="num">6 of 12</td><td class="num">0 of 12</td></tr>
+<tr><th scope="row">Gemini Lite</th><td class="num">9 of 12</td><td class="num">90.2%</td><td class="num">95.0%</td><td class="num">2 of 12</td><td class="num">0 of 12</td></tr>
+<tr><th scope="row">DS3.2</th><td class="num">12 of 12</td><td class="num">97.0%</td><td class="num">99.5%</td><td class="num">7 of 12</td><td class="num">2 of 12</td></tr>
+</tbody>
+</table></div>
+<p>DS3.2 was the strongest candidate on selected full-brief instruction coverage, followed by Hy3. Both returned all twelve full-brief drafts. GLM’s lower event coverage did not prevent it from being the more promising creative-scene candidate in direct readings. MiMo supplied engaging interactions in selected examples but had lower completion and selected-probe coverage. DS4’s two surviving full-brief drafts are too selective to support a dependable quality ranking.</p>
+<p>These percentages are conditional on usable output. Failures differ by model and brief, so the surviving drafts are not an unbiased sample of all intended outcomes. The table separates confirmed coverage from a possible upper bound that credits unknown judgments. They do not remove uncertainty from the small number of scenes.</p>
+<section id="sec-5-4-1">
+<h4>5.4.1 Does numbering improve the same instructions?</h4>
+<div class="table-wrap"><table id="table-9">
+<caption>Table 9: Numbering had no consistent advantage when instruction sentences were held constant. Positive means numbered plans had higher confirmed instruction coverage; negative favors detailed prose. Only pairs with two usable, scored drafts enter.</caption>
+<thead><tr><th scope="col">Focal scene</th><th scope="col">Matched pairs</th><th scope="col">Numbering effect</th><th scope="col">Interpretation</th></tr></thead>
+<tbody>
+<tr><th scope="row">A</th><td class="num">9</td><td class="num">−4.2 percentage points</td><td>Prose did slightly better</td></tr>
+<tr><th scope="row">B</th><td class="num">6</td><td class="num">−4.8 percentage points</td><td>Prose did slightly better</td></tr>
+<tr><th scope="row">C</th><td class="num">8</td><td class="num">+3.7 percentage points</td><td>Numbering did slightly better</td></tr>
+</tbody>
+</table></div>
+<p>Across the three scenes, there were 9, 6 and 8 usable matched pairs, respectively. Numbering changed average paired coverage by −4.2, −4.8 and +3.7 percentage points across the three focal scenes. Detailed prose and numbered briefs had similar aggregate results, with a slight descriptive advantage for prose. This sample establishes no consistent numbering benefit and does not justify claiming a universally best format.</p>
+<p>Numbering can still help an author edit, prioritize and verify a brief. That is a usability recommendation, not a demonstrated generation-quality advantage. Choose detailed prose or a numbered plan according to how the author works; the evidence favors specifying the right content over relying on formatting alone.</p>
+</section>
+<section id="sec-5-4-2">
+<h4>5.4.2 Faithfulness and creative completion are different</h4>
+<p>Detailed and numbered drafts remained far from the reference in wording: their average surface distances were approximately 0.922 and 0.907, despite high source-event coverage. A model can follow the same plot using substantially different language. Surface difference is therefore unsuitable as a standalone quality or creativity score. Across 81 returned reconstruction drafts, the longest normalized contiguous overlap with a withheld target was 36 tokens. That observation neither establishes plagiarism nor rules out training-data familiarity.</p>
+<p>Direct readings also distinguished successful invention from unsupported canon. A vague continuation could introduce a useful obstacle, responsive dialogue or an earned ending while departing from the reference. Problems arose when an invention was presented as already-established history or gave a character knowledge they should not have. Under detailed instructions, some drafts restated the outline mechanically rather than dramatizing it through choices and interaction.</p>
+<p>Compound requirements were especially easy to overcredit. An explanation of why an action matters, preparation to act, and the completed action are three different observations. Selected drafts satisfied different subsets of such requirements. Authors and evaluators should verify the indispensable components separately instead of asking whether the scene broadly “covered” the topic.</p>
+</section>
+</section>
+<section id="sec-5-5">
+<h3>5.5 Creative writing, character and dialogue</h3>
+<p>The exploratory readings support a role-based shortlist, with stronger evidence for operating reliability than for aesthetic preference. No independent human reader study was conducted, and the small reading sample cannot establish a general literary ranking.</p>
+<p>Tables <a href="#table-10">10</a>–<a href="#table-12">12</a> expose each assessed dimension separately. They compare selected writing samples, not increasing history lengths. Every sample used two preceding chapters. A scene later in the novel is a different task, not evidence that the model received more history.</p>
+<div class="table-wrap"><table id="table-10">
+<caption>Table 10: Exploratory literary reading: scene A with a vague brief. One AI-reviewed attempt per model, with two preceding chapters. Scale: 1 = ineffective, 3 = functional, 5 = specific and effective. A dash means no readable output.</caption>
+<thead><tr><th scope="col">Model</th><th scope="col">Creative filling</th><th scope="col">Character portrayal</th><th scope="col">Dialogue</th><th scope="col">Scene craft</th><th scope="col">Prose</th></tr></thead>
+<tbody>
+<tr><th scope="row">DS4 Flash</th><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td></tr>
+<tr><th scope="row">GLM Flash</th><td class="num">4</td><td class="num">3</td><td class="num">4</td><td class="num">4</td><td class="num">4</td></tr>
+<tr><th scope="row">MiMo</th><td class="num">3</td><td class="num">4</td><td class="num">4</td><td class="num">3</td><td class="num">3</td></tr>
+<tr><th scope="row">Hy3</th><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num">3</td></tr>
+<tr><th scope="row">Gemini Lite</th><td class="num">2</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td class="num">2</td></tr>
+<tr><th scope="row">DS3.2</th><td class="num">3</td><td class="num">4</td><td class="num">3</td><td class="num">3</td><td class="num">3</td></tr>
+</tbody>
+</table></div>
+<div class="table-wrap"><table id="table-11">
+<caption>Table 11: Exploratory literary reading: scene A with a numbered plan. One AI-reviewed attempt per model, with two preceding chapters. Scale: 1 = ineffective, 3 = functional, 5 = specific and effective. A dash means no readable output.</caption>
+<thead><tr><th scope="col">Model</th><th scope="col">Creative filling</th><th scope="col">Character portrayal</th><th scope="col">Dialogue</th><th scope="col">Scene craft</th><th scope="col">Prose</th></tr></thead>
+<tbody>
+<tr><th scope="row">DS4 Flash</th><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td></tr>
+<tr><th scope="row">GLM Flash</th><td class="num">3</td><td class="num">4</td><td class="num">4</td><td class="num">3</td><td class="num">4</td></tr>
+<tr><th scope="row">MiMo</th><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">3</td></tr>
+<tr><th scope="row">Hy3</th><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">3</td></tr>
+<tr><th scope="row">Gemini Lite</th><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td></tr>
+<tr><th scope="row">DS3.2</th><td class="num">3</td><td class="num">4</td><td class="num">3</td><td class="num">3</td><td class="num">3</td></tr>
+</tbody>
+</table></div>
+<div class="table-wrap"><table id="table-12">
+<caption>Table 12: Exploratory literary reading: scene C with a numbered plan. One AI-reviewed attempt per model, with two preceding chapters. Scale: 1 = ineffective, 3 = functional, 5 = specific and effective. A dash means no readable output.</caption>
+<thead><tr><th scope="col">Model</th><th scope="col">Creative filling</th><th scope="col">Character portrayal</th><th scope="col">Dialogue</th><th scope="col">Scene craft</th><th scope="col">Prose</th></tr></thead>
+<tbody>
+<tr><th scope="row">DS4 Flash</th><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="num">–</td></tr>
+<tr><th scope="row">GLM Flash</th><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td></tr>
+<tr><th scope="row">MiMo</th><td class="num">3</td><td class="num">4</td><td class="num">4</td><td class="num">3</td><td class="num">3</td></tr>
+<tr><th scope="row">Hy3</th><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td></tr>
+<tr><th scope="row">Gemini Lite</th><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num">2</td></tr>
+<tr><th scope="row">DS3.2</th><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td></tr>
+</tbody>
+</table></div>
+<p><strong>GLM Flash was the most balanced creative-scene candidate.</strong> Its strongest vague sample connected concrete imagery, cautious decisions and purposeful supporting dialogue. The inspected scenes generally offered more dramatization than synopsis. Its 21/24 usable outputs and comparatively strong length adherence make that qualitative impression practically relevant. However, selected drafts still introduced incorrect identity details, knowledge provenance and inconsistent physical state. Fluency is not a continuity guarantee.</p>
+<p><strong>MiMo was promising for dialogue.</strong> Selected drafts contained responsive exchanges, character-specific humor and sensitive interaction. Other samples became exposition-heavy, exceeded the length target or introduced unsupported background. One inspected draft included untranslated text despite the English requirement. With 15/24 usable outputs, it is a candidate for supervised dialogue-rich work rather than the strongest unattended drafting choice.</p>
+<p><strong>DS3.2 was promising for carrying out a detailed plan and portraying motives.</strong> The strongest inspected structured scene preserved practical motivations and developed the viewpoint character’s reasoning. Its full-brief event checks also led the comparison. Weaknesses included repetitive expansion, decorated headings, prefatory text and one direct excursion into another character’s private thoughts. Plot fidelity and viewpoint fidelity must be evaluated separately.</p>
+<p><strong>Hy3 was the most dependable economical first-draft option in the instruction-design test.</strong> All 24 attempts returned usable output, but only six met the length band. Some scenes read as functional outline realization rather than vivid dramatic interaction. It is useful where an author expects to expand and polish a reliable draft; completion alone does not make it the best dialogue or prose model.</p>
+<p><strong>Gemini Lite favored speed over scene depth in the selected examples.</strong> Its fastest outputs could compress important moments into summary, postpone required actions or provide little interaction. Rate errors and truncation also reduced usable output. It remains a fast sketching candidate, but this study does not support choosing it as the most dependable long-form continuation model.</p>
+<p><strong>DS4 needs route qualification before a writer recommendation.</strong> None of its three selected instruction-design reading attempts supplied readable prose. That prevents a literary ranking for those cases. Its stronger reconstruction completion and useful bible behavior show why a failure in one configuration should not become an unsupported claim about all of its capabilities.</p>
+<p>No model earned an overall character-consistency title. DS3.2 and GLM are reasonable candidates for motives and scene realization, respectively, but both exhibited factual or viewpoint problems. A future human evaluation across more novels is needed to distinguish close aesthetic preferences.</p>
+</section>
+<section id="sec-5-6">
+<h3>5.6 Story-bible retention and update errors</h3>
+<section id="sec-5-6-1">
+<h4>5.6.1 Having a bible is not the same as having correct memory</h4>
+<p>Across anchored and automatic bible conditions, 46/48 writing attempts were usable. Length effects varied: relative to shared no-bible controls, automatic bibles changed in-band rates by −12.5 percentage points for GLM and +25 points for Gemini Lite and DS3.2. Each comparison had only eight attempts per model and condition. Invalid broad semantic graders prevent claiming that those changes demonstrate better story consistency.</p>
+<p>Store inspection found a more actionable result: correct new facts can coexist with unretracted old errors. An updater may add the right relationship to one entry while leaving a contradictory relationship elsewhere. It can also split one character into conflicting records or attach another character’s attributes to the protagonist. Merely adding more entries can make retrieval more confidently wrong.</p>
+</section>
+<section id="sec-5-6-2">
+<h4>5.6.2 Which updater retained the right facts?</h4>
+<p>The controlled replay inspected eight selected categories: protagonist identity, social roles, family links, capability limits, character status, attribution of past events, newly introduced characters and unresolved event state. A category with correct and unretracted contradictory claims is counted as wrong. Facts may be retained anywhere in the store; a dedicated entity is not required. These categories do not enumerate every possible error.</p>
+<div class="table-wrap"><table id="table-13">
+<caption>Table 13: DS4 retained the most selected facts, but no updater was safe to trust without review. The two counts show two separate three-chapter replay paths, each checking eight fact categories. They are not percentages of the entire bible. Risks include errors outside the eight scored categories.</caption>
+<thead><tr><th scope="col">Updater</th><th scope="col">Correct categories retained</th><th scope="col">Main risk observed</th></tr></thead>
+<tbody>
+<tr><th scope="row">DS4 Flash</th><td class="num">7 and 8 of 8</td><td>Best selected retention; a repair was described but never written.</td></tr>
+<tr><th scope="row">GLM Flash</th><td class="num">7 and 7 of 8</td><td>Old incorrect family claims remained.</td></tr>
+<tr><th scope="row">MiMo</th><td class="num">7 and 7 of 8</td><td>Old errors remained; one update failed after partial writes.</td></tr>
+<tr><th scope="row">DS3.2</th><td class="num">5 and 6 of 8</td><td>Omitted relationships and unrepaired history.</td></tr>
+<tr><th scope="row">Gemini Lite</th><td class="num">5 and 6 of 8</td><td>Assigned attributes to the wrong character.</td></tr>
+<tr><th scope="row">Hy3</th><td class="num">3 and 5 of 8</td><td>Skipped needed updates and omitted new facts.</td></tr>
+</tbody>
+</table></div>
+<p>DS4 retained seven and eight of eight selected categories in its two paths, the best observed coverage. One path explicitly superseded an incorrect relationship inference. Yet it also wrote an incorrect relationship outside the selected categories. The model recognized that mistake in prose and emitted a repair in pseudo-tool markup, but no corresponding structured write executed. The error remained. Thus, “eight of eight retained” is not equivalent to a correct complete bible.</p>
+<p>GLM and MiMo each retained seven categories in both paths but left incorrect old family assertions alongside correct newer records. Hy3’s first path incorrectly declared that no changes were needed for two chapters, omitting important new canon. Gemini Lite introduced serious attribute misassignment. DS3.2 omitted important relationship information and left incorrect history unrepaired. These are distinct extraction, attribution, correction and execution failures.</p>
+<p>Five of the 36 controlled invocations left the store semantically unchanged. One invocation propagated an error after partial writes. Two contained visible pseudo-tool markup, sometimes after valid writes. In the 52 complementary maintenance observations, 25 invocations contained such markup, and a directly inspected update failed to add an important new character. Different configurations and source conditions prevent pooling these into a general failure rate.</p>
+<p>For a supervised updater, DS4 is the strongest retention candidate in this short replay, with GLM a faster alternative. Neither should be accepted solely on a success message. Verify actual writes, valid relationship targets, and whether an old contradictory claim was explicitly superseded. The replay covers three updates per path, not long-run memory survival.</p>
+</section>
+</section>
+<section id="sec-5-7">
+<h3>5.7 History length and compression</h3>
+<p><strong>History length means the number of preceding chapters supplied to the writer, not the requested length of the new chapter.</strong> The experiment holds the two target cases fixed and supplies 2, 5, 10, 25 or 50 preceding reference chapters, with two replicates per case and model. This gives four attempts at every model–depth combination and 60 attempts overall. The requested output remains about 1,450 words. The application’s normal compaction and retrieval remain active, so longer available history does not mean every prior word is simultaneously visible.</p>
+<p>For history length, we report completion, word-count compliance, generated word count, latency and cost. <a href="#table-14">Table 14</a> reports all five levels together. Read each model’s rows from top to bottom. Usable output, length adherence, generated word count, latency and cost answer different questions; none is a substitute for literary quality.</p>
+<figure id="fig-4">
+<img loading="lazy" src="fig/fig4-history-length.png" alt="Two line charts against preceding chapters supplied (2, 5, 10, 25, 50) for Gemini Lite, GLM Flash and DS3.2. Left, cost increases overall: US dollars per usable draft, with DS3.2 rising to about $0.032 at 50 chapters and the other two staying below about $0.007. Right, length compliance is uneven: drafts meeting length out of 4 fluctuate between 0 and 3 for all three models." width="1340" height="663">
+<figcaption>Figure 4: Measured history-length effects. The left panel shows cost per usable draft; the right shows drafts meeting the requested length out of four attempts per depth. Points use 2, 5, 10, 25 and 50 preceding chapters; lines connect observations and do not imply a fitted trend. Costs include failed attempts. No literary-quality score is plotted.</figcaption>
+</figure>
+<p><strong>Completion did not deteriorate steadily with more history.</strong> Gemini Lite returned usable output in all 20 attempts. GLM completed 3, 4, 3, 4 and 4 of four attempts as depth increased; DS3.2 completed 4, 2, 4, 4 and 4. The failures therefore do not support a simple claim that longer histories cause more failures.</p>
+<p><strong>Length compliance was uneven rather than uniformly better.</strong> GLM met the requested band in 2, 2, 1, 0 and 1 attempts; Gemini Lite in 2, 1, 1, 3 and 1; DS3.2 in 2, 1, 3, 2 and 3. At 50 prior chapters, DS3.2 met the band in three of four attempts, versus one of four for each other model. With four attempts per depth, this is descriptive evidence rather than a robust ranking. GLM tended to run long, whereas Gemini Lite’s mean usable output was below the band at depths 10 and 50.</p>
+<p><strong>Latency did not rise in proportion to history.</strong> Gemini Lite stayed near 10–12 seconds and GLM near 79–93 seconds across depths. DS3.2 varied more; its fast median at depth 5 includes two failed attempts and should not be read as faster successful drafting.</p>
+<div class="table-wrap"><table id="table-14">
+<caption>Table 14: All five history lengths: cost rose overall, but completion and length compliance did not change consistently. Four attempts per model and depth use the same two target cases. Usable means at least 500 words without an error or truncation; met length requires 1,233–1,667 words. Mean words uses usable drafts; median time uses all attempts. Cost is in US dollars per usable draft, including failed attempts. Prior chapters are supplied reference history, not generated chapters.</caption>
+<thead><tr><th scope="col">Prior chapters</th><th scope="col">Usable drafts</th><th scope="col">Met length</th><th scope="col">Mean output words</th><th scope="col">Median seconds</th><th scope="col">Cost per usable draft</th></tr></thead>
+<tbody>
+<tr><th scope="rowgroup" colspan="6">Gemini Lite</th></tr>
+<tr><th scope="row">2</th><td class="num">4 of 4</td><td class="num">2 of 4</td><td class="num">1287</td><td class="num">10</td><td class="num">$0.0013</td></tr>
+<tr><th scope="row">5</th><td class="num">4 of 4</td><td class="num">1 of 4</td><td class="num">1661</td><td class="num">11</td><td class="num">$0.0021</td></tr>
+<tr><th scope="row">10</th><td class="num">4 of 4</td><td class="num">1 of 4</td><td class="num">1085</td><td class="num">10</td><td class="num">$0.0027</td></tr>
+<tr><th scope="row">25</th><td class="num">4 of 4</td><td class="num">3 of 4</td><td class="num">1304</td><td class="num">12</td><td class="num">$0.0043</td></tr>
+<tr><th scope="row">50</th><td class="num">4 of 4</td><td class="num">1 of 4</td><td class="num">1195</td><td class="num">11</td><td class="num">$0.0067</td></tr>
+<tr><th scope="rowgroup" colspan="6">GLM Flash</th></tr>
+<tr><th scope="row">2</th><td class="num">3 of 4</td><td class="num">2 of 4</td><td class="num">1645</td><td class="num">89</td><td class="num">$0.0016</td></tr>
+<tr><th scope="row">5</th><td class="num">4 of 4</td><td class="num">2 of 4</td><td class="num">1626</td><td class="num">85</td><td class="num">$0.0024</td></tr>
+<tr><th scope="row">10</th><td class="num">3 of 4</td><td class="num">1 of 4</td><td class="num">1754</td><td class="num">93</td><td class="num">$0.0050</td></tr>
+<tr><th scope="row">25</th><td class="num">4 of 4</td><td class="num">0 of 4</td><td class="num">1723</td><td class="num">79</td><td class="num">$0.0058</td></tr>
+<tr><th scope="row">50</th><td class="num">4 of 4</td><td class="num">1 of 4</td><td class="num">1784</td><td class="num">91</td><td class="num">$0.0056</td></tr>
+<tr><th scope="rowgroup" colspan="6">DS3.2</th></tr>
+<tr><th scope="row">2</th><td class="num">4 of 4</td><td class="num">2 of 4</td><td class="num">1593</td><td class="num">104</td><td class="num">$0.0036</td></tr>
+<tr><th scope="row">5</th><td class="num">2 of 4</td><td class="num">1 of 4</td><td class="num">1780</td><td class="num">46</td><td class="num">$0.0133</td></tr>
+<tr><th scope="row">10</th><td class="num">4 of 4</td><td class="num">3 of 4</td><td class="num">1518</td><td class="num">79</td><td class="num">$0.0108</td></tr>
+<tr><th scope="row">25</th><td class="num">4 of 4</td><td class="num">2 of 4</td><td class="num">1494</td><td class="num">85</td><td class="num">$0.0165</td></tr>
+<tr><th scope="row">50</th><td class="num">4 of 4</td><td class="num">3 of 4</td><td class="num">1465</td><td class="num">85</td><td class="num">$0.0317</td></tr>
+</tbody>
+</table></div>
+<p>From two to 50 available reference chapters, cost per usable output rose about fivefold for Gemini Lite, threefold for GLM and ninefold for DS3.2. The latter repeatedly resent history across tool rounds: depth-50 attempts averaged about 236,000 prompt tokens, compared with roughly 57,500 for Gemini Lite. For DS3.2 at depth 50, the four usable attempts contain 16 writer calls and average 236,235 prompt tokens, of which 177,072 (75.0%) are reported as cached, plus 2,924 completion tokens. The recorded routes are AtlasCloud (9 calls), StreamLake (6) and Novita (1). API-reported charges average $0.0306955 for input and $0.00101925 for completion per attempt, totaling $0.0317148, which rounds to Table 14’s $0.0317. These route-specific charges and cache reuse explain why multiplying all 236,235 prompt tokens by the $0.269/M catalog rate overstates the observed cost. Evaluation calls are excluded from this reconciliation. Available context length therefore does not directly predict billed usage. Automatic compaction, retrieval behavior and repeated calls all matter.</p>
+<p>All 24 full-history and summary-heavy outputs were usable. Summary-heavy input reduced measured cost per usable output by 80% for Gemini Lite, 56% for GLM and 71% for DS3.2. This is a strong operating result, but not a verified finding that compression preserves plot, character or prose quality. Summaries can omit causal motives and knowledge boundaries even when the chapter remains fluent.</p>
+<div class="table-wrap"><table id="table-15">
+<caption>Table 15: Summaries reduced cost for every tested model, but quality preservation remains unvalidated. Costs are US dollars per usable chapter with 50 available reference chapters. Each model had four attempts per representation, all usable. Length counts are shown separately to distinguish them from cost savings.</caption>
+<thead><tr><th scope="col">Model</th><th scope="col">Full history cost</th><th scope="col">Summary cost</th><th scope="col">Saving</th><th scope="col">Full: met length</th><th scope="col">Summary: met length</th></tr></thead>
+<tbody>
+<tr><th scope="row">Gemini Lite</th><td class="num">$0.0102</td><td class="num">$0.0020</td><td class="num">80%</td><td class="num">1 of 4</td><td class="num">2 of 4</td></tr>
+<tr><th scope="row">GLM Flash</th><td class="num">$0.0060</td><td class="num">$0.0027</td><td class="num">56%</td><td class="num">1 of 4</td><td class="num">3 of 4</td></tr>
+<tr><th scope="row">DS3.2</th><td class="num">$0.0343</td><td class="num">$0.0099</td><td class="num">71%</td><td class="num">2 of 4</td><td class="num">2 of 4</td></tr>
+</tbody>
+</table></div>
+</section>
+<section id="sec-5-8">
+<h3>5.8 Retrieval and brief simplification: measured operating outcomes</h3>
+<p>This comparison measured completion, requested length, latency and exact phrase use. All 24 attempts with retrieval tools disabled were usable. GLM’s median attempt time fell from about 89 to 40 seconds, while its length-compliant count fell from 7/8 to 4/8. DS3.2’s count changed from 5/8 to 6/8, and Gemini Lite’s from 4/8 to 3/8. Thus, the speed benefit did not come with a consistent length-compliance benefit.</p>
+<p>All 24 attempts without enumerated plot events were usable; each of the three tested models met the length band in five of eight attempts. In the separate exact-phrase placement task, 20/24 primary attempts were usable and 19/24 were usable and included the phrase. Only 4/24 used it exactly once. Three separate recovery attempts all completed; two included the phrase and none used it exactly once. These repeats remain separate from the primary results.</p>
+</section>
+<section id="sec-5-9">
+<h3>5.9 Consecutive chapter generation</h3>
+<p>Here the model writes a sequence rather than one chapter. Each <em>run</em> starts with two reference chapters, generates the next chapter from a supplied brief, adds that draft to its history, and repeats. The target is eight consecutive generated chapters. We ran four sequences per model and stopped a sequence on an error, truncation or output below 500 words. Two runs used bible updates and two did not.</p>
+<div class="table-wrap"><table id="table-16">
+<caption>Table 16: Can the writer finish an eight-chapter sequence? A run means one attempt to generate eight consecutive chapters using its own previous drafts as history, with a new brief at every step. Four runs per model include two with bible updates and two without. This measures completion, not the quality of the resulting story. Figure 5 shows each run separately.</caption>
+<thead><tr><th scope="col">Model</th><th scope="col">Runs finishing all 8 chapters</th><th scope="col">Completed chapters per run</th><th scope="col">What happened</th></tr></thead>
+<tbody>
+<tr><th scope="row">GLM Flash</th><td class="num">4 of 4</td><td>8 in every run</td><td>All reached the planned endpoint.</td></tr>
+<tr><th scope="row">DS3.2</th><td class="num">4 of 4</td><td>8 in every run</td><td>All reached the planned endpoint.</td></tr>
+<tr><th scope="row">Gemini Lite</th><td class="num">0 of 4</td><td>Between 4 and 6</td><td>Stopped after truncation or a timeout.</td></tr>
+</tbody>
+</table></div>
+<p>GLM and DS3.2 completed all eight planned steps in each of their four paths. Gemini Lite stopped after four to six completed chapters through truncation or an upstream timeout. Its separately planned 50-step path completed six chapters and stopped on a truncated seventh attempt. No successful 50-chapter generated novel is established by this study.</p>
+<figure id="fig-5">
+<img loading="lazy" src="fig/fig5-eight-chapter-runs.png" alt="Dot plot of consecutive chapters completed before stopping, four runs per model, with a dashed line at the 8-chapter goal. GLM Flash: 8, 8, 8, 8. DS3.2: 8, 8, 8, 8. Gemini Lite: 4, 5, 6, 6." width="1334" height="566">
+<figcaption>Figure 5: Each dot is one of four independent eight-chapter runs for a model. Its horizontal position is the number of consecutive chapters completed; dots are separated vertically only to keep overlapping results visible. The dashed line is the eight-chapter goal. GLM and DS3.2 reached it in every run; Gemini Lite completed 4, 5, 6 and 6 chapters.</figcaption>
+</figure>
+<p>All 24 independent attempts using supplied reference history completed. These controls differ from a run that consumes its own generated chapters. The outcome reported here is operational completion; an eight-chapter sequence that finishes can still need revision for continuity and storytelling.</p>
+<p>Maintenance also added latency. Median steps with bible updates were approximately 122–129 seconds for Gemini Lite, 195–240 for GLM and 186–205 for DS3.2, versus about 11, 72–76 and 47 seconds without updates. These figures include summary preparation and a fixed updater, so they should not be interpreted as the writing model’s intrinsic memory speed. Early stopping is not a cost-saving success.</p>
+</section>
+</section>
+
+<section id="sec-6">
+<h2>6. Recommendations for authors</h2>
+<section id="sec-6-1">
+<h3>6.1 A useful model shortlist</h3>
+<p>For an author starting with one writer, <strong>GLM Flash is the most balanced starting candidate</strong> with reasoning enabled when creative scenes and useful completion matter together. Choose <strong>DS3.2</strong> instead when faithfully executing a detailed outline is the primary need, and <strong>Hy3 with reasoning disabled</strong> when dependable economical draft delivery matters more than finished prose. MiMo is worth testing for dialogue-focused revision, while Gemini Lite suits rapid sketches better than the long continuation role measured here.</p>
+<p>Separating writing from memory maintenance is sensible because the skills differ: DS4’s selected retention was strong even when its writer route was unreliable. However, a mixed-model production workflow was not tested end to end. These role assignments are recommendations derived from separate observations, not a measured guarantee that combining them improves a novel.</p>
+<div class="table-wrap"><table id="table-17">
+<caption>Table 17: Starting candidates by author priority. Apply the reasoning settings in Table 18 and check the indicated weaknesses.</caption>
+<thead><tr><th scope="col">Author’s priority</th><th scope="col">Candidate</th><th scope="col">Why, and what to check</th></tr></thead>
+<tbody>
+<tr><th scope="row">Balanced creative scenes</th><td>GLM Flash (reasoning on)</td><td>Strongest balanced impression in selected readings; check canon, viewpoint and completed actions.</td></tr>
+<tr><th scope="row">Detailed plan execution</th><td>DS3.2</td><td>Highest selected full-brief coverage; check heading, length, repetition and viewpoint.</td></tr>
+<tr><th scope="row">Reliable low-cost first draft</th><td>Hy3 (reasoning off)</td><td>24/24 usable with reasoning disabled; expect expansion and prose revision.</td></tr>
+<tr><th scope="row">Dialogue-rich passages</th><td>MiMo</td><td>Responsive interactions in selected samples; tolerate lower completion and review language/length.</td></tr>
+<tr><th scope="row">Rapid sketches</th><td>Gemini Lite</td><td>Lowest median attempt latency; check scene depth, completion and route availability.</td></tr>
+<tr><th scope="row">Supervised bible extraction</th><td>DS4 Flash</td><td>Best selected retention in the short replay; verify writes and corrections before accepting memory.</td></tr>
+</tbody>
+</table></div>
+</section>
+<section id="sec-6-2">
+<h3>6.2 Settings to use with the shortlist</h3>
+<p><strong>Choose the model and its settings together.</strong> The following reproduces the reasoning settings of the instruction-design comparison, rather than asserting an optimum for every task. GLM rejected requests to disable reasoning. For Hy3, a separate matched comparison improved usable outputs from 2/8 with a 1,024-token reasoning hint to 8/8 with reasoning disabled. Its 5/16 reconstruction result also used the reasoning hint; its 24/24 instruction-design result used reasoning disabled. The latter two experiments differ in tasks as well as settings.</p>
+<div class="table-wrap"><table id="table-18">
+<caption>Table 18: Reasoning settings in the main brief comparison. These are API settings, not instructions to type into the story prompt.</caption>
+<thead><tr><th scope="col">Model</th><th scope="col">Reasoning setting</th><th scope="col">Practical interpretation</th></tr></thead>
+<tbody>
+<tr><th scope="row">GLM Flash</th><td>On: <code>max_tokens: 1024</code> inside <code>reasoning</code></td><td>Required by the tested endpoint; disabling was rejected.</td></tr>
+<tr><th scope="row">Hy3</th><td><code>enabled: false</code> inside <code>reasoning</code></td><td>Use this for the reliable-drafter recommendation.</td></tr>
+<tr><th scope="row">DS3.2</th><td><code>enabled: false</code></td><td>Setting behind the detailed-brief recommendation.</td></tr>
+<tr><th scope="row">MiMo</th><td><code>enabled: false</code></td><td>Dialogue candidate; tool failures still occurred.</td></tr>
+<tr><th scope="row">Gemini Lite</th><td><code>enabled: false</code></td><td>Fast drafts; inspect completeness and scene depth.</td></tr>
+<tr><th scope="row">DS4 Flash</th><td><code>enabled: false</code></td><td>Many writer timeouts remained; qualify the route before use.</td></tr>
+</tbody>
+</table></div>
+<p>Shared writer settings were temperature 0.7, top_p 0.95 and a recorded <code>max_tokens</code> output cap of 4,820 per call, with a target of 1,450 words. The study-wide transport ceiling was 8,192 tokens; it did not raise a smaller application cap. The reasoning allowance and the output cap are different settings: neither guarantees a particular prose length. Provider routing favored price and permitted fallback within the same model under the price ceiling. Retrieval tools and repeated calls remained part of the workflow. Do not infer that these writer settings optimize bible updates or every long-run configuration.</p>
+</section>
+<section id="sec-6-3">
+<h3>6.3 Getting started and understanding cost</h3>
+<p>The prompting approach does not require this paper’s application. For a simple trial, use a chat interface that exposes the chosen model and reasoning setting; provide two recent chapters, a concise bible and the chapter contract below. Review the draft, revise it, and update the saved bible only after checking the changes. This manual workflow is a suggested way to begin, not a separately benchmarked condition.</p>
+<p>The reported experiments used OpenRouter through a programmatic writing application that managed history, retrieval, retries and bible writes. Reproducing that workflow requires API access and software implementing those functions. A plain chat session does not automatically reproduce the tools, routing or persistent memory. A different provider or interface may expose different settings and yield different reliability. OpenRouter is the tested access route, not a requirement of the chapter-contract idea.</p>
+<p><strong>What the writing charges mean in everyday money.</strong> In the two-chapter brief comparison, known writer cost was about $0.0011–$0.0028 per usable draft, or roughly 0.11–0.28 cents. Multiplying those measured averages by 100 gives about $0.11–$0.28 for 100 similarly sized drafts under similar conditions. This is a simple illustration, not the measured cost of a 100-chapter serial. With 50 preceding reference chapters, the corresponding 100-draft arithmetic is about $0.56 for GLM, $0.67 for Gemini Lite and $3.17 for DS3.2. Actual serial cost changes with growing history, routing, caching, revisions and failure rates; bible maintenance, evaluation, application fees and human editing are additional work or cost. The 56–80% summary savings concern writer-call cost in the tested comparison, not verified preservation of story quality.</p>
+</section>
+<section id="sec-6-4">
+<h3>6.4 Which instruction format should authors use?</h3>
+<p><strong>The strongest supported answer is detailed causal content, not a particular syntax.</strong> Detailed prose achieved slightly higher aggregate coverage than numbered instructions, and the paired scene results had mixed signs. Use numbering for ease of inspection if it helps; do not expect numbering alone to fix omissions.</p>
+<p>The appropriate detail level depends on the author’s goal. For discovery writing, give a direction, character and world boundaries, and a clear stopping point, then allow alternative developments. Judge the invention on coherence and usefulness. For a chapter whose plot is already decided, specify the non-negotiable actions, motives and consequences. For a close reconstruction task, a detailed brief is appropriate, but resemblance to the reference should not become the definition of good writing.</p>
+<p>A practical <em>chapter contract plus scene plan</em> should contain:</p>
+<ol>
+<li><strong>Purpose and starting state.</strong> What changes in this chapter, where it starts, viewpoint, physical condition and what each participant knows.</li>
+<li><strong>Required causal developments.</strong> Identify actor, action, motive and consequence for every indispensable moment. Distinguish deciding, attempting and completing.</li>
+<li><strong>Canon boundaries.</strong> State the few facts most at risk: relationships, capabilities, secrets, promises and any intentional change to them.</li>
+<li><strong>Final state and forbidden advances.</strong> Say what must be true at the end and what must remain unresolved. This controls serial pacing.</li>
+<li><strong>Creative room.</strong> Explicitly allow compatible dialogue, imagery, blocking and minor obstacles. Say whether alternative plot outcomes are permitted.</li>
+<li><strong>Output contract.</strong> Give a realistic length band and necessary format rules. Establish priorities if they conflict.</li>
+</ol>
+<p>For example, “the protagonist considers confronting the rival” leaves a different endpoint from “the protagonist confronts the rival, receives a refusal and leaves without agreement.” If only the latter fulfills the author’s plan, those completed actions must be explicit. This generic illustration is not a source-story excerpt or an additional tested condition.</p>
+<p>Do not turn every incidental detail into a requirement. The evidence shows that models can satisfy many selected events while failing the complete contract. Reserve hard constraints for choices the author truly needs, and preserve freedom in how the scene conveys them. The proposed contract is a practical synthesis, not an experimentally proven optimal template.</p>
+</section>
+<section id="sec-6-5">
+<h3>6.5 A copyable chapter contract</h3>
+<p>Replace the bracketed fields, attach the recent chapters and bible, and set the API options separately. This template puts the recommendations into practice; it is not an additional tested prompt condition.</p>
+<pre><code>Write Chapter [N] in English, past tense, restricted third person from
+[viewpoint character]. Start with “Chapter [N]: [title]”. Aim for 1,450 words
+(acceptable: 1,233–1,667).
+
+CONTEXT: [Attach two recent chapters and a concise story bible. Mark
+established facts separately from uncertain claims.]
+
+PURPOSE AND START: [What should change? Where does the scene begin? What does
+each character know?]
+
+REQUIRED ACTIONS: [For each essential development, name the actor, completed
+action, motive and consequence. Considering or promising an action does not
+count as doing it.]
+
+CANON BOUNDARIES: [Relationships, abilities, secrets and physical limits that
+must remain true.]
+
+ENDING: [What must be true when the chapter ends? What must remain unresolved
+or must not happen yet?]
+
+CREATIVE ROOM: Invent compatible dialogue, sensory detail and connective
+action. Do not invent past facts or change the required outcome. Dramatize
+the actions rather than summarizing the checklist.
+
+PRIORITIES: Preserve canon and required actions first, then the ending, then
+length and presentation. Return only the chapter. If the requirements
+conflict, ask for clarification before drafting.</code></pre>
+<p>For discovery writing, replace the detailed action list with a broad direction and state that alternate plot developments are allowed. Keep the canon boundaries and any essential endpoint. Do not score a different permitted plot as a failure merely because it differs from a reference.</p>
+<p><strong>Illustrative miniature, not a model sample or source excerpt.</strong> The following newly written teaching example is intentionally much shorter than a chapter and receives no experimental score.</p>
+<p>Brief: “A courier asks a ferryman to cross tonight because a medicine shipment cannot wait. The ferryman refuses because the chain is broken. The courier leaves without crossing. She cannot swim. Invent the dialogue and scene detail.”</p>
+<blockquote>
+<p>Mara set the medicine box on the bollard. “One crossing. I’ll pay for the return too.”</p>
+<p>The ferryman lifted the chain. Its broken link knocked against the wood. “Pay that to hold together.”</p>
+<p>She looked beyond him. Across the channel, a single window still burned in the infirmary. “They need it before morning.”</p>
+<p>“Then find the bridge.” He lowered the chain between them.</p>
+<p>Mara pulled the box back. The water below the landing erased the posts in black ripples; swimming had never been an option. She tightened the strap and took the road upstream. Behind her, the ferry stayed tied to the bank.</p>
+</blockquote>
+<p>The request, refusal, reason and departure are visible actions. Dialogue and setting fill the permitted creative space, while the crossing remains unresolved and the courier’s limitation is respected. An attractive paragraph in which she only thinks about asking would miss the required action.</p>
+</section>
+<section id="sec-6-6">
+<h3>6.6 Accept chapters and memory updates separately</h3>
+<p>First check literal requirements such as heading and length. Then verify the required actions and endpoint, including whether the draft merely promises an action. Read for character knowledge, scene geography, responsive dialogue and causal transitions. Only then accept the chapter and inspect the bible changes it produces.</p>
+<p>For memory, check both additions and corrections. A new correct statement does not cancel a conflicting old one. Require explicit supersession, valid entity links and a confirmed database change. Keep recent prose available alongside concise summaries and selected canon, but treat that combination as a strategy to validate, not a proven long-run consistency solution.</p>
+</section>
+</section>
+
+<section id="sec-7">
+<h2>7. Limitations and future research</h2>
+<p>The goal is guidance useful to many authors; the evidence comes from one selected novel and a limited set of scenes. It cannot establish the best model across genres, languages, author styles or every length requirement. Source-derived briefs supply privileged target information. Unknown training exposure and corpus-informed application development prevent claims of an unseen benchmark or training-data originality.</p>
+<p>The selected text is not identified or reproduced, so the public presentation supports interpretation of the methods and findings rather than exact independent reproduction of the corpus-specific benchmark. All essential experimental definitions and aggregate results are included here. The absence of source details does not justify treating the sample as more diverse than it is.</p>
+<p>Only three focal scenes support the detailed format comparison; paired effects and evidence ranges are descriptive, not population confidence intervals. Memory comparisons use a selected subset of models, and two paths per short configuration do not estimate long-run failure probabilities precisely. Provider routing, collection time, caching, reasoning settings and tool use affect results. Operational failures remain part of reliability outcomes but should not be relabeled as prose-quality failures.</p>
+<p>Automated event coverage is narrow and provisionally qualified. Repeated refinement on inspected cases can overfit those cases, and exact evidence matching cannot establish correct semantic interpretation. Literary and store audits are AI assessments, not independent human validation. There is no validated global canon score, no general screenplay-format result, and no claim that summary compression preserves quality or that a generated story remained coherent for 50 chapters.</p>
+<section id="sec-7-1">
+<h3>7.1 Beyond eight chapters and across genres</h3>
+<p>For authors planning a long serial, the study does not establish reliable performance over dozens or hundreds of generated installments. GLM and DS3.2 finished the tested eight-step runs; the only planned 50-step generated path, using Gemini Lite, stopped during step seven. The separate 50-chapter history test supplied existing reference chapters. It cannot answer whether errors accumulate in a model’s own long story. Likewise, scenes A/B/C vary in task emphasis within one novel; they are not a comparison of genres. No supported ranking for romance, progression fantasy, mystery or other genres follows from these results.</p>
+<p>A practical next evaluation would use multiple novels and genres, longer generated paths, matched settings and independent reader judgments at repeated checkpoints. Until then, authors should trial the recommended configurations on their own scenes before committing a serial to them.</p>
+</section>
+<section id="sec-7-2">
+<h3>7.2 Future research</h3>
+<p>A direct next step is to measure how plot-instruction adherence, creative quality, dialogue and character consistency change when preceding history grows from 2 to 50 chapters. This study reports operating outcomes for that comparison; semantic and literary trends require evaluation qualified on those depth-series cases and independent human readings. The fixed-two-chapter instruction comparison should not be used as a substitute.</p>
+<p>The same assessment should test whether retrieval or summary compression preserves important motives and facts, not only whether it reduces time or cost. Longer generated sequences, more novels and repeated runs would then allow study of accumulated story errors and mixed-model writing and memory workflows.</p>
+</section>
+</section>
+
+<section id="sec-8">
+<h2>8. Conclusion</h2>
+<p>Affordable models can support serial-fiction workflows, but the strongest choice depends on the job. DS3.2 is a promising detailed-plan executor, GLM a balanced creative writer, Hy3 a reliable economical drafter, MiMo a dialogue candidate, and DS4 a supervised memory-extraction candidate. Each has measured or observed weaknesses that require different checks.</p>
+<p>For instructions, the most useful finding is that explicit causal information mattered more than numbering. Authors should specify the decisions they want to control, protect canon and the intended endpoint, and leave expression open where creativity is welcome. Evaluate reference distance, instruction compliance, scene effectiveness and persistent memory separately. That approach produces more actionable decisions than selecting a single model from one blended score.</p>
+</section>
+
+<section id="references">
+<h2>References</h2>
+<ol>
+<li id="ref-1">A. Atmakuru et al. <cite>CS4: Measuring the Creativity of Large Language Models Automatically by Controlling the Number of Story-Writing Constraints</cite>. 2024. <a href="https://arxiv.org/abs/2410.04197">https://arxiv.org/abs/2410.04197</a>.</li>
+<li id="ref-2">T. Chakrabarty, P. Laban, D. Agarwal, S. Muresan, and C.-S. Wu. <cite>Art or Artifice? Large Language Models and the False Promise of Creativity</cite>. CHI 2024. <a href="https://arxiv.org/abs/2309.14556">https://arxiv.org/abs/2309.14556</a>.</li>
+<li id="ref-3">N. F. Liu et al. <cite>Lost in the Middle: How Language Models Use Long Contexts</cite>. 2023. <a href="https://arxiv.org/abs/2307.03172">https://arxiv.org/abs/2307.03172</a>.</li>
+<li id="ref-4">OpenRouter. <cite>LLM Rankings</cite>. Usage rankings consulted September 2026. <a href="https://openrouter.ai/rankings">https://openrouter.ai/rankings</a>.</li>
+<li id="ref-5">A. R. Doshi and O. P. Hauser. <cite>Generative AI enhances individual creativity but reduces the collective diversity of novel content</cite>. Science Advances, 10(28), eadn5290, 2024. <a href="https://doi.org/10.1126/sciadv.adn5290">https://doi.org/10.1126/sciadv.adn5290</a>.</li>
+<li id="ref-6">K. Yang, Y. Tian, N. Peng, and D. Klein. <cite>Re3: Generating Longer Stories With Recursive Reprompting and Revision</cite>. EMNLP, 2022. <a href="https://aclanthology.org/2022.emnlp-main.296/">https://aclanthology.org/2022.emnlp-main.296/</a>.</li>
+<li id="ref-7">Y. Kim et al. <cite>FABLES: Evaluating faithfulness and content selection in book-length summarization</cite>. COLM, 2024. <a href="https://arxiv.org/abs/2404.01261">https://arxiv.org/abs/2404.01261</a>.</li>
+<li id="ref-8">D. Fein, S. Russo, V. Xiang, K. Jolly, R. Rafailov, and N. Haber. <cite>LitBench: A Benchmark and Dataset for Reliable Evaluation of Creative Writing</cite>. arXiv:2507.00769, 2025. <a href="https://arxiv.org/abs/2507.00769">https://arxiv.org/abs/2507.00769</a>.</li>
+<li id="ref-9">OpenRouter. <cite>DeepSeek: DeepSeek V4 Flash 0731</cite>. Model endpoint documentation, accessed 25 September 2026. <a href="https://openrouter.ai/deepseek/deepseek-v4-flash-0731">https://openrouter.ai/deepseek/deepseek-v4-flash-0731</a>.</li>
+<li id="ref-10">OpenRouter. <cite>Z.ai: GLM 5.3 Flash</cite>. Model endpoint documentation, accessed 25 September 2026. <a href="https://openrouter.ai/z-ai/glm-5.3-flash">https://openrouter.ai/z-ai/glm-5.3-flash</a>.</li>
+<li id="ref-11">OpenRouter. <cite>Xiaomi: MiMo-V2.5</cite>. Model endpoint documentation, accessed 25 September 2026. <a href="https://openrouter.ai/xiaomi/mimo-v2.5">https://openrouter.ai/xiaomi/mimo-v2.5</a>.</li>
+<li id="ref-12">OpenRouter. <cite>Tencent: Hy3</cite>. Model endpoint documentation, accessed 25 September 2026. <a href="https://openrouter.ai/tencent/hy3">https://openrouter.ai/tencent/hy3</a>.</li>
+<li id="ref-13">OpenRouter. <cite>Google: Gemini 2.5 Flash Lite</cite>. Model endpoint documentation, accessed 25 September 2026. <a href="https://openrouter.ai/google/gemini-2.5-flash-lite">https://openrouter.ai/google/gemini-2.5-flash-lite</a>.</li>
+<li id="ref-14">OpenRouter. <cite>DeepSeek: DeepSeek V3.2</cite>. Model endpoint documentation, accessed 25 September 2026. <a href="https://openrouter.ai/deepseek/deepseek-v3.2">https://openrouter.ai/deepseek/deepseek-v3.2</a>.</li>
+</ol>
+</section>
+<section id="cite"><h2>Cite this paper</h2>
+<p>Atukuri, S. V. (2026). Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory. Zenodo. https://doi.org/10.5281/zenodo.22977925</p>
+<pre><code>@misc{atukuri2026affordable,
+  author       = {Atukuri, Sai Vamshi},
+  title        = {{Choosing Affordable Language Models for Serial Fiction: Instruction Following, Creative Writing, and Story Memory}},
+  year         = {2026},
+  month        = sep,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.22977925},
+  url          = {https://doi.org/10.5281/zenodo.22977925}
+}</code></pre>
+<p class="note">Full text: <a href="https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/">https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/</a> · PDF: <a href="affordable-models-for-serial-fiction.pdf">https://vamshibobby.github.io/papers/affordable-models-for-serial-fiction/affordable-models-for-serial-fiction.pdf</a> · Code: <a href="https://github.com/vamshibobby/webnovel-harness">https://github.com/vamshibobby/webnovel-harness</a> · Licence: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+</section>
+</article>
+</main>
+<footer class="site-foot"><p>© 2026 Sai Vamshi Atukuri. Text licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. <a href="../../">All papers</a> · <a href="../../llms.txt">llms.txt</a></p></footer>
+</body>
+</html>
