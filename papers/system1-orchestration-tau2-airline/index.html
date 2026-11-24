@@ -17,25 +17,27 @@
 <meta name="citation_author_institution" content="Independent Researcher">
 <meta name="citation_author_orcid" content="https://orcid.org/0009-0003-3111-7148">
 <meta name="citation_author_email" content="vamshibobby1996@gmail.com">
-<meta name="citation_publication_date" content="2026/11/22">
+<meta name="citation_publication_date" content="2026/11/24">
 <meta name="citation_online_date" content="2026/11/22">
 <meta name="citation_pdf_url" content="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/system1-orchestration-tau2-airline.pdf">
 <meta name="citation_abstract_html_url" content="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/">
 <meta name="citation_fulltext_html_url" content="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/">
 <meta name="citation_language" content="en">
 <meta name="citation_keywords" content="conversational agents; tool calling; τ²-Bench; decision models; LLM orchestration; latency; guardrails">
-<meta name="citation_technical_report_institution" content="Independent Researcher">
+<meta name="citation_publisher" content="Zenodo">
+<meta name="citation_doi" content="10.5281/zenodo.24501211">
 
 <!-- Dublin Core -->
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
 <meta name="DC.title" content="System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline">
 <meta name="DC.creator" content="Atukuri, Sai Vamshi">
-<meta name="DC.date" content="2026-11-22">
-<meta name="DC.identifier" content="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/">
+<meta name="DC.date" content="2026-11-24">
+<meta name="DC.identifier" content="https://doi.org/10.5281/zenodo.24501211">
 <meta name="DC.description" content="Tool-calling chat agents spend most of a customer’s wait on serial LLM calls, and many of those calls make decisions that a small typed-decision model or…">
 <meta name="DC.language" content="en">
 <meta name="DC.type" content="Text.Preprint">
 <meta name="DC.rights" content="https://creativecommons.org/licenses/by/4.0/">
+<meta name="DC.identifier" content="doi:10.5281/zenodo.24501211">
 
 <!-- Open Graph / Twitter -->
 <meta property="og:type" content="article">
@@ -43,7 +45,7 @@
 <meta property="og:description" content="Tool-calling chat agents spend most of a customer’s wait on serial LLM calls, and many of those calls make decisions that a small typed-decision model or…">
 <meta property="og:url" content="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/">
 <meta property="og:site_name" content="Sai Vamshi Atukuri — Research">
-<meta property="article:published_time" content="2026-11-22">
+<meta property="article:published_time" content="2026-11-24">
 <meta property="article:author" content="Sai Vamshi Atukuri">
 <meta property="article:tag" content="conversational agents">
 <meta property="article:tag" content="tool calling">
@@ -79,7 +81,7 @@
    "https://github.com/vamshibobby"
   ]
  },
- "datePublished": "2026-11-22",
+ "datePublished": "2026-11-24",
  "abstract": "Tool-calling chat agents spend most of a customer’s wait on serial LLM calls, and many of those calls make decisions that a small typed-decision model or plain code can make exactly. We present a decision-model harness, which places a decision model, one that answers yes/no and multiple-choice questions, beside the agent’s LLM rather than in front of it. For our experiments we use Jev, a hosted decision model that answers in about half a second. One Jev call per turn decides whether the turn needs a tool, which of the customer’s reservations it is about, whether flight statuses matter, whether the customer confirmed a write, and the route and date of a flight search, while a speculative model call runs; code then issues those tool calls in one batch and checks every write against the airline policy. On τ2-Bench Airline (50 tasks × 4 trials, Gemini 2.5 Flash as the simulated customer) we compare three agent models alone and inside the harness. Code issued 77–84% of all tool calls and model calls per turn fell by 24–37%. pass4, the share of tasks solved on all four tries, rose on all three models, by 10.7 points on average, and nearly doubled on the weakest model, Gemma 4 26B A4B (0.220 to 0.420). Conversations with a policy-forbidden write fell from 43 to 10. pass1 rose on Gemma (0.465 to 0.560) and Gemini 3.8 Flash (0.810 to 0.860) and fell slightly on Gemini 3.5 Flash-Lite. Cost fell 17% and 25% on the two Gemini models. Reply latency fell at every percentile on Flash-Lite (median −31%, p90 −44%); on Gemini 3.8 Flash, tool-using turns were 43% faster but the slowest turns were not. On four further open models of 30–35B parameters (50 tasks × 1 trial), the harness raised pass1 by 6–12 points on the three that started below 0.70 and made tool-using turns 22–41% faster on all four.",
  "description": "Tool-calling chat agents spend most of a customer’s wait on serial LLM calls, and many of those calls make decisions that a small typed-decision model or…",
  "keywords": [
@@ -106,6 +108,16 @@
   "@type": "SoftwareSourceCode",
   "codeRepository": "https://github.com/vamshibobby/jev-tau2-harness",
   "url": "https://github.com/vamshibobby/jev-tau2-harness"
+ },
+ "sameAs": "https://doi.org/10.5281/zenodo.24501211",
+ "identifier": {
+  "@type": "PropertyValue",
+  "propertyID": "DOI",
+  "value": "10.5281/zenodo.24501211"
+ },
+ "publisher": {
+  "@type": "Organization",
+  "name": "Zenodo"
  }
 }
 </script>
@@ -168,8 +180,8 @@ pre code{background:none;padding:0}
 <p class="kicker">Preprint · November 2026</p>
 <h1 itemprop="name">System-1 Orchestration for Enterprise Conversational Agents<span class="subtitle">Typed Decisions Beside the LLM on τ²-Bench Airline</span></h1>
 <p class="byline"><a href="../../" rel="author" itemprop="author">Sai Vamshi Atukuri</a> · Independent Researcher, USA · <a href="https://orcid.org/0009-0003-3111-7148">ORCID 0009-0003-3111-7148</a></p>
-<p class="status">Submitted to Preprints.org on 22 November 2026 (manuscript ID 245718, under screening); the DOI will be added here when assigned.</p>
-<ul class="linkbar"><li><a href="system1-orchestration-tau2-airline.pdf" type="application/pdf">PDF</a></li><li><a href="https://github.com/vamshibobby/jev-tau2-harness">Code</a></li><li><a href="#cite">Cite</a></li></ul>
+<p class="status">Preprint published on Zenodo on 24 November 2026: <a href="https://doi.org/10.5281/zenodo.24501211">doi:10.5281/zenodo.24501211</a>.</p>
+<ul class="linkbar"><li><a href="system1-orchestration-tau2-airline.pdf" type="application/pdf">PDF</a></li><li><a href="https://github.com/vamshibobby/jev-tau2-harness">Code</a></li><li><a href="https://doi.org/10.5281/zenodo.24501211">DOI 10.5281/zenodo.24501211</a></li><li><a href="#cite">Cite</a></li></ul>
 </header>
 <section id="abstract"><h2>Abstract</h2>
 <p>Tool-calling chat agents spend most of a customer’s wait on serial LLM calls, and many of those calls make decisions that a small typed-decision model or plain code can make exactly. We present a <em>decision-model harness</em>, which places a decision model, one that answers yes/no and multiple-choice questions, beside the agent’s LLM rather than in front of it. For our experiments we use Jev, a hosted decision model that answers in about half a second. One Jev call per turn decides whether the turn needs a tool, which of the customer’s reservations it is about, whether flight statuses matter, whether the customer confirmed a write, and the route and date of a flight search, while a speculative model call runs; code then issues those tool calls in one batch and checks every write against the airline policy. On τ<sup>2</sup>-Bench Airline (50 tasks × 4 trials, Gemini 2.5 Flash as the simulated customer) we compare three agent models alone and inside the harness. Code issued 77–84% of all tool calls and model calls per turn fell by 24–37%. pass<sup>4</sup>, the share of tasks solved on all four tries, rose on all three models, by 10.7 points on average, and nearly doubled on the weakest model, Gemma 4 26B A4B (0.220 to 0.420). Conversations with a policy-forbidden write fell from 43 to 10. pass<sup>1</sup> rose on Gemma (0.465 to 0.560) and Gemini 3.8 Flash (0.810 to 0.860) and fell slightly on Gemini 3.5 Flash-Lite. Cost fell 17% and 25% on the two Gemini models. Reply latency fell at every percentile on Flash-Lite (median −31%, p90 −44%); on Gemini 3.8 Flash, tool-using turns were 43% faster but the slowest turns were not. On four further open models of 30–35B parameters (50 tasks × 1 trial), the harness raised pass<sup>1</sup> by 6–12 points on the three that started below 0.70 and made tool-using turns 22–41% faster on all four.</p>
@@ -878,15 +890,15 @@ pre code{background:none;padding:0}
 </ol>
 </section>
 <section id="cite"><h2>Cite this paper</h2>
-<p>Atukuri, S. V. (2026). System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline. Preprint submitted to Preprints.org, DOI pending. https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/</p>
+<p>Atukuri, S. V. (2026). System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline. Zenodo. https://doi.org/10.5281/zenodo.24501211</p>
 <pre><code>@misc{atukuri2026system1,
   author       = {Atukuri, Sai Vamshi},
   title        = {{System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on $\tau^2$-Bench Airline}},
   year         = {2026},
   month        = nov,
-  howpublished = {Preprint, submitted to Preprints.org (ID 245718)},
-  url          = {https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/},
-  note         = {Preprints.org, 2026, DOI pending}
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.24501211},
+  url          = {https://doi.org/10.5281/zenodo.24501211}
 }</code></pre>
 <p class="note">Full text: <a href="https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/">https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/</a> · PDF: <a href="system1-orchestration-tau2-airline.pdf">https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/system1-orchestration-tau2-airline.pdf</a> · Code: <a href="https://github.com/vamshibobby/jev-tau2-harness">https://github.com/vamshibobby/jev-tau2-harness</a> · Licence: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
 </section>

@@ -1,18 +1,19 @@
 # Sai Vamshi Atukuri — research papers (full abstracts and key results)
 
 Independent researcher working on decision models, LLM agents and evaluation. Independent Researcher, USA. ORCID https://orcid.org/0009-0003-3111-7148. GitHub https://github.com/vamshibobby.
-Generated 2026-11-22.
+Generated 2026-11-24.
 
 ==============================================================================
 
 System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline
 
 Author: Sai Vamshi Atukuri (Independent Researcher, ORCID 0009-0003-3111-7148)
-Date: 2026-11-22
-Status: Submitted to Preprints.org on 22 November 2026 (manuscript ID 245718, under screening); the DOI will be added here when assigned.
+Date: 2026-11-24
+Status: Preprint published on Zenodo on 24 November 2026: doi:10.5281/zenodo.24501211.
 Full text (HTML): https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/
 PDF: https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/system1-orchestration-tau2-airline.pdf
 Code: https://github.com/vamshibobby/jev-tau2-harness
+DOI: https://doi.org/10.5281/zenodo.24501211
 Keywords: conversational agents; tool calling; τ²-Bench; decision models; LLM orchestration; latency; guardrails
 
 Abstract
@@ -51,16 +52,16 @@ Key results (numbers as reported in the paper)
 
 How to cite
 
-Atukuri, S. V. (2026). System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline. Preprint submitted to Preprints.org, DOI pending. https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/
+Atukuri, S. V. (2026). System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on τ²-Bench Airline. Zenodo. https://doi.org/10.5281/zenodo.24501211
 
 @misc{atukuri2026system1,
   author       = {Atukuri, Sai Vamshi},
   title        = {{System-1 Orchestration for Enterprise Conversational Agents: Typed Decisions Beside the LLM on $\tau^2$-Bench Airline}},
   year         = {2026},
   month        = nov,
-  howpublished = {Preprint, submitted to Preprints.org (ID 245718)},
-  url          = {https://vamshibobby.github.io/papers/system1-orchestration-tau2-airline/},
-  note         = {Preprints.org, 2026, DOI pending}
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.24501211},
+  url          = {https://doi.org/10.5281/zenodo.24501211}
 }
 
 ==============================================================================
