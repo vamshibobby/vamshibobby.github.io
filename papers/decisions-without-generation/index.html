@@ -1,0 +1,1457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Decisions Without Generation: What Universal Decision Models Changed About Classification, and Where a Fine-Tuned 4B Model Still Wins</title>
+<meta name="description" content="The release of TypeSafe’s Jev, a hosted “System One” model that answers typed questions about a piece of text with calibrated probabilities in a single…">
+<meta name="author" content="Sai Vamshi Atukuri">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="canonical" href="https://vamshibobby.github.io/papers/decisions-without-generation/">
+<link rel="icon" href="data:,">
+<meta name="color-scheme" content="light dark">
+
+<!-- Highwire Press tags for Google Scholar -->
+<meta name="citation_title" content="Decisions Without Generation: What Universal Decision Models Changed About Classification, and Where a Fine-Tuned 4B Model Still Wins">
+<meta name="citation_author" content="Atukuri, Sai Vamshi">
+<meta name="citation_author_institution" content="Independent Researcher">
+<meta name="citation_author_orcid" content="https://orcid.org/0009-0003-3111-7148">
+<meta name="citation_author_email" content="vamshibobby1996@gmail.com">
+<meta name="citation_publication_date" content="2026/11/27">
+<meta name="citation_online_date" content="2026/11/27">
+<meta name="citation_pdf_url" content="https://vamshibobby.github.io/papers/decisions-without-generation/decisions-without-generation.pdf">
+<meta name="citation_abstract_html_url" content="https://vamshibobby.github.io/papers/decisions-without-generation/">
+<meta name="citation_fulltext_html_url" content="https://vamshibobby.github.io/papers/decisions-without-generation/">
+<meta name="citation_language" content="en">
+<meta name="citation_keywords" content="text classification; decision models; calibration; LoRA; AI agents; tool selection; LLM serving cost; selective prediction">
+<meta name="citation_publisher" content="Zenodo">
+<meta name="citation_doi" content="10.5281/zenodo.24601222">
+
+<!-- Dublin Core -->
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.title" content="Decisions Without Generation: What Universal Decision Models Changed About Classification, and Where a Fine-Tuned 4B Model Still Wins">
+<meta name="DC.creator" content="Atukuri, Sai Vamshi">
+<meta name="DC.date" content="2026-11-27">
+<meta name="DC.identifier" content="https://doi.org/10.5281/zenodo.24601222">
+<meta name="DC.description" content="The release of TypeSafe’s Jev, a hosted “System One” model that answers typed questions about a piece of text with calibrated probabilities in a single…">
+<meta name="DC.language" content="en">
+<meta name="DC.type" content="Text.Preprint">
+<meta name="DC.rights" content="https://creativecommons.org/licenses/by/4.0/">
+<meta name="DC.identifier" content="doi:10.5281/zenodo.24601222">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Decisions Without Generation: What Universal Decision Models Changed About Classification, and Where a Fine-Tuned 4B Model Still Wins">
+<meta property="og:description" content="The release of TypeSafe’s Jev, a hosted “System One” model that answers typed questions about a piece of text with calibrated probabilities in a single…">
+<meta property="og:url" content="https://vamshibobby.github.io/papers/decisions-without-generation/">
+<meta property="og:site_name" content="Sai Vamshi Atukuri — Research">
+<meta property="article:published_time" content="2026-11-27">
+<meta property="article:author" content="Sai Vamshi Atukuri">
+<meta property="article:tag" content="text classification">
+<meta property="article:tag" content="decision models">
+<meta property="article:tag" content="calibration">
+<meta property="article:tag" content="LoRA">
+<meta property="article:tag" content="AI agents">
+<meta property="article:tag" content="tool selection">
+<meta property="article:tag" content="LLM serving cost">
+<meta property="article:tag" content="selective prediction">
+<meta property="og:image" content="https://vamshibobby.github.io/papers/decisions-without-generation/fig/fig_surfaces.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://vamshibobby.github.io/papers/decisions-without-generation/fig/fig_surfaces.png">
+<meta name="twitter:title" content="Decisions Without Generation: What Universal Decision Models Changed About Classification, and Where a Fine-Tuned 4B Model Still Wins">
+<meta name="twitter:description" content="The release of TypeSafe’s Jev, a hosted “System One” model that answers typed questions about a piece of text with calibrated probabilities in a single…">
+<link rel="alternate" type="application/pdf" href="https://vamshibobby.github.io/papers/decisions-without-generation/decisions-without-generation.pdf" title="PDF">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "ScholarlyArticle",
+ "@id": "https://vamshibobby.github.io/papers/decisions-without-generation/#article",
+ "headline": "Decisions Without Generation",
+ "name": "Decisions Without Generation: What Universal Decision Models Changed About Classification, and Where a Fine-Tuned 4B Model Still Wins",
+ "author": {
+  "@type": "Person",
+  "@id": "https://orcid.org/0009-0003-3111-7148",
+  "name": "Sai Vamshi Atukuri",
+  "url": "https://vamshibobby.github.io/",
+  "affiliation": {
+   "@type": "Organization",
+   "name": "Independent Researcher"
+  },
+  "sameAs": [
+   "https://orcid.org/0009-0003-3111-7148",
+   "https://github.com/vamshibobby"
+  ]
+ },
+ "datePublished": "2026-11-27",
+ "abstract": "The release of TypeSafe’s Jev, a hosted “System One” model that answers typed questions about a piece of text with calibrated probabilities in a single non-autoregressive pass, did something that a decade of text classifiers had not: it put a classifier into the hands of people who never trained one, and it was pointed at decisions where nobody had thought to use a classifier before. Browser agents ask it which element to click. Orchestrators ask it which tool to call and whether the call is risky. Harnesses ask it whether a trajectory succeeded or is looping. Moderation pipelines ask it whether a response is harmful. We treat these as new problem statements and ask a practical question: on the decision surfaces Jev made visible, how do the classical tools of the field, sentence-embedding classifiers, zero-shot log-probability readouts, and classifier heads on a small fine-tuned language model, perform in accuracy, calibration, latency and cost? We build four designs on Qwen3.5-4B that share Jev’s interface (state plus one to five typed questions, one forward pass, one probability vector per question): a zero-shot logprob readout, LoRA with linear heads, LoRA with a per-option [CLS] scorer for dynamic option sets, and a LoRA language model read at answer slots. We evaluate them, an embedding floor, and Jev on sixteen datasets spanning intent routing, moderation, tool selection, browser-step selection, agent-trajectory judging, fact verification, adversarial inference and knowledge, with temperature fitted on a disjoint calibration split and every model measured on the same rows. The picture is consistent. With a few thousand labels and ten to eighty minutes on a rented GPU, a fine-tuned 4B model matches or beats the universal model on every agentic decision we measured, at 55–85 ms per decision against roughly 250 ms for the API, and at $1–9 per million decisions on a fully used GPU against $10–144 billed per token. The head design barely matters; training does. Jev, in turn, is the strongest zero-label decision model we measured, beats our zero-shot 4B on every reading task, escalates when evidence is missing where our best fine-tuned model has learned to guess, and is the most conservative scorer at high confidence. On knowledge we ran two probes: on the public MMLU-Pro benchmark Jev leads a one-pass 4B by nineteen points, but on ObscureWikiQA, a set built from articles too obscure for any benchmark, its closed-book accuracy is within the confidence interval of the 4B’s, so the MMLU-Pro lead reflects that benchmark rather than a general advantage. Decomposing a decision into typed sub-questions, the lever its users report most often, did not help on the one task where we tested it. We also analyse serving: a hosted API scales out by adding concurrent calls, while a self-hosted classifier is bound by the capacity of its GPU, and we measure what continuous batching does to that ceiling on one task (one A100 goes from 17 requests per second one at a time to 73 under load) and where the cost curves cross. We also build Jev’s serving contract on the 4B itself, encoding the state once with the untouched base weights and fanning isolated question segments out over the cached state: accuracy matches or slightly exceeds the shared-prompt arms and a marginal question costs two milliseconds, at the price of a second forward pass. We conclude that universal decision models democratised classification, that in most labelled, high-volume settings a purpose-tuned small classifier will still do the better job, and that both are needed. We close with a research direction: reinforcement learning for decision models whose reward comes from the environment the decision acts in, rather than from a loss that penalises false positives and negatives, which would reduce to supervised training with a different name.",
+ "description": "The release of TypeSafe’s Jev, a hosted “System One” model that answers typed questions about a piece of text with calibrated probabilities in a single…",
+ "keywords": [
+  "text classification",
+  "decision models",
+  "calibration",
+  "LoRA",
+  "AI agents",
+  "tool selection",
+  "LLM serving cost",
+  "selective prediction"
+ ],
+ "inLanguage": "en",
+ "url": "https://vamshibobby.github.io/papers/decisions-without-generation/",
+ "mainEntityOfPage": "https://vamshibobby.github.io/papers/decisions-without-generation/",
+ "isAccessibleForFree": true,
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "encoding": {
+  "@type": "MediaObject",
+  "contentUrl": "https://vamshibobby.github.io/papers/decisions-without-generation/decisions-without-generation.pdf",
+  "encodingFormat": "application/pdf",
+  "name": "decisions-without-generation.pdf"
+ },
+ "isBasedOn": {
+  "@type": "SoftwareSourceCode",
+  "codeRepository": "https://github.com/vamshibobby/decisions-without-generation",
+  "url": "https://github.com/vamshibobby/decisions-without-generation"
+ },
+ "sameAs": "https://doi.org/10.5281/zenodo.24601222",
+ "identifier": {
+  "@type": "PropertyValue",
+  "propertyID": "DOI",
+  "value": "10.5281/zenodo.24601222"
+ },
+ "publisher": {
+  "@type": "Organization",
+  "name": "Zenodo"
+ }
+}
+</script>
+<style>:root{--bg:#fdfcf9;--fg:#1d1d1b;--muted:#5d5d57;--line:#dedbd2;--accent:#1f5fae;--box:#f3f1ea;--code:#f1efe8}
+@media (prefers-color-scheme:dark){:root{--bg:#16171a;--fg:#e6e4de;--muted:#a3a19a;--line:#34363b;--accent:#8ab8f0;--box:#1f2125;--code:#22252a}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.62 Charter,"Bitstream Charter","Sitka Text",Cambria,Georgia,serif}
+main,.site-head,.site-foot{max-width:46rem;margin:0 auto;padding:0 16px}
+.site-head{padding-top:18px;font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+.site-head a{color:var(--muted);text-decoration:none}
+.site-foot{margin-top:3rem;padding-bottom:2rem;border-top:1px solid var(--line);color:var(--muted);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25}
+h1{font-size:1.75rem;margin:1.4rem 0 .5rem}
+h1 .subtitle{display:block;font-size:1.15rem;font-weight:500;color:var(--muted);margin-top:.35rem}
+h2{font-size:1.3rem;margin:2.2rem 0 .6rem;padding-bottom:.25rem;border-bottom:1px solid var(--line)}
+h3{font-size:1.08rem;margin:1.6rem 0 .4rem}
+h4{font-size:1rem;margin:1.2rem 0 .3rem}
+.kicker,.byline,.status,.linkbar,.meta{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.kicker{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin:1.6rem 0 0}
+.byline{margin:.4rem 0;font-size:.98rem}
+.status{color:var(--muted);font-size:.9rem;margin:.3rem 0}
+.linkbar{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 0;padding:0;list-style:none;font-size:.92rem}
+.linkbar a{display:inline-block;padding:.28rem .7rem;border:1px solid var(--line);border-radius:6px;text-decoration:none;background:var(--box)}
+#abstract{background:var(--box);border-radius:8px;padding:.2rem 1.1rem .6rem;margin-top:1.5rem}
+#abstract h2{border:0;margin-top:1rem}
+.table-wrap{overflow-x:auto;margin:1.2rem 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;min-width:60%}
+caption{caption-side:bottom;text-align:left;color:var(--muted);font-size:13.5px;padding-top:.5rem;line-height:1.45}
+th,td{border-bottom:1px solid var(--line);padding:.35rem .55rem;text-align:left;vertical-align:top}
+thead th{border-bottom:2px solid var(--fg)}
+th[colspan]{text-align:center}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+figure{margin:1.6rem 0}
+figure img{display:block;max-width:100%;height:auto;margin:0 auto;background:#fff;border-radius:4px;padding:6px}
+figcaption{color:var(--muted);font-size:.9rem;margin-top:.5rem;line-height:1.5}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em}
+code{background:var(--code);padding:0 .2em;border-radius:3px;word-break:break-word}
+pre{background:var(--code);padding:.8rem 1rem;border-radius:6px;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0}
+#cite pre{white-space:pre-wrap}
+#references ol,#references ul{padding-left:1.6rem;font-size:.92rem}
+#references li{margin-bottom:.35rem}
+.papers{list-style:none;padding:0}
+.papers li{margin:0 0 1.8rem}
+.papers h3{margin:0 0 .25rem;font-size:1.12rem}
+.papers h3 a{text-decoration:none}
+.papers .meta{color:var(--muted);font-size:.88rem;margin:0 0 .35rem}
+.papers p{margin:.25rem 0}
+.papers .linkbar{margin-top:.5rem;font-size:.85rem}
+.note{color:var(--muted);font-size:.92rem}
+@media (max-width:540px){body{font-size:16px}h1{font-size:1.45rem}}</style>
+</head>
+<body>
+<header class="site-head"><a href="../../">← Sai Vamshi Atukuri · Research papers</a></header>
+<main>
+<article itemscope itemtype="https://schema.org/ScholarlyArticle">
+<header>
+<p class="kicker">Preprint · November 2026</p>
+<h1 itemprop="name">Decisions Without Generation<span class="subtitle">What Universal Decision Models Changed About Classification, and Where a Fine-Tuned 4B Model Still Wins</span></h1>
+<p class="byline"><a href="../../" rel="author" itemprop="author">Sai Vamshi Atukuri</a> · Independent Researcher, USA · <a href="https://orcid.org/0009-0003-3111-7148">ORCID 0009-0003-3111-7148</a></p>
+<p class="status">Preprint published on Zenodo on 27 November 2026: <a href="https://doi.org/10.5281/zenodo.24601222">doi:10.5281/zenodo.24601222</a>.</p>
+<ul class="linkbar"><li><a href="decisions-without-generation.pdf" type="application/pdf">PDF</a></li><li><a href="https://github.com/vamshibobby/decisions-without-generation">Code</a></li><li><a href="https://doi.org/10.5281/zenodo.24601222">DOI 10.5281/zenodo.24601222</a></li><li><a href="#cite">Cite</a></li></ul>
+</header>
+<section id="abstract"><h2>Abstract</h2>
+<p>The release of TypeSafe&rsquo;s Jev, a hosted &ldquo;System One&rdquo; model that answers typed questions about a piece of text with calibrated probabilities in a single non-autoregressive pass, did something that a decade of text classifiers had not: it put a classifier into the hands of people who never trained one, and it was pointed at decisions where nobody had thought to use a classifier before. Browser agents ask it which element to click. Orchestrators ask it which tool to call and whether the call is risky. Harnesses ask it whether a trajectory succeeded or is looping. Moderation pipelines ask it whether a response is harmful. We treat these as new problem statements and ask a practical question: on the decision surfaces Jev made visible, how do the classical tools of the field, sentence-embedding classifiers, zero-shot log-probability readouts, and classifier heads on a small fine-tuned language model, perform in accuracy, calibration, latency and cost?</p>
+<p>We build four designs on Qwen3.5-4B that share Jev&rsquo;s interface (state plus one to five typed questions, one forward pass, one probability vector per question): a zero-shot logprob readout, LoRA with linear heads, LoRA with a per-option <code>[CLS]</code> scorer for dynamic option sets, and a LoRA language model read at answer slots. We evaluate them, an embedding floor, and Jev on sixteen datasets spanning intent routing, moderation, tool selection, browser-step selection, agent-trajectory judging, fact verification, adversarial inference and knowledge, with temperature fitted on a disjoint calibration split and every model measured on the same rows.</p>
+<p>The picture is consistent. With a few thousand labels and ten to eighty minutes on a rented GPU, a fine-tuned 4B model matches or beats the universal model on every agentic decision we measured, at 55–85 ms per decision against roughly 250 ms for the API, and at $1–9 per million decisions on a fully used GPU against $10–144 billed per token. The head design barely matters; training does. Jev, in turn, is the strongest zero-label decision model we measured, beats our zero-shot 4B on every reading task, escalates when evidence is missing where our best fine-tuned model has learned to guess, and is the most conservative scorer at high confidence. On knowledge we ran two probes: on the public MMLU-Pro benchmark Jev leads a one-pass 4B by nineteen points, but on ObscureWikiQA, a set built from articles too obscure for any benchmark, its closed-book accuracy is within the confidence interval of the 4B&rsquo;s, so the MMLU-Pro lead reflects that benchmark rather than a general advantage. Decomposing a decision into typed sub-questions, the lever its users report most often, did not help on the one task where we tested it. We also analyse serving: a hosted API scales out by adding concurrent calls, while a self-hosted classifier is bound by the capacity of its GPU, and we measure what continuous batching does to that ceiling on one task (one A100 goes from 17 requests per second one at a time to 73 under load) and where the cost curves cross. We also build Jev&rsquo;s serving contract on the 4B itself, encoding the state once with the untouched base weights and fanning isolated question segments out over the cached state: accuracy matches or slightly exceeds the shared-prompt arms and a marginal question costs two milliseconds, at the price of a second forward pass. We conclude that universal decision models democratised classification, that in most labelled, high-volume settings a purpose-tuned small classifier will still do the better job, and that both are needed. We close with a research direction: reinforcement learning for decision models whose reward comes from the environment the decision acts in, rather than from a loss that penalises false positives and negatives, which would reduce to supervised training with a different name.</p>
+</section>
+<section id="key-results"><h2>Key results</h2>
+<table><thead><tr><th scope="col">Result</th><th scope="col">As reported in the paper</th></tr></thead><tbody>
+<tr><th scope="row">Agentic decisions (fine-tuned 4B vs Jev)</th><td>With a few thousand labels and ten to eighty minutes on a rented GPU, a fine-tuned 4B model matches or beats the universal model on every agentic decision measured</td></tr>
+<tr><th scope="row">Latency per decision</th><td>55–85 ms (fine-tuned 4B) against roughly 250 ms for the API</td></tr>
+<tr><th scope="row">Cost per million decisions</th><td>$1–9 on a fully used GPU against $10–144 billed per token</td></tr>
+<tr><th scope="row">Mind2Web browser-step selection</th><td>One epoch (6,787 steps, about 20 minutes on an A100) gives 6 points over the universal model in distribution and 5 to 6 on unseen websites and domains</td></tr>
+<tr><th scope="row">Knowledge</th><td>Jev leads a one-pass 4B by nineteen points on MMLU-Pro; on ObscureWikiQA its closed-book accuracy is within the confidence interval of the 4B's</td></tr>
+<tr><th scope="row">Continuous batching, one A100</th><td>17 requests per second one at a time → 73 under load</td></tr>
+<tr><th scope="row">Jev-style fan-out on the 4B</th><td>Accuracy matches or slightly exceeds the shared-prompt arms; a marginal question costs two milliseconds</td></tr>
+<tr><th scope="row">Decomposition into typed sub-questions</th><td>Did not help on the one task where it was tested</td></tr>
+</tbody></table>
+<p class="note">Sixteen datasets spanning intent routing, moderation, tool selection, browser-step selection, agent-trajectory judging, fact verification, adversarial inference and knowledge; numbers from the abstract and Table 4.</p>
+</section>
+<section id="sec-1">
+<h2>1. Introduction</h2>
+<p>Text classification is the oldest deployed form of natural-language processing and, until recently, the least glamorous. Intent routers, spam filters, sentiment scorers and moderation models were trained per task, on labelled data, by teams who owned the label pipeline. Large language models changed who could build a classifier (anyone who can write a prompt) but not how classifiers were served: an LLM asked to pick a category generates tokens, and the answer has to be parsed out of the generation, with latency and cost scaled to the generation rather than to the decision.</p>
+<p>In 2026 TypeSafe released Jev, which it calls a System One model in Kahneman&rsquo;s sense [<a href="#ref-48">48</a>]: a model that does not generate text but returns, for a supplied state and a set of typed questions, a probability over each question&rsquo;s options in one pass, with a confidence score. TypeSafe describes it as trained with &ldquo;Reinforcement Learning for Calibrated Decisions&rdquo; so that &ldquo;its probabilities are optimized against outcomes to reflect uncertainty&rdquo; [<a href="#ref-37">37</a>, <a href="#ref-38">38</a>]. Three properties of this product matter for this paper more than its architecture, which is undisclosed. First, it needs no labels: the question text and the option strings are the whole specification. Second, its output is a typed object, so software can act on it directly. Third, and most consequentially, its users have applied it to decisions where the field never used a classifier: which page element a browser agent should act on, which function an orchestrator should call and whether the call is destructive, whether an agent&rsquo;s run succeeded or is looping, whether a model output should be blocked, and which model a request should be routed to [<a href="#ref-37">37</a>, <a href="#ref-46">46</a>].</p>
+<p>We take those uses as the object of study. They are new problem statements for classification, and they arrived without the labelled datasets, the fine-tuning recipes or the latency budgets that a classical practitioner would expect. Our question is therefore not &ldquo;is Jev good&rdquo; but &ldquo;now that these decision surfaces exist, what do the classical approaches do on them, and what does a universal model add?&rdquo; Concretely:</p>
+<ol>
+<li>On each surface, how accurate, how well calibrated and how fast is a sentence-embedding classifier, a zero-shot logprob readout from a small open model, and a classifier head on a small fine-tuned model, compared with the universal model?</li>
+<li>How many labels does it take for the fine-tuned model to overtake the universal one, and what is the cheapest design that gets there?</li>
+<li>Where does the universal model remain better, and is that because of knowledge, reading, escalation behaviour or calibration?</li>
+<li>What does each approach cost to train and to serve, how much load can one GPU carry, and at what point does self-hosting pay?</li>
+</ol>
+<p>Our contributions are the following. We define a single decision interface shared by all systems under test and implement four designs on Qwen3.5-4B [<a href="#ref-22">22</a>, <a href="#ref-45">45</a>] that return every answer in one forward pass (Section 4, Figures 1–2). We assemble sixteen evaluation sets that cover both classical classification and the agentic surfaces above, including a browser-step task with three out-of-distribution splits, a tool-selection task trained on synthetic data and tested on a human benchmark, a fact-verification task with evidence-removal and evidence-swap controls, and a purpose-built uncontaminated knowledge probe (Section 5). We report accuracy, macro-F1, negative log-likelihood, Brier score, expected calibration error before and after held-out temperature scaling, selective accuracy, out-of-scope recall, batch-1 latency on real rows, throughput and cost per million decisions, for every system on the same rows (Section 6). We run a label-efficiency curve from 50 to 10,000 labels and compare knowledge on a public benchmark and on the obscure probe (Sections 6.3, 6.6). We give a serving analysis covering training cost, serving cost, capacity and concurrency for each arm on each task (Section 7). Finally we argue for a specific next step, reinforcement learning of decision models from environmental feedback, and explain why the obvious formulation, rewarding fewer false positives and negatives, is not a step at all (Section 10).</p>
+</section>
+<section id="sec-2">
+<h2>2. Background and related work</h2>
+<h3 id="sec-2-1">2.1 Classification before and after language models</h3>
+<p>The pre-LLM state of the art for text classification was an encoder fine-tuned per task [<a href="#ref-42">42</a>]. Sentence-embedding models [<a href="#ref-7">7</a>] made a cheaper variant possible: freeze the encoder, embed the text, and train a linear classifier on top; SetFit [<a href="#ref-6">6</a>] showed that contrastive fine-tuning of the embedding closes most of the gap to full fine-tuning with a few dozen labels. Our Arm 0 is exactly this frozen-embedding-plus-logistic-regression recipe, chosen as the floor a practitioner would try first.</p>
+<p>Zero-shot classification without task labels was first made practical by casting the label as a hypothesis and using a natural-language-inference model to score entailment [<a href="#ref-5">5</a>]; later universal classifiers such as GLiClass [<a href="#ref-36">36</a>] train a single encoder to score arbitrary label sets, and a 2026 benchmark [<a href="#ref-41">41</a>] compares cross-encoders, embedding models, rerankers and LLMs on zero-shot classification and finds no single family dominant. Jev belongs to this lineage in interface (arbitrary label sets, no training) but not in mechanism (it is a decision model trained with reinforcement learning rather than an entailment scorer), and it extends the interface to multiple typed questions over one state.</p>
+<h3 id="sec-2-2">2.2 Prompt-based classification and its fragility</h3>
+<p>Prompting a generative model and reading the probability of each label token is the cheapest way to turn an LLM into a classifier, and several of its pathologies are well documented. Few-shot performance is unstable under prompt format and example order, and the prior over label tokens should be estimated and divided out [<a href="#ref-4">4</a>]. Different surface forms of the same answer compete for probability mass [<a href="#ref-25">25</a>]. Multiple-choice prompts carry a token bias toward specific option identifiers and a weaker position bias [<a href="#ref-24">24</a>]. Pattern-exploiting training [<a href="#ref-40">40</a>] and related work turned prompting into a fine-tuning objective. We observe the same fragility: a single instruction line in the system prompt drops our zero-shot accuracy from 63 % to 21 % on banking77&rsquo;s calibration split because 77 options need two-letter codes (Section 6.1). Every fine-tuned design in this paper is immune to it.</p>
+<h3 id="sec-2-3">2.3 Parameter-efficient fine-tuning and classifier heads</h3>
+<p>Adapters [<a href="#ref-39">39</a>] and low-rank adaptation [<a href="#ref-1">1</a>] make it cheap to specialise a multi-billion-parameter model to a task, and LoRA weights can be merged into the base weights so that inference costs exactly what the base model costs. Three of our arms use LoRA, and one of our operational findings is that an unmerged adapter adds about 60 ms per decision on a 4B model, enough to invert a latency ranking. The choice between reading the answer from the language-model head, from a linear head on a hidden state, or from a scorer over per-option marker tokens is a design question with little published guidance for decision workloads; it is the axis our Arms 2a, 2b and 3 vary.</p>
+<h3 id="sec-2-4">2.4 Calibration and selective prediction</h3>
+<p>Modern neural classifiers are over-confident, and a single temperature fitted on held-out data fixes most of it [<a href="#ref-2">2</a>]. Expected calibration error [<a href="#ref-43">43</a>] and the Brier score [<a href="#ref-44">44</a>] measure it; selective classification [<a href="#ref-3">3</a>] turns a calibrated confidence into a coverage-accuracy trade-off, which is what a decision model&rsquo;s consumer actually uses when it routes low-confidence cases to a fallback. Language models can also report their own uncertainty with some validity [<a href="#ref-34">34</a>], but a generative model&rsquo;s stated confidence is a different object from a probability read at a token. TypeSafe frames calibration as Jev&rsquo;s central property and states that it &ldquo;is measured across groups of predictions; it does not guarantee that an individual answer is correct&rdquo; [<a href="#ref-38">38</a>]. We report calibration before and after temperature scaling for every model, including Jev, and analyse escalation behaviour directly (Section 6.4).</p>
+<h3 id="sec-2-5">2.5 Decision surfaces in agent systems</h3>
+<p>The agentic tasks in this study each have a benchmark that was built to evaluate a generating LLM, which we re-pose as a one-pass decision. Mind2Web [<a href="#ref-19">19</a>] provides real web tasks with the ground-truth element and operation for each step; its authors&rsquo; ranker produces candidate elements, and the choice among the top candidates is a classification. MetaTool [<a href="#ref-16">16</a>] asks whether a tool is needed and which one; the Berkeley Function Calling Leaderboard [<a href="#ref-17">17</a>] and the xLAM synthetic corpus [<a href="#ref-18">18</a>] cover function selection with irrelevance detection. AgentRewardBench [<a href="#ref-20">20</a>] provides expert judgements of whether a web agent&rsquo;s trajectory succeeded, looped or caused side effects, and reports that no single LLM judge excels everywhere; LLM-as-a-judge [<a href="#ref-23">23</a>] is the generative baseline it evaluates. WildGuard [<a href="#ref-15">15</a>] labels prompts and responses for harm and refusal. Belcak et al. [<a href="#ref-26">26</a>] argue that agent systems repeatedly invoke a small number of narrow capabilities and that small language models are the natural fit; this paper is a test of that argument on the decision component specifically. Model routing [<a href="#ref-47">47</a>] is another such component, which we do not test directly.</p>
+<h3 id="sec-2-6">2.6 Reinforcement learning for decision models</h3>
+<p>RLHF [<a href="#ref-27">27</a>] optimises a policy against a learned preference model; RLVR [<a href="#ref-28">28</a>, <a href="#ref-29">29</a>, <a href="#ref-30">30</a>] optimises it against a programmatic verifier; DPO [<a href="#ref-31">31</a>] removes the explicit policy-gradient step. All of these are formulated for generators. Jev&rsquo;s stated recipe, &ldquo;Reinforcement Learning for Calibrated Decisions&rdquo;, optimises probabilities &ldquo;against outcomes&rdquo; [<a href="#ref-37">37</a>, <a href="#ref-38">38</a>], which places it closer to contextual bandits [<a href="#ref-32">32</a>], where the reward for a choice is observed from the environment after the choice is made. Recent work on process rewards for agents [<a href="#ref-50">50</a>] and on learning reward models from mixed feedback types [<a href="#ref-49">49</a>] is relevant to the direction we propose in Section 10, and reward hacking [<a href="#ref-33">33</a>] is the failure mode that direction has to design around.</p>
+</section>
+<section id="sec-3">
+<h2>3. The problem statements that a universal decision model surfaced</h2>
+<p>We group the decisions people have pointed Jev at into five surfaces, each of which becomes an experiment.</p>
+<p><strong>Browser use.</strong> Given a task, a page and a list of candidate elements, which element should the agent act on, and with what operation? The candidate list changes on every step, the correct answer may be outside the list, and the decision is made on every step of every task, so latency compounds.</p>
+<p><strong>Tool and function selection.</strong> Given a request and a list of available functions, which function should be called, how many calls are needed, and is any of the functions relevant at all? The list is per request; irrelevance is a first-class answer.</p>
+<p><strong>Fixed-catalogue routing.</strong> Given a request and a catalogue that does not change per request (an intent inventory, a tool registry, a set of downstream models), which entry applies, or none? This is classical intent classification with an out-of-scope class, and it is where classifiers have always lived.</p>
+<p><strong>Judging an agent&rsquo;s run.</strong> Given a trajectory, did it succeed, is it looping, did it cause side effects? The state is long, the labels are expert judgements, and the decision gates retries and escalation.</p>
+<p><strong>Reading and judgement over evidence.</strong> Given a claim and evidence, is the claim supported, refuted or undecidable? Given a prompt and a response, is either harmful, and did the model refuse? These require reading the state rather than recognising its surface, and they include an explicit &ldquo;not enough information&rdquo; or &ldquo;none&rdquo; option that the consumer uses to escalate.</p>
+<p>Knowledge (answering from parametric memory) is a sixth surface that Jev&rsquo;s users advertise through MMLU-Pro [<a href="#ref-14">14</a>]; we include it with a public benchmark and with a contamination-safe probe of our own.</p>
+</section>
+<section id="sec-4">
+<h2>4. Methods</h2>
+<h3 id="sec-4-1">4.1 One interface for every system</h3>
+<p>Every system implements the same contract (<a href="#fig-1">Figure 1</a>): state (text) plus one to five typed questions returns one probability vector per question, from one forward pass. Question types are <code>enum</code> (an option list), <code>bool</code> (the enum <code>["no", "yes"]</code>) and <code>ordinal</code> (an ordered enum, for which we also report mean absolute error). A question may mark an option as out-of-scope (<code>oos_index</code>), which is the &ldquo;none of these&rdquo; or &ldquo;not enough information&rdquo; answer. Data are JSONL rows of one state and its questions. Jev is queried through OpenRouter&rsquo;s decisions endpoint with the same state, the question text as instructions and the option strings as criteria, using its <code>choice</code>, <code>noul</code> and <code>score</code> primitives; its probabilities arrive rounded to 0.01 and are floored at 1e-4 before log-scoring.</p>
+<figure id="fig-1">
+<img loading="lazy" src="fig/fig_interface.png" alt="The decision interface shared by every system under test" width="1464" height="574">
+<figcaption><strong>Figure 1.</strong> The decision interface shared by every system under test. Nothing is generated; the consumer acts on the probabilities directly or escalates below a threshold.</figcaption>
+</figure>
+<h3 id="sec-4-2">4.2 Systems under test</h3>
+<p>Figure 2 shows where each design reads its answer from; <a href="#tab-1">Table 1</a> summarises what is trained and what inference costs.</p>
+<figure id="fig-2">
+<img loading="lazy" src="fig/fig_arms.png" alt="The four readout designs on the same backbone, and the embedding floor" width="1869" height="1018">
+<figcaption><strong>Figure 2.</strong> The four readout designs on the same backbone, and the embedding floor. Blue tokens are the positions whose hidden state or logits produce the answer.</figcaption>
+</figure>
+<div class="table-wrap"><table id="tab-1">
+<caption><strong>Table 1.</strong> Systems under test.</caption>
+<thead>
+<tr>
+<th>Arm</th>
+<th>Design</th>
+<th>Trained parameters</th>
+<th>Inference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="num">0</td>
+<td>MiniLM sentence embedding + logistic regression; for per-row option sets, a pairwise scorer on <code>[u·v, |u−v|]</code></td>
+<td>logistic regression</td>
+<td>CPU, microseconds</td>
+</tr>
+<tr>
+<td class="num">1</td>
+<td>Zero-shot logprob readout from Qwen3.5-4B (chat template, thinking off, single-token option codes; p(option) = p(bare code) + p(space code))</td>
+<td>none</td>
+<td>one prefill, LM head at answer positions only</td>
+</tr>
+<tr>
+<td>2a-frozen</td>
+<td>Linear head per question on the cached last-token hidden state of the frozen 4B</td>
+<td>heads only (seconds, CPU)</td>
+<td>one prefill</td>
+</tr>
+<tr>
+<td>2a</td>
+<td>LoRA on the 4B + linear head per question. On per-row option sets the head is an answer-index head over the listed options</td>
+<td>LoRA + heads</td>
+<td>one prefill, no LM head</td>
+</tr>
+<tr>
+<td>2b</td>
+<td>LoRA + a new <code>[CLS]</code> token appended to every option line; a shared 2-layer MLP scores each <code>[CLS]</code> state; softmax within each question; options shuffled every step; 15 % of rows get a distractor option</td>
+<td>LoRA + scorer + <code>[CLS]</code> row</td>
+<td>one prefill, gather <code>[CLS]</code> states</td>
+</tr>
+<tr>
+<td class="num">3</td>
+<td>LoRA on the language model; a multi-slot template (<code>1) ?</code>, <code>2) ?</code> … in the assistant turn, teacher-forced); logits read at the token before each placeholder</td>
+<td>LoRA</td>
+<td>one prefill, LM head at slots</td>
+</tr>
+<tr>
+<td>Jev</td>
+<td>TypeSafe <code>jev-1.13</code> via OpenRouter</td>
+<td>—</td>
+<td>API</td>
+</tr>
+</tbody>
+</table></div>
+<p>Arms 2b and 3 accept any option set at inference and can represent a &ldquo;none&rdquo; option that moves position; Arm 2a cannot, and Arm 0&rsquo;s pairwise variant can. Option codes for Arms 1 and 3 are letters A–Z followed by two-letter codes that the Qwen tokenizer maps to a single token both bare and with a leading space (505 such codes exist), verified at runtime.</p>
+<h3 id="sec-4-3">4.3 Backbone and training recipe</h3>
+<p>Qwen3.5-4B is a hybrid of Gated DeltaNet linear-attention layers [<a href="#ref-22">22</a>] and full-attention layers, loaded in bfloat16 as a text-only causal model with thinking disabled. LoRA rank 16, alpha 32, dropout 0.05 on the attention and MLP projections and on the DeltaNet projections; learning rate 1e-4 for LoRA and 1e-3 for heads, scorer and the <code>[CLS]</code> row; AdamW; cosine schedule with 3 % warm-up; effective batch 32; gradient clipping at 1.0; loss 0.7·cross-entropy + 0.3·Brier/K (for Arm 3, full-vocabulary cross-entropy at the slot plus Brier over displayed options). Two epochs on short-prompt sets, one epoch on long-prompt sets (a second epoch never improved calibration-split NLL on those); checkpoint selection on calibration-split NLL; gradient checkpointing above 1,024 tokens; training capped at 10,000 rows. Because the Brier term is divided by the option count, it is negligible on many-class sets and the trained arms are effectively cross-entropy-trained; we record this rather than change it mid-study. LoRA weights are merged into the base model before any latency measurement, with outputs verified identical to 1e-6.</p>
+<h3 id="sec-4-4">4.4 Evaluation pipeline, calibration and metrics</h3>
+<p>Figure 3 shows the pipeline. A single temperature is fitted by NLL on the calibration split only (one per question type for Arm 2b) and applied unchanged to test; we report metrics before and after. Arm 1&rsquo;s prompt variant is chosen on the calibration split. We report accuracy; macro-F1 on fixed option sets; NLL; the standard multiclass Brier score; ECE with 15 equal-width bins on top-label confidence; AUROC of confidence against correctness; selective accuracy at 80 % and 90 % coverage; out-of-scope recall using each row&rsquo;s own <code>oos_index</code>; and ordinal MAE. Multi-question datasets are reported per question. Seeds are explicit, test splits are never used for selection, and every Jev raw response is cached so that rescoring never re-bills.</p>
+<figure id="fig-3">
+<img loading="lazy" src="fig/fig_pipeline.png" alt="Experimental pipeline" width="1498" height="845">
+<figcaption><strong>Figure 3.</strong> Experimental pipeline. Every model, including Jev, is scored on the same test rows with a temperature fitted on the same calibration split.</figcaption>
+</figure>
+<h3 id="sec-4-5">4.5 Latency, throughput and cost protocols</h3>
+<p>Two latency protocols are used. The synthetic protocol runs 200 warmed-up batch-1 requests at 256-, 1,024- and 4,096-token states with 4–10 options and 1–3 questions, a batch-32 throughput condition, and an option-count sweep from 5 to 100, on one GPU with the HF forward pass and the LM head applied only at answer positions; Jev is measured under the same conditions from the same client machine, with 32 concurrent requests for the throughput condition. The real-row protocol times batch-1 inference on 100 sampled test rows of each dataset, request in to probabilities out including tokenisation, for every trained arm and for the zero-shot arm, and takes Jev&rsquo;s per-request wall time on the same rows from the cache. Cost per million decisions is GPU list price divided by measured decisions per hour for local arms (A6000 48 GB at $0.35/hr and A100 80 GB at $1.09/hr, the on-demand prices on the cloud we rented from) and the billed usage for Jev ($0.042 per million input tokens, output free). Local latencies are bfloat16 with the reference DeltaNet kernels and no serving-stack optimisation; Jev&rsquo;s include network and provider queueing.</p>
+</section>
+<section id="sec-5">
+<h2>5. Datasets</h2>
+<p>Official test splits are kept; the calibration split is the official validation split or a stratified 10 % carved from train; training is capped at 10,000 rows. <a href="#tab-2">Table 2</a> lists the sets; the surfaces of Section 3 are marked.</p>
+<div class="table-wrap"><table id="tab-2">
+<caption><strong>Table 2.</strong> Datasets.</caption>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Surface</th>
+<th>Train / cal / test</th>
+<th>Questions</th>
+<th>Options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>banking77 [<a href="#ref-8">8</a>]</td>
+<td>fixed catalogue</td>
+<td>8,695 / 1,308 / 3,080</td>
+<td>intent</td>
+<td class="num">77</td>
+</tr>
+<tr>
+<td>CLINC150 plus [<a href="#ref-9">9</a>]</td>
+<td>fixed catalogue, OOS</td>
+<td>10,000 / 3,100 / 5,500</td>
+<td>intent</td>
+<td>150 + out-of-scope</td>
+</tr>
+<tr>
+<td>MASSIVE en-US [<a href="#ref-11">11</a>]</td>
+<td>fixed catalogue</td>
+<td>10,000 / 2,033 / 2,974</td>
+<td>intent, scenario</td>
+<td>60, 18</td>
+</tr>
+<tr>
+<td>MetaTool [<a href="#ref-16">16</a>]</td>
+<td>fixed catalogue, OOS</td>
+<td>10,000 / 2,061 / 4,122</td>
+<td>tool</td>
+<td>179 + none (20 tools held out entirely)</td>
+</tr>
+<tr>
+<td>BoolQ [<a href="#ref-10">10</a>]</td>
+<td>reading</td>
+<td>8,157 / 1,270 / 3,270</td>
+<td>answer</td>
+<td>bool</td>
+</tr>
+<tr>
+<td>ANLI R1–R3 [<a href="#ref-12">12</a>]</td>
+<td>reading</td>
+<td>10,000 / 3,200 / 3,200</td>
+<td>relation</td>
+<td class="num">3</td>
+</tr>
+<tr>
+<td>SST-5 [<a href="#ref-13">13</a>]</td>
+<td>judgement</td>
+<td>8,544 / 1,101 / 2,210</td>
+<td>sentiment</td>
+<td>ordinal 5</td>
+</tr>
+<tr>
+<td>WildGuardMix [<a href="#ref-15">15</a>]</td>
+<td>judgement</td>
+<td>10,000 / 3,962 / 1,688</td>
+<td>prompt harmful, response harmful, refused</td>
+<td>3 bools</td>
+</tr>
+<tr>
+<td>Tool call: xLAM [<a href="#ref-18">18</a>] train, BFCL v3 [<a href="#ref-17">17</a>] cal/test</td>
+<td>tool selection, OOS</td>
+<td>10,000 / 871 / 2,616</td>
+<td>function, number of calls</td>
+<td>2–38 + none; ordinal 0/1/2/3+</td>
+</tr>
+<tr>
+<td>Mind2Web [<a href="#ref-19">19</a>] cross-task, cross-website, cross-domain</td>
+<td>browser use, OOS</td>
+<td>6,787 / 987 / 2,094 (+1,373, +5,908)</td>
+<td>element, operation</td>
+<td>10 ranker candidates + none; 3</td>
+</tr>
+<tr>
+<td>AgentRewardBench [<a href="#ref-20">20</a>]</td>
+<td>agent-run review</td>
+<td>918 / 129 / 254</td>
+<td>success, side effect, looping</td>
+<td>3 bools, ≈2.3k-token state</td>
+</tr>
+<tr>
+<td>MMLU-Pro [<a href="#ref-14">14</a>]</td>
+<td>knowledge</td>
+<td>8,436 / 1,252 / 2,281 scored</td>
+<td>answer</td>
+<td>3–10 per row</td>
+</tr>
+<tr>
+<td>VitaminC [<a href="#ref-21">21</a>] (+ no-evidence, swapped-evidence, decomposed)</td>
+<td>reading, OOS</td>
+<td>10,000 / 1,001 / 2,001</td>
+<td>supports / refutes / not enough info</td>
+<td class="num">3</td>
+</tr>
+<tr>
+<td>ObscureWikiQA (this paper; closed- and open-book)</td>
+<td>knowledge</td>
+<td>33 / 31 / 253</td>
+<td>answer</td>
+<td class="num">5</td>
+</tr>
+</tbody>
+</table></div>
+<p>Choices that affect interpretation: the tool-call task trains on synthetic xLAM rows (30 % of which are given another row&rsquo;s tools so that &ldquo;none&rdquo; is learnable) and is calibrated and tested on human-written BFCL, so it measures cross-source transfer. Mind2Web shows the paper ranker&rsquo;s top ten candidates; when the target lies outside them the label is &ldquo;none of the listed elements&rdquo; (15 % of train, 27 % of the cross-task test). MetaTool holds twenty tools out of every split so that their queries are &ldquo;none&rdquo;. MMLU-Pro has no train split, so we split its public test set by subject and exclude 118 test questions that recur verbatim in our train portion; Jev&rsquo;s score on it is contamination-suspect [<a href="#ref-35">35</a>] and not leaderboard-comparable. AgentRewardBench trajectories are cut at 40 steps and 2,000 characters of final accessibility tree; its side-effect question is 6 % positive. VitaminC rows are sampled by case so that contrastive pairs stay together.</p>
+<p>ObscureWikiQA was built for this paper as a contamination-resistant knowledge probe. Random English Wikipedia articles were kept if their introduction had at least 900 characters, the page id indicated creation before about 2023 (so the facts are pretraining-available), and the article received at most 500 views per month over June–August 2026 (median 90). One five-option question per article was generated by one model and independently verified by a second, larger model as answerable from the article, unambiguous, and not answerable from wording alone; 392 generated, 317 verified, 253 test. An open-book sibling supplies the article introduction as the state.</p>
+</section>
+<section id="sec-6">
+<h2>6. Results</h2>
+<p>All numbers are test-set, post-temperature unless marked raw, single seed unless a spread is given. <a href="#fig-4">Figure 4</a> gives the overview; full tables with every metric, per-question breakdowns and reliability plots are in the repository (<code>results/REPORT.md</code>, <code>results/tables/</code>, <code>results/plots/</code>).</p>
+<figure id="fig-4">
+<img loading="lazy" src="fig/fig_surfaces.png" alt="One representative decision per surface" width="1861" height="1215">
+<figcaption><strong>Figure 4.</strong> One representative decision per surface. With labels, the fine-tuned 4B matches or beats the universal model everywhere except on the public knowledge benchmark; without labels, Jev beats the zero-shot 4B everywhere except on fixed catalogues.</figcaption>
+</figure>
+<h3 id="sec-6-1">6.1 Classical fixed-schema classification</h3>
+<div class="table-wrap"><table id="tab-3">
+<caption><strong>Table 3.</strong> banking77.</caption>
+<thead>
+<tr>
+<th>banking77 (77 intents, n = 3,080)</th>
+<th>Acc</th>
+<th>NLL</th>
+<th>ECE raw → T</th>
+<th>SelAcc@90</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arm 0 embedding + logreg</td>
+<td class="num">93.1</td>
+<td class="num">0.266</td>
+<td>0.094 → 0.008</td>
+<td class="num">96.9</td>
+</tr>
+<tr>
+<td>Arm 1 zero-shot 4B</td>
+<td class="num">65.6</td>
+<td class="num">1.677</td>
+<td>0.052 → 0.114</td>
+<td class="num">70.5</td>
+</tr>
+<tr>
+<td>Arm 2a-frozen head</td>
+<td class="num">87.9</td>
+<td class="num">0.424</td>
+<td>0.018 → 0.017</td>
+<td class="num">92.9</td>
+</tr>
+<tr>
+<td>Arm 2a LoRA + heads</td>
+<td class="num"><strong>94.1</strong></td>
+<td class="num"><strong>0.208</strong></td>
+<td>0.023 → 0.009</td>
+<td class="num"><strong>98.1</strong></td>
+</tr>
+<tr>
+<td>Arm 2b LoRA + <code>[CLS]</code> (2 seeds)</td>
+<td class="num">93.3 ± 0.3</td>
+<td class="num">0.242</td>
+<td>0.019 → 0.009</td>
+<td class="num">97.2</td>
+</tr>
+<tr>
+<td>Arm 3 LoRA LM slots</td>
+<td class="num">93.9</td>
+<td class="num">0.240</td>
+<td>0.018 → 0.011</td>
+<td class="num">97.5</td>
+</tr>
+<tr>
+<td>Jev</td>
+<td class="num">79.8</td>
+<td class="num">0.891</td>
+<td>0.079 → 0.039</td>
+<td class="num">84.9</td>
+</tr>
+</tbody>
+</table></div>
+<p>On CLINC150 with out-of-scope (n = 5,500): Arm 2a 91.9 % with OOS recall 0.70; Jev 88.3 % and OOS recall 0.79; embedding 86.6 % and 0.55; zero-shot 71.6 % and 0.54. On MASSIVE the embedding floor (86.9 %) beats Jev (74.5 %); on MetaTool the embedding floor (80.0 %, none-recall 0.83) beats Jev (51.6 %, none-recall 0.13) by a wide margin.</p>
+<p>Three things stand out. Training is the lever and the head is not: the three LoRA arms sit within 0.8 points of each other and all beat the strong embedding floor, which the frozen 4B state cannot. A generic last-token hidden state is a worse feature than a purpose-built sentence embedding until the backbone is fine-tuned. Zero-shot readout is fragile: forcing a system line that says &ldquo;answer with a single letter&rdquo; drops the zero-shot model to 14.4 % on CLINC&rsquo;s test set because 151 options need two-letter codes; the calibration-split variant selection avoids it, but no fine-tuned arm is exposed to it. Finally, on fixed catalogues a universal model has no way to know what the catalogue means: with 180 bare tool names serialised into every request, Jev sends 3,422 tokens per decision and answers 51.6 %, while a LoRA head holding the catalogue in its parameters sends 60 tokens and answers 83.7 %.</p>
+<h3 id="sec-6-2">6.2 The agentic surfaces</h3>
+<p><strong>Browser use (Mind2Web).</strong> Accuracy on the element question with a moving &ldquo;none&rdquo; option, on the three splits, plus operation accuracy and batch-1 latency:</p>
+<div class="table-wrap"><table id="tab-4">
+<caption><strong>Table 4.</strong> Mind2Web.</caption>
+<thead>
+<tr>
+<th></th>
+<th>element cross-task</th>
+<th>element cross-website</th>
+<th>element cross-domain</th>
+<th>operation</th>
+<th>none recall</th>
+<th>latency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arm 0 pairwise embedding</td>
+<td class="num">24.2</td>
+<td class="num">27.0</td>
+<td class="num">20.5</td>
+<td class="num">83.7</td>
+<td class="num">0.60</td>
+<td class="num">≈0</td>
+</tr>
+<tr>
+<td>Arm 1 zero-shot 4B</td>
+<td class="num">29.0</td>
+<td>–</td>
+<td>–</td>
+<td class="num">82.4</td>
+<td class="num">0.01</td>
+<td class="num">59 ms</td>
+</tr>
+<tr>
+<td>Arm 2b LoRA + <code>[CLS]</code></td>
+<td class="num">51.0</td>
+<td class="num">46.8</td>
+<td class="num">45.6</td>
+<td class="num"><strong>89.8</strong></td>
+<td class="num">0.33</td>
+<td class="num"><strong>55 ms</strong></td>
+</tr>
+<tr>
+<td>Arm 3 LoRA LM slots</td>
+<td class="num"><strong>53.2</strong></td>
+<td class="num"><strong>50.3</strong></td>
+<td class="num"><strong>48.1</strong></td>
+<td class="num">89.3</td>
+<td class="num">0.36</td>
+<td class="num">62 ms</td>
+</tr>
+<tr>
+<td>Jev</td>
+<td class="num">46.8</td>
+<td class="num">43.9</td>
+<td class="num">43.4</td>
+<td class="num">73.8</td>
+<td class="num">0.18</td>
+<td class="num">240 ms</td>
+</tr>
+</tbody>
+</table></div>
+<p>One epoch on 6,787 steps (about 20 minutes on an A100) gives +6 points over the universal model in distribution and +5 to +6 on unseen websites and domains, +15 on the operation, and a four-fold latency advantage. The tuned models lose three to five points out of distribution and stay ahead. The embedding floor&rsquo;s high none-recall is not a virtue: it predicts &ldquo;none&rdquo; often because it cannot read the candidates.</p>
+<p><strong>Tool selection (trained on xLAM, tested on BFCL).</strong></p>
+<div class="table-wrap"><table id="tab-5">
+<caption><strong>Table 5.</strong> BFCL.</caption>
+<thead>
+<tr>
+<th></th>
+<th>function</th>
+<th>none recall</th>
+<th>number of calls</th>
+<th>latency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arm 0</td>
+<td class="num">47.2</td>
+<td class="num">0.17</td>
+<td class="num">38.2</td>
+<td class="num">≈0</td>
+</tr>
+<tr>
+<td>Arm 1 zero-shot</td>
+<td class="num">77.6</td>
+<td class="num">0.41</td>
+<td class="num">43.2</td>
+<td class="num">57 ms</td>
+</tr>
+<tr>
+<td>Arm 2b</td>
+<td class="num"><strong>87.1</strong></td>
+<td class="num"><strong>0.66</strong></td>
+<td class="num">87.2</td>
+<td class="num"><strong>54 ms</strong></td>
+</tr>
+<tr>
+<td>Arm 3</td>
+<td class="num">86.7</td>
+<td class="num">0.65</td>
+<td class="num"><strong>87.8</strong></td>
+<td class="num">57 ms</td>
+</tr>
+<tr>
+<td>Jev</td>
+<td class="num">83.3</td>
+<td class="num">0.54</td>
+<td class="num">84.0</td>
+<td class="num">244 ms</td>
+</tr>
+</tbody>
+</table></div>
+<p>Synthetic training data transferred to the human benchmark; the tuned models&rsquo; main gain over Jev is detecting that no listed function applies (+12 points of none-recall), which is the answer that prevents a bad call.</p>
+<p><strong>Agent-run review (AgentRewardBench, three questions over ~2.3k-token trajectories).</strong></p>
+<div class="table-wrap"><table id="tab-6">
+<caption><strong>Table 6.</strong> AgentRewardBench.</caption>
+<thead>
+<tr>
+<th></th>
+<th>success</th>
+<th>looping</th>
+<th>side effects</th>
+<th>raw ECE</th>
+<th>latency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arm 0</td>
+<td class="num">78.3</td>
+<td class="num">69.3</td>
+<td class="num">91.3</td>
+<td class="num">0.05</td>
+<td class="num">≈0</td>
+</tr>
+<tr>
+<td>Arm 1 zero-shot</td>
+<td class="num">81.1</td>
+<td class="num">59.1</td>
+<td class="num">87.8</td>
+<td class="num">0.04</td>
+<td class="num">154 ms</td>
+</tr>
+<tr>
+<td>Arm 2a-frozen (seconds of training)</td>
+<td class="num">87.8</td>
+<td class="num">87.0</td>
+<td class="num">92.9</td>
+<td class="num">0.05</td>
+<td>≈ zero-shot</td>
+</tr>
+<tr>
+<td>Arm 2b</td>
+<td class="num">84.3</td>
+<td class="num"><strong>87.8</strong></td>
+<td class="num">92.9</td>
+<td class="num"><strong>0.013</strong></td>
+<td class="num">142 ms</td>
+</tr>
+<tr>
+<td>Arm 3</td>
+<td class="num"><strong>89.0</strong></td>
+<td class="num">87.0</td>
+<td class="num">92.9</td>
+<td class="num">0.03</td>
+<td class="num">152 ms</td>
+</tr>
+<tr>
+<td>Jev</td>
+<td class="num">85.4</td>
+<td class="num">81.1</td>
+<td class="num">92.9</td>
+<td class="num">0.02</td>
+<td class="num">256 ms</td>
+</tr>
+</tbody>
+</table></div>
+<p>With only 918 labelled trajectories, a linear head trained in seconds on the frozen backbone&rsquo;s hidden state judges success as well as anything. No model beats the majority class on side effects, which are 6 % positive.</p>
+<p><strong>Moderation (WildGuardMix).</strong> Per-question accuracy: tuned arms 89.8–90.6 (prompt harmful), 92.1–92.7 (refused), 92.5–93.1 (response harmful) at 58–60 ms; Jev 88.9, <strong>94.3</strong>, <strong>93.6</strong> at 245 ms. This is the one agentic surface where the universal model is at least as accurate, and it is the one that most requires judgement over the state rather than recognition of a catalogue.</p>
+<p>Across the agentic surfaces, then: with labels, a tuned 4B matches or beats the universal model on every decision, at four to five times lower latency. The right head follows the option regime. Fixed catalogue: a linear head (best accuracy and far fewer tokens). Per-row option sets: the slot-logprob model (best on browser steps and trajectory judging, degraded least out of distribution) or the <code>[CLS]</code>-per-option scorer (best raw calibration, marginally faster). Index heads cannot represent a moving &ldquo;none&rdquo; and cannot score more options than they were built with, which rules Arm 2a out of the dynamic surfaces.</p>
+<h3 id="sec-6-3">6.3 Zero labels, and how many labels it takes</h3>
+<p>Jev beat our same-interface zero-shot 4B on every task except the fixed catalogues: Mind2Web element +18, BFCL function +6, WildGuard +8 pooled, ANLI 73.4 against a 34.6 floor, BoolQ 91.6 against 63.0, MMLU-Pro +40, AgentRewardBench success +4. It is the best zero-label decision model we measured.</p>
+<p>To locate the crossover we ran a label-efficiency curve on VitaminC fact verification (claim + evidence → supports / refutes / not enough information), <a href="#fig-5">Figure 5</a>:</p>
+<figure id="fig-5">
+<img loading="lazy" src="fig/fig_labelcurve.png" alt="Label efficiency on VitaminC" width="1245" height="799">
+<figcaption><strong>Figure 5.</strong> Label efficiency on VitaminC. A frozen head never crosses the universal model; a LoRA run does at about a thousand labels, and collapses below that.</figcaption>
+</figure>
+<div class="table-wrap"><table id="tab-7">
+<caption><strong>Table 7.</strong> Label-efficiency curve.</caption>
+<thead>
+<tr>
+<th></th>
+<th>0 labels</th>
+<th>50</th>
+<th>200</th>
+<th>1,000</th>
+<th>5,000</th>
+<th>10,000</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jev</td>
+<td class="num"><strong>83.5</strong></td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Arm 1 zero-shot 4B</td>
+<td class="num">76.3</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Arm 2a-frozen head (3 seeds, seconds)</td>
+<td>–</td>
+<td class="num">75.7 ± 1.6</td>
+<td class="num">78.9 ± 0.7</td>
+<td class="num">80.9 ± 0.6</td>
+<td class="num">82.8 ± 0.2</td>
+<td class="num">83.2 ± 0.1</td>
+</tr>
+<tr>
+<td>Arm 2b LoRA (10 GPU-minutes)</td>
+<td>–</td>
+<td>–</td>
+<td class="num">49.8</td>
+<td class="num"><strong>85.1</strong></td>
+<td>–</td>
+<td class="num"><strong>89.6</strong></td>
+</tr>
+<tr>
+<td>Arm 2a LoRA + head</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td class="num"><strong>90.0</strong></td>
+</tr>
+<tr>
+<td>Arm 0 embedding</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td class="num">50.0</td>
+</tr>
+</tbody>
+</table></div>
+<p>A universal model with no labels beats a 4B fine-tuned on anything under roughly a thousand labels on a reading task, and a frozen head never catches it. At a thousand labels LoRA overtakes it by 1.6 points; at ten thousand by six. LoRA at 200 labels collapses to chance, worse than a frozen head at 50: a small run has too few steps to train a new scorer. The practical rule is that below about a thousand labels one should use the universal model or a frozen head, never a short LoRA run.</p>
+<h3 id="sec-6-4">6.4 Reading, escalation, and what happens when the evidence is missing</h3>
+<p>Every 4B model and Jev collapse when the evidence is removed or swapped, so all of them read; the embedding floor barely moves because it never did. The difference lies in the failure mode (<a href="#fig-6">Figure 6</a>):</p>
+<figure id="fig-6">
+<img loading="lazy" src="fig/fig_reading.png" alt="VitaminC reading controls" width="1601" height="795">
+<figcaption><strong>Figure 6.</strong> VitaminC reading controls. Left: accuracy with real, removed and swapped evidence. Right: how often each model answers &ldquo;not enough information&rdquo; when the evidence is missing or wrong.</figcaption>
+</figure>
+<div class="table-wrap"><table id="tab-8">
+<caption><strong>Table 8.</strong> Reading controls.</caption>
+<thead>
+<tr>
+<th>VitaminC</th>
+<th>real evidence</th>
+<th>evidence removed</th>
+<th>evidence swapped</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jev</td>
+<td>83.5 % (NEI recall 0.71)</td>
+<td>24.8 %, answers NEI on <strong>78 %</strong></td>
+<td>12.7 %, NEI on <strong>99.6 %</strong></td>
+</tr>
+<tr>
+<td>Arm 1 zero-shot 4B</td>
+<td>76.3 % (0.50)</td>
+<td>36.8 %, NEI on 49 %</td>
+<td>13.6 %, NEI on 100 %</td>
+</tr>
+<tr>
+<td>Arm 2a-frozen head (10k)</td>
+<td>83.1 % (0.54)</td>
+<td>17.1 %, NEI on 94 %</td>
+<td>30.1 %, NEI on 64 %</td>
+</tr>
+<tr>
+<td>Arm 2b LoRA (10k)</td>
+<td><strong>89.6 %</strong> (0.69)</td>
+<td>48.2 %, NEI on <strong>5 %</strong></td>
+<td>20.5 %, NEI on 96 %</td>
+</tr>
+<tr>
+<td>Arm 0 embedding</td>
+<td class="num">50.0 %</td>
+<td class="num">45.7 %</td>
+<td class="num">40.1 %</td>
+</tr>
+</tbody>
+</table></div>
+<p>When the evidence is absent, Jev escalates (&ldquo;not enough information&rdquo;) 78 % of the time. The fine-tuned model that beats it by six points with evidence present has learned claim-only priors and guesses &ldquo;supports&rdquo; or &ldquo;refutes&rdquo; 95 % of the time, with confidence. Its extra accuracy comes with a worse safety profile on inputs it was never trained to see. Adding explicit no-evidence rows to training would presumably fix this, and the point is that a universal model arrives with that behaviour while a tuned one has to be given it.</p>
+<p>The same conservatism shows up in the escalation analysis over every dataset (<a href="#fig-7">Figure 7</a>, from saved predictions). At a confidence threshold of 0.9, Jev covers the smallest fraction of rows of any model on almost every set (on Mind2Web 2 % against 39 % for the best tuned arm) with error rates among covered rows that are comparable to, and on the judgement sets lower than, the tuned model&rsquo;s. On VitaminC it covers 39 % of rows with 3.7 % of those wrong; the 10k-label LoRA covers 67 % with 1.9 % wrong. Jev&rsquo;s probability of &ldquo;not enough information&rdquo; detects genuinely evidence-less rows with AUROC 0.89 (LoRA 0.94, frozen head 0.90). On CLINC its out-of-scope recall is 0.79 against 0.70 for our best tuned model. In short, Jev is the safest model to route on and the most expensive in fallbacks.</p>
+<figure id="fig-7">
+<img loading="lazy" src="fig/fig_escalation.png" alt="Escalation profile at a confidence threshold of 0.9" width="1738" height="884">
+<figcaption><strong>Figure 7.</strong> Escalation profile at a confidence threshold of 0.9. Jev answers fewer rows at high confidence on every set but one; the tuned model&rsquo;s extra coverage is bought with a similar or slightly higher error rate among the rows it answers.</figcaption>
+</figure>
+<h3 id="sec-6-5">6.5 Decomposition: a negative result</h3>
+<p>TypeSafe&rsquo;s guidance and the strongest outside result [<a href="#ref-46">46</a>] hold that Jev should be asked several narrow typed questions rather than one broad one; a phishing benchmark reported 62.6 % with one question and 95.0 % with five questions whose weights were fitted on a thousand emails. We tested this on VitaminC by re-posing the three-way question as three booleans (does the evidence address the claim; does it support it; does it contradict it) and recombining them by fixed rules:</p>
+<div class="table-wrap"><table id="tab-9">
+<caption><strong>Table 9.</strong> Decomposition on VitaminC.</caption>
+<thead>
+<tr>
+<th></th>
+<th>single 3-way</th>
+<th>addresses / supports / contradicts</th>
+<th>recombined 3-way</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jev</td>
+<td class="num">83.5</td>
+<td>84.5 / 91.1 / 87.9</td>
+<td class="num">79.7</td>
+</tr>
+<tr>
+<td>Arm 1 zero-shot 4B</td>
+<td class="num">76.3</td>
+<td>78.9 / 75.4 / 43.7</td>
+<td class="num">54.6</td>
+</tr>
+<tr>
+<td>Arm 2a-frozen head</td>
+<td class="num">83.2</td>
+<td>91.9 / 85.8 / 84.8</td>
+<td class="num">81.8</td>
+</tr>
+<tr>
+<td>Arm 2a LoRA</td>
+<td class="num">90.0</td>
+<td>93.4 / 94.5 / 91.9</td>
+<td class="num">89.9</td>
+</tr>
+</tbody>
+</table></div>
+<p>The individual sub-questions are excellent (Jev answers &ldquo;does the evidence support the claim?&rdquo; at 91 %), but no model gains from recombining them; when the decomposition is close to a relabelling of the original question it adds noise. The published gains presumably require sub-questions that are genuinely complementary and a fitted combiner, which is itself a small supervised model.</p>
+<h3 id="sec-6-6">6.6 Knowledge: a public benchmark and an uncontaminated probe</h3>
+<p>We measured knowledge twice (<a href="#fig-8">Figure 8</a>). On MMLU-Pro Jev scores 84.0 %; the best one-pass 4B reaches 65.3 ± 0.3 (Arm 2a, 3 seeds) after LoRA and 43.5 % zero-shot; a frozen head on the 4B&rsquo;s hidden state gets 30.9 ± 0.5 and the embedding floor 14.5. MMLU-Pro is a public test set and Jev&rsquo;s training data are undisclosed, so we did not know whether the nineteen-point gap measured knowledge or exposure. ObscureWikiQA was built to answer that without a contamination probe:</p>
+<figure id="fig-8">
+<img loading="lazy" src="fig/fig_knowledge.png" alt="Knowledge on the public benchmark and on the obscure probe" width="1430" height="736">
+<figcaption><strong>Figure 8.</strong> Knowledge on the public benchmark and on the obscure probe. The gap on MMLU-Pro does not reappear on facts that exist in no benchmark; with the article supplied, both models read it almost perfectly.</figcaption>
+</figure>
+<div class="table-wrap"><table id="tab-10">
+<caption><strong>Table 10.</strong> ObscureWikiQA.</caption>
+<thead>
+<tr>
+<th>253 questions, chance 20 %</th>
+<th>closed-book</th>
+<th>open-book</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arm 0 embedding</td>
+<td class="num">20.9</td>
+<td class="num">19.8</td>
+</tr>
+<tr>
+<td>Arm 1 zero-shot 4B</td>
+<td class="num">45.5</td>
+<td class="num">99.2</td>
+</tr>
+<tr>
+<td>Jev</td>
+<td class="num">48.6</td>
+<td class="num">99.6</td>
+</tr>
+</tbody>
+</table></div>
+<p>On facts that exist in pretraining corpora but in no benchmark, Jev&rsquo;s closed-book knowledge is within the ±6-point confidence interval of a 4B model&rsquo;s, and both read a supplied article essentially perfectly. Its MMLU-Pro number therefore reflects that benchmark, not a general knowledge advantage over small open models. We did not fine-tune on ObscureWikiQA by design (33 training rows would test memorisation, not knowledge). This is the most useful thing the two probes together tell a practitioner: if a decision depends on parametric knowledge, neither system is the right tool, and the state should carry the facts.</p>
+<h3 id="sec-6-7">6.7 Calibration</h3>
+<p>Calibration is a property of the held-out split, not of the model (<a href="#fig-9">Figure 9</a>). Raw ECE ranged 0.01–0.11 across our tuned arms; the xLAM-trained tool model was over-confident on BFCL until a temperature of about 2.7 was fitted on BFCL&rsquo;s calibration split, and Arm 2a on CLINC needed T ≈ 2.95. Jev&rsquo;s raw ECE ranged 0.014 (CLINC) to 0.19 (MetaTool), with 0.02–0.03 on the reading and judgement sets and fitted temperatures near 1 on most of them; it is the best-calibrated model as shipped on the surfaces it is good at. After a single temperature every LoRA arm lands at 0.01–0.06 and Jev at 0.01–0.07; the zero-shot readout is the exception, and on banking77 and MetaTool a temperature fitted on the calibration split made its test ECE worse (<a href="#tab-3">Table 3</a>). Arm 2b was the best-calibrated tuned design (raw ECE 0.013–0.02 on the agentic sets). A methodological note: an early version of this study reported Jev&rsquo;s raw ECE on CLINC as 0.36; that was an artefact of flooring probabilities rounded to zero at 0.005 across 151 options, and was corrected to 0.014 with a 1e-4 floor. Rounded API probabilities need a floor chosen with the option count in mind.</p>
+<figure id="fig-9">
+<img loading="lazy" src="fig/fig_calibration.png" alt="Expected calibration error before and after a temperature fitted on the calibration split, best tuned arm and Jev, per dataset" width="1600" height="800">
+<figcaption><strong>Figure 9.</strong> Expected calibration error before and after a temperature fitted on the calibration split, best tuned arm and Jev, per dataset.</figcaption>
+</figure>
+<h3 id="sec-6-8">6.8 Latency</h3>
+<p>Batch-1 latency on real rows (A100, merged LoRA, bfloat16; Jev from the same client) is in <a href="#fig-10">Figure 10</a> and <a href="#tab-11">Table 11</a>.</p>
+<figure id="fig-10">
+<img loading="lazy" src="fig/fig_latency.png" alt="Left: per-decision latency on real test rows" width="1906" height="852">
+<figcaption><strong>Figure 10.</strong> Left: per-decision latency on real test rows. Right: the synthetic sweep; a merged adapter costs nothing, an unmerged one costs 60 ms, and the API is flat in context length because the network floor dominates.</figcaption>
+</figure>
+<div class="table-wrap"><table id="tab-11">
+<caption><strong>Table 11.</strong> Batch-1 latency on real rows.</caption>
+<thead>
+<tr>
+<th>task</th>
+<th>tokens/request</th>
+<th>tuned 4B p50</th>
+<th>Jev p50</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tool selection (BFCL, 2 q)</td>
+<td class="num">152</td>
+<td class="num">54 ms</td>
+<td class="num">244 ms</td>
+</tr>
+<tr>
+<td>browser step (Mind2Web, 2 q)</td>
+<td class="num">330</td>
+<td>55–62 ms</td>
+<td class="num">240 ms</td>
+</tr>
+<tr>
+<td>moderation (WildGuard, 3 q)</td>
+<td class="num">440</td>
+<td>58–60 ms</td>
+<td class="num">245 ms</td>
+</tr>
+<tr>
+<td>catalogue routing (MetaTool, 2a)</td>
+<td class="num">60</td>
+<td class="num">56 ms</td>
+<td class="num">269 ms</td>
+</tr>
+<tr>
+<td>knowledge MCQ (MMLU-Pro)</td>
+<td class="num">209</td>
+<td class="num">60 ms</td>
+<td class="num">243 ms</td>
+</tr>
+<tr>
+<td>agent-run review (ARB, 3 q)</td>
+<td class="num">2,267</td>
+<td>142–152 ms</td>
+<td class="num">256 ms</td>
+</tr>
+</tbody>
+</table></div>
+<p>Under the synthetic protocol, merged LoRA has essentially the zero-shot model&rsquo;s latency (148 vs 142 ms on a short prompt on the A6000; 545 vs 540 ms at 4k tokens); the unmerged adapter adds about 60 ms. Listing 100 options as <code>[CLS]</code> lines costs Arm 2b 16 % over the fixed-head arm. Jev&rsquo;s latency is flat in context length (215–235 ms from 256 to 4k tokens) because the network floor dominates; ours scales with prefill.</p>
+</section>
+<section id="sec-7">
+<h2>7. Serving: what each arm costs to train and run, and how much load one GPU carries</h2>
+<p>This section answers the operational question a team faces after the accuracy tables: what does it cost to build and serve each design on each surface, and how does a self-hosted classifier, which is bound by the capacity of the GPU it runs on, compare with an API that scales out by accepting more concurrent calls?</p>
+<h3 id="sec-7-1">7.1 Training cost per arm and task</h3>
+<p>Table 12 gives the wall-clock of one training run (including the evaluation pass) for each arm on each task, and its cost at the on-demand list price of the GPU it ran on. These are upper bounds: they include evaluation, the runs used a plain training loop with gradient checkpointing above 1,024 tokens and no throughput tuning, and a second GPU class would change them roughly in proportion to its price-performance.</p>
+<div class="table-wrap"><table id="tab-12">
+<caption><strong>Table 12.</strong> One training run per arm and task, wall-clock including evaluation, at $0.35/hr (A6000) or $1.09/hr (A100). A frozen head also needs one forward pass over the training set to cache hidden states, a few minutes on either GPU.</caption>
+<thead>
+<tr>
+<th>task (train rows × prompt length, epochs)</th>
+<th>frozen head</th>
+<th>2a LoRA + heads</th>
+<th>2b LoRA + <code>[CLS]</code></th>
+<th>3 LoRA LM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>banking77 (8.7k × 0.6k, 2 ep, A6000)</td>
+<td>&lt; 1 min</td>
+<td>17 min, $0.10</td>
+<td>≈110 min, $0.65</td>
+<td>≈110 min, $0.65</td>
+</tr>
+<tr>
+<td>CLINC150 (10k × 0.8k, 2 ep, A6000)</td>
+<td>&lt; 1 min</td>
+<td>≈60 min, $0.35</td>
+<td>–</td>
+<td>–</td>
+</tr>
+<tr>
+<td>MetaTool (10k × 60 / 1k / 1.2k tokens, 1 ep, A100)</td>
+<td>1 min</td>
+<td>21 min, $0.40</td>
+<td>67 min, $1.20</td>
+<td>83 min, $1.50</td>
+</tr>
+<tr>
+<td>BFCL/xLAM (10k × 1k, 1 ep, A100)</td>
+<td>–</td>
+<td>–</td>
+<td>22 min, $0.40</td>
+<td>25 min, $0.45</td>
+</tr>
+<tr>
+<td>Mind2Web (6.8k × 1.5k, 1 ep, A100)</td>
+<td>1 min</td>
+<td>–</td>
+<td>20 min, $0.35</td>
+<td>23 min, $0.40</td>
+</tr>
+<tr>
+<td>AgentRewardBench (918 × 3k, 1 ep, A100)</td>
+<td>&lt; 1 min</td>
+<td>17 min, $0.30</td>
+<td>17 min, $0.30</td>
+<td>18 min, $0.30</td>
+</tr>
+<tr>
+<td>WildGuardMix (10k × 1.5k, 1 ep, A100)</td>
+<td>1 min</td>
+<td>58 min, $1.05</td>
+<td>56 min, $1.00</td>
+<td>61 min, $1.10</td>
+</tr>
+<tr>
+<td>MMLU-Pro (8.4k × 2k, 1 ep, A100)</td>
+<td>1 min</td>
+<td>50 min, $0.90</td>
+<td>45 min, $0.80</td>
+<td>48 min, $0.90</td>
+</tr>
+<tr>
+<td>VitaminC (10k × 0.4k, 1 ep, A100)</td>
+<td>seconds</td>
+<td>12 min, $0.20</td>
+<td>11 min, $0.20</td>
+<td>–</td>
+</tr>
+</tbody>
+</table></div>
+<p>Two patterns matter. Training cost is set by prompt length times rows, not by the head: on MetaTool the linear head is three to four times cheaper to train than the option-listing designs because its prompt is 60 tokens instead of a thousand. And every run in the table costs less than two dollars; the frozen head costs effectively nothing and is the right first step below a thousand labels (Section 6.3). The cost that dominates in practice is the labels, not the GPU.</p>
+<h3 id="sec-7-2">7.2 Serving cost per million decisions</h3>
+<p>Self-hosted cost is GPU time divided by decisions produced, so it depends on prompt length and on how full the GPU is. <a href="#tab-13">Table 13</a> gives the cost of each arm on each task on a fully used A6000 at the measured batched throughput (about 8.7k prefill tokens per second), against Jev&rsquo;s billed cost on the same rows.</p>
+<div class="table-wrap"><table id="tab-13">
+<caption><strong>Table 13.</strong> Cost per million decisions: self-hosted at full utilisation of one A6000 ($0.35/hr), and Jev from its actual usage billing ($0.042 per million input tokens). Multi-question requests count one decision per question.</caption>
+<thead>
+<tr>
+<th>task</th>
+<th>prompt tokens (2a / 2b / 3)</th>
+<th>self-hosted 2a</th>
+<th>self-hosted 2b or 3</th>
+<th>Jev (billed)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>intent routing, banking77</td>
+<td>50 / ≈620 / ≈640</td>
+<td class="num">$1.6</td>
+<td class="num">$7</td>
+<td class="num">$70.8</td>
+</tr>
+<tr>
+<td>intent + OOS, CLINC150</td>
+<td>60 / ≈850 / ≈870</td>
+<td class="num">$1.6</td>
+<td class="num">$10</td>
+<td class="num">$103</td>
+</tr>
+<tr>
+<td>catalogue routing, MetaTool</td>
+<td>60 / 958 / 1,151</td>
+<td class="num">$1.6</td>
+<td>$11–13</td>
+<td class="num">$143.7</td>
+</tr>
+<tr>
+<td>tool selection, BFCL (2 q)</td>
+<td>– / 152 / 152</td>
+<td>–</td>
+<td class="num">$0.9</td>
+<td class="num">$11.3</td>
+</tr>
+<tr>
+<td>browser step, Mind2Web (2 q)</td>
+<td>– / 330 / 330</td>
+<td>–</td>
+<td class="num">$1.9</td>
+<td class="num">$16.9</td>
+</tr>
+<tr>
+<td>moderation, WildGuard (3 q)</td>
+<td class="num">440</td>
+<td class="num">$1.7</td>
+<td class="num">$1.7</td>
+<td class="num">$10.1</td>
+</tr>
+<tr>
+<td>agent-run review, ARB (3 q)</td>
+<td class="num">2,267</td>
+<td class="num">$8.6</td>
+<td class="num">$8.6</td>
+<td class="num">$32.3</td>
+</tr>
+<tr>
+<td>knowledge MCQ, MMLU-Pro</td>
+<td>– / 209 / 209</td>
+<td>–</td>
+<td class="num">$2.4</td>
+<td class="num">$27.4</td>
+</tr>
+<tr>
+<td>fact verification, VitaminC</td>
+<td class="num">≈350</td>
+<td class="num">$3.9</td>
+<td class="num">$3.9</td>
+<td class="num">$17.3</td>
+</tr>
+</tbody>
+</table></div>
+<p>The cost structures differ in kind. Jev bills tokens, so a fixed catalogue serialised into every request is its worst case (MetaTool, banking77, CLINC), and it sends two to three times more tokens than our prompts for the same row because criteria are serialised. Self-hosting bills time, so it is flat in option count for a linear head that holds the catalogue in its parameters, and it is cheap only when the GPU is busy. On the agentic surfaces the difference is 4–13×; on catalogues it is 40–90×.</p>
+<h3 id="sec-7-3">7.3 Capacity, concurrency and the break-even load</h3>
+<p>An API request is one of many the provider is serving; the caller adds throughput by opening more connections, and the provider&rsquo;s fleet absorbs it. A self-hosted classifier has a fixed budget of GPU compute, and every decision spends some of it. <a href="#fig-11">Figure 11</a> shows what that means in practice.</p>
+<figure id="fig-11">
+<img loading="lazy" src="fig/fig_serving.png" alt="(a) Requests per second one A6000 sustains, one at a time versus batched, per task" width="2126" height="764">
+<figcaption><strong>Figure 11.</strong> (a) Requests per second one A6000 sustains, one at a time versus batched, per task. (b) Wall time per request when 32 requests are in flight, local and API (1.1k-token, three-question requests). (c) Dollars per hour against sustained load for Mind2Web-shaped requests: the API is a line through the origin, self-hosting a staircase of replicas.</figcaption>
+</figure>
+<p><strong>Capacity is prefill-bound.</strong> A decision is one prefill of the prompt; there is no decode phase. The compute per request is therefore proportional to prompt length, and a GPU has a fixed prefill budget (about 8.7k tokens per second on the A6000 with the plain HF forward pass, roughly 2.5× that on an A100). One request at a time, the A6000 answers a short prompt in about 135 ms regardless of length, because kernel launch overhead dominates below a few hundred tokens; batching 32 requests together removes that overhead and lifts the modelled ceiling to 56 requests per second on 152-token tool-selection prompts and 26 per second on 330-token browser steps, but only from 3.3 to 3.7 per second on 2.3k-token trajectories, which are compute-bound at batch 1 already. Batching helps short prompts and does almost nothing for long ones.</p>
+<p><strong>Measured: raising the ceiling on one dataset.</strong> To check the model above against a real serving stack we took the Mind2Web decision model (Arm 3, adapter merged) and measured it on one A100 under closed-loop load, where c clients each keep one request in flight, for c from 1 to 128 (<a href="#fig-12">Figure 12</a>). Two engines were compared on the same 512 real test prompts: the plain HF forward pass with static batching (a batch of c requests padded to the longest prompt), and vLLM with continuous batching, its fused DeltaNet kernels and prefix caching, reading the decision the serving-native way, by ending the prompt at the answer slot and taking the top-k log-probabilities of one generated token. Predictions from the two engines agreed on 94–96 % of rows.</p>
+<div class="table-wrap"><table id="tab-14">
+<caption><strong>Table 14.</strong> Closed-loop load on one A100, Mind2Web prompts (median 330 tokens): throughput and p50 latency per request at each concurrency, and the ceiling.</caption>
+<thead>
+<tr>
+<th>engine</th>
+<th>1 client</th>
+<th>4</th>
+<th>16</th>
+<th>32</th>
+<th>128</th>
+<th>ceiling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HF forward, one request at a time</td>
+<td>17.1 req/s, 58 ms</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>–</td>
+<td>17 req/s</td>
+</tr>
+<tr>
+<td>HF forward, static batching</td>
+<td>–</td>
+<td>33.4 req/s, 116 ms</td>
+<td>31.9 req/s, 506 ms</td>
+<td>12.5 req/s, 1.1 s</td>
+<td>–</td>
+<td>33 req/s</td>
+</tr>
+<tr>
+<td>vLLM continuous batching, defaults</td>
+<td>10.4 req/s, 90 ms</td>
+<td>20.1 req/s, 192 ms</td>
+<td>49.2 req/s, 320 ms</td>
+<td>50.2 req/s, 607 ms</td>
+<td>50.8 req/s, 2.5 s</td>
+<td>51 req/s</td>
+</tr>
+<tr>
+<td>vLLM, 32k-token batch budget, 512 sequences</td>
+<td>11.5 req/s, 80 ms</td>
+<td>19.9 req/s, 194 ms</td>
+<td>41.0 req/s, 391 ms</td>
+<td>55.8 req/s, 568 ms</td>
+<td>72.9 req/s, 1.7 s</td>
+<td>73 req/s</td>
+</tr>
+<tr>
+<td>vLLM, decision read via <code>prompt_logprobs</code></td>
+<td>3.4 req/s, 256 ms</td>
+<td>5.0 req/s, 748 ms</td>
+<td>5.9 req/s, 2.5 s</td>
+<td>6.6 req/s, 4.7 s</td>
+<td>7.1 req/s, 16.7 s</td>
+<td>7 req/s</td>
+</tr>
+</tbody>
+</table></div>
+<figure id="fig-12">
+<img loading="lazy" src="fig/fig_concurrency.png" alt="Measured throughput and latency against closed-loop concurrency on one A100 for the Mind2Web decision model" width="1620" height="780">
+<figcaption><strong>Figure 12.</strong> Measured throughput and latency against closed-loop concurrency on one A100 for the Mind2Web decision model. Continuous batching raises the ceiling from 33 to 51–73 requests per second and holds it flat to 128 clients; static batching collapses beyond 16 clients because every request in a batch is padded to the longest prompt in it.</figcaption>
+</figure>
+<p>Four things follow. First, the static batcher&rsquo;s ceiling is twice the one-at-a-time rate and it collapses beyond 16 clients: Mind2Web prompts range up to 1,536 tokens against a 330 median, so a large batch pays for padding and the reference kernels pay again. Continuous batching removes both costs and raises the ceiling to three times the one-at-a-time rate with default settings, and to 4.3× with a larger batch budget, at which point the GPU is compute-bound and latency grows linearly with the number of clients (Little&rsquo;s law: 73 requests per second × 1.7 s ≈ 128 in flight). Second, the serving stack costs something at the bottom: a single request takes 80–90 ms through the HTTP server against 58 ms in-process, so at very low load the plain forward pass is the faster path, and the crossover is at about four clients. Third, the readout matters as much as the engine: asking the server for log-probabilities at every prompt position (<code>prompt_logprobs</code>, the naive way to score several slots in one call) forces a top-k over a 248k-token vocabulary at some 360 positions and bypasses prefix caching, and costs seven times the throughput; a decision model behind an API must be read at one generated position, or with one prefix-cached request per question. Fourth, the API&rsquo;s flat latency is a single-stream property too: Jev&rsquo;s per-request time rose from 235 ms to 1,080 ms when we sent 32 requests concurrently from one client, so both sides trade latency for throughput, and the API&rsquo;s behaviour beyond 32 concurrent calls, where provider rate limits apply, is not something we measured.</p>
+<p><strong>Where the cost curves cross.</strong> Self-hosted cost is a step function: one GPU costs the same whether it answers one request per second or the 26 per second it can sustain on browser steps, and a second replica doubles the cost and the capacity. The API is a line through the origin. For Mind2Web-shaped requests the lines cross at about 3 requests (6 decisions) per second of sustained load on an A6000, and at about 9 per second on an A100 at $1.09/hr, which the measured vLLM ceiling of 73 per second exceeds eight-fold; on catalogue routing the crossing is at under one request per second, on trajectory review at about one per second. Below the crossing a dedicated GPU idles and the API is cheaper in absolute dollars; above it self-hosting wins and the gap grows with volume until a GPU is full, at which point a replica resets the step. The per-decision cost of <a href="#tab-13">Table 13</a> is what the staircase converges to when every replica is busy.</p>
+<p><strong>Raising the ceiling.</strong> Six levers change the self-hosted numbers. The first was measured above (continuous batching with fused kernels and prefix caching: 2.2× the static batcher&rsquo;s ceiling and 4.3× the one-at-a-time rate on the A100); the others were not applied, so <a href="#tab-13">Table 13</a> and <a href="#fig-11">Figure 11</a> remain conservative for the local side:</p>
+<ol>
+<li><em>A serving engine with continuous batching and prefix caching.</em> Requests arrive asynchronously, so a scheduler that forms batches on the fly and caches the shared prefix (the catalogue and question text in a fixed-schema prompt) gives the batched throughput without waiting for a full batch, and removes the repeated prefill of the constant part of the prompt. Measured on Mind2Web: 51 requests per second with defaults, 73 with a 32k-token batch budget, against 33 for static batching (<a href="#tab-14">Table 14</a>). Prefix caching was not isolated; its effect on Mind2Web, where prompts share only the system line and question text, is expected to be small, and larger on fixed catalogues.</li>
+<li><em>Quantisation.</em> FP8 on Hopper or Ada-class GPUs and INT4/AWQ weights roughly halve prefill time on a 4B model and let two replicas share a card; accuracy loss on a merged LoRA classifier can be checked on the calibration split before deployment.</li>
+<li><em>Fused kernels for the backbone.</em> The DeltaNet layers ran with reference kernels; the fused implementations are several times faster on those layers.</li>
+<li><em>Prompt design.</em> The cheapest token is the one not sent. A linear head holds the catalogue in its parameters (60 tokens for MetaTool against 958–1,151 for the option-listing arms and 3,422 for the API), and truncating the state to what the decision needs is a capacity lever before it is an accuracy lever.</li>
+<li><em>Horizontal replicas and autoscaling.</em> Throughput scales linearly with GPUs behind a load balancer; cost per decision stays flat as long as replicas are busy, and per-second-billed serverless GPUs remove the idle cost for bursty traffic, at the price of cold starts of a few seconds for an 8 GB model.</li>
+<li><em>A larger GPU.</em> An H100 has about three times the A100&rsquo;s prefill throughput at about three times its price, so it changes the ceiling and the batch-1 latency, not the cost per decision.</li>
+</ol>
+<p>The operational conclusion is that a self-hosted 4B classifier is the cheaper and faster choice once a surface carries a few requests per second of sustained load, that its ceiling per GPU is set by prompt length, and that a serving engine alone moves that ceiling by a factor of two to four on 330-token prompts, with quantisation, prompt design and replicas on top of that. Below that load, or for traffic that arrives in bursts, the API&rsquo;s ability to absorb concurrency without an idle GPU is worth its per-token price.</p>
+<h3 id="sec-7-4">7.4 A Jev-like contract on the 4B: encode the state once, fan the questions out</h3>
+<p>Jev&rsquo;s serving contract has three parts that our arms did not all have: the state is ingested once, every question is evaluated against it independently, and a marginal question costs only its own tokens (TypeSafe&rsquo;s documentation [<a href="#ref-38">38</a>]). Arms 2a, 2b and 3 put all questions in one prompt, so questions see each other and the adapter changes how the state itself is represented. We built a design that meets the contract without touching the original weights&rsquo; representation of the state, and tested it on WildGuardMix (three independent boolean questions over 440-token states, the surface where Jev was strongest).</p>
+<p><strong>Design.</strong> The state is prefilled once by the base model with adapters disabled, producing the hybrid cache (key-value tensors for the attention layers, convolution and recurrent states for the DeltaNet layers). Each question is a short segment (question text, options, the end of the user turn and the assistant header, about 40 tokens) that continues from that cache as its own batch row; the cache is expanded by indexing every cached tensor along the batch axis, so <em>n</em> questions over <em>b</em> states run as one batch of <em>b·n</em> rows with no question able to attend to another. The answer is read at each segment&rsquo;s last token. Three variants leave the base weights untouched: a zero-shot readout; linear heads trained on the segment&rsquo;s hidden state (seconds); and a <em>segment-only</em> LoRA, active only while question segments are processed, so the state cache is still exactly the base model&rsquo;s and the adapter only changes how a question reads it. That adapter is served unmerged, since merging would alter the prefill. A unit test checks that fanned-out logits equal an isolated full forward of state plus that one question to 1e-4 on both layer types, on the fused kernels.</p>
+<div class="table-wrap"><table id="tab-15">
+<caption><strong>Table 15.</strong> Isolating the questions costs nothing: at every training level the fan-out matches or edges the shared-prompt arm, and the segment-only LoRA is the best tuned result on this task, level with Jev. Zero-shot, the isolated format is four times better calibrated before any temperature.</caption>
+<thead>
+<tr>
+<th>WildGuardMix, per question (%)</th>
+<th>prompt harmful</th>
+<th>response harmful</th>
+<th>refused</th>
+<th>pooled</th>
+<th>raw ECE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>zero-shot, all questions in one prompt (Arm 1)</td>
+<td class="num">85.1</td>
+<td class="num">85.0</td>
+<td class="num">82.0</td>
+<td class="num">84.1</td>
+<td class="num">0.104</td>
+</tr>
+<tr>
+<td>zero-shot, fan-out</td>
+<td class="num">84.4</td>
+<td class="num">86.4</td>
+<td class="num">81.0</td>
+<td class="num">83.9</td>
+<td class="num"><strong>0.025</strong></td>
+</tr>
+<tr>
+<td>frozen head, shared prompt (Arm 2a-frozen)</td>
+<td class="num">88.3</td>
+<td class="num">92.2</td>
+<td class="num">91.8</td>
+<td class="num">90.8</td>
+<td class="num">0.064</td>
+</tr>
+<tr>
+<td>frozen head, fan-out</td>
+<td class="num">88.6</td>
+<td class="num">92.2</td>
+<td class="num">92.5</td>
+<td class="num">91.1</td>
+<td class="num">0.055</td>
+</tr>
+<tr>
+<td>LoRA, shared prompt (Arm 3)</td>
+<td class="num">89.8</td>
+<td class="num">93.1</td>
+<td class="num">92.7</td>
+<td class="num">91.8</td>
+<td class="num">0.059</td>
+</tr>
+<tr>
+<td>segment-only LoRA, fan-out</td>
+<td class="num">90.0</td>
+<td class="num">93.2</td>
+<td class="num">93.4</td>
+<td class="num"><strong>92.2</strong></td>
+<td class="num">0.053</td>
+</tr>
+<tr>
+<td>Jev</td>
+<td class="num">88.9</td>
+<td class="num">93.6</td>
+<td class="num">94.3</td>
+<td class="num">92.3</td>
+<td class="num">0.027</td>
+</tr>
+</tbody>
+</table></div>
+<div class="table-wrap"><table id="tab-16">
+<caption><strong>Table 16.</strong> Marginal question cost. Closed-loop throughput of the fan-out on this task peaks at 14.8 requests per second (batch 16) against about 15 per second for the shared prompt one request at a time.</caption>
+<thead>
+<tr>
+<th>latency, one A100, batch 1</th>
+<th>1 question</th>
+<th>3</th>
+<th>6</th>
+<th>12</th>
+<th>24</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>all questions in one prompt (Arm 3 template, one pass)</td>
+<td class="num">65 ms</td>
+<td class="num">65 ms</td>
+<td class="num">65 ms</td>
+<td class="num">71 ms</td>
+<td class="num">84 ms</td>
+</tr>
+<tr>
+<td>fan-out: state prefill (83 ms) + isolated questions</td>
+<td class="num">163 ms</td>
+<td class="num">164 ms</td>
+<td class="num">170 ms</td>
+<td class="num">179 ms</td>
+<td class="num">233 ms</td>
+</tr>
+<tr>
+<td>fan-out: questions on an already-cached state</td>
+<td class="num">88 ms</td>
+<td class="num">86 ms</td>
+<td class="num">89 ms</td>
+<td class="num">94 ms</td>
+<td class="num">138 ms</td>
+</tr>
+</tbody>
+</table></div>
+<figure id="fig-13">
+<img loading="lazy" src="fig/fig_fanout.png" alt="Left: latency against questions per request for the shared prompt and the fan-out, with and without a cached state" width="1691" height="779">
+<figcaption><strong>Figure 13.</strong> Left: latency against questions per request for the shared prompt and the fan-out, with and without a cached state. Right: per-question accuracy, shared prompt against fan-out, at each training level.</figcaption>
+</figure>
+<p><strong>Reading.</strong> The contract is met: a question costs about two milliseconds at the margin (88 ms for one question on a cached state, 138 ms for twenty-four), questions are isolated, and the state representation is the base model&rsquo;s, so the same cached state can serve any later question or any other task&rsquo;s adapter. Accuracy does not suffer; it improves slightly, and the zero-shot calibration improves a great deal, presumably because a single-question format is closer to what the base model expects. What the contract costs is a second forward pass. On a 440-token state both the prefill and the segment pass sit at the launch-bound floor of a 32-layer forward on this GPU (about 65–85 ms each), so the fan-out is 2.5× slower than the one-pass shared prompt at batch 1 (6 against 15 requests per second), batching sixteen requests only brings it level with the shared prompt&rsquo;s unbatched rate, and re-asking a cached state costs more than a whole shared-prompt request. The shared prompt has an equally flat marginal cost (65 ms for one to six questions) because its extra questions are also just tokens. The fan-out pays off only where the state is long enough for prefill to dominate, where the same state is queried repeatedly by different questions or adapters (an agent harness asking new questions about the same page or trajectory), or where isolation itself is the requirement. The design is about 120 lines on top of the transformers cache and needs no serving-engine support, which is the practical point: the Jev interface is not architectural magic, it is a cache discipline any small model can adopt.</p>
+</section>
+<section id="sec-8">
+<h2>8. Discussion</h2>
+<h3 id="sec-8-1">8.1 What the universal decision model changed</h3>
+<p>Three things, none of which is accuracy. It changed the interface: state plus typed questions in, probabilities out, in one pass, with no generation to parse and no schema violations (zero parse failures in about 50,000 requests here). It changed who can build a decision component: a product engineer with no labels, no GPU and no training loop now has a calibrated classifier by writing a question. And it changed where decisions get made: the surfaces in Section 3 were being handled by generating LLMs or by hand-written heuristics, and a single fast, typed, calibrated call made them classification problems. Our whole experimental design, including the four arms, is downstream of that interface; we would not have posed browser-step selection as a one-pass decision with a moving &ldquo;none&rdquo; option without it.</p>
+<h3 id="sec-8-2">8.2 Where a fine-tuned small model does the better job</h3>
+<p>In the majority of the cases we measured. Given a few thousand labels for a fixed workflow and ten to eighty minutes on a rented GPU, a 4B model with a LoRA adapter and any of three heads matched or beat the universal model on every agentic decision, by 4–15 points on the decisions that involve a catalogue or a candidate list, at 55–85 ms and $1–9 per million decisions. The head design is a second-order choice. The order of magnitude in cost and the factor of four in latency come from serving a small model on a GPU rather than from cleverness, and they are the numbers a system that makes a decision on every agent step actually feels. On fixed catalogues even a sentence-embedding logistic regression, trained on a laptop, beats the universal model.</p>
+<h3 id="sec-8-3">8.3 Where the universal model is better, and why that matters</h3>
+<p>The zero-label regime, up to about a thousand labels, is Jev&rsquo;s on every reading task. It is better at the questions that require judgement over the state rather than recognition of a catalogue (BoolQ, ANLI, WildGuard&rsquo;s refusal and response-harm questions). It escalates when the input does not contain what the question needs, a behaviour our tuned model had to be taught and was not. It is the most conservative scorer at high confidence and the best calibrated as shipped. Its per-request latency is flat in context length, it absorbs concurrency without an idle GPU, and it costs nothing when unused. Outside testers report the same profile: strong when a decision is decomposed into typed questions, safe to route on because its wrong answers carry hedged confidence, weak on single broad questions, counting and large states [<a href="#ref-46">46</a>].</p>
+<p>These are not marginal properties. The reason to want a decision model in an agent loop is often not the mean accuracy but the behaviour at the tail, and a model that says &ldquo;not enough information&rdquo; on 78 % of evidence-less inputs is doing the job that a confidence threshold is supposed to do. A team without an ML function cannot build that from scratch, and a team with one still benefits from having it on day one.</p>
+<h3 id="sec-8-4">8.4 A decision procedure</h3>
+<p>The results support a simple rule (<a href="#fig-14">Figure 14</a>). Start with the universal model: it bootstraps the surface, produces the first labels, and covers the long tail. Log its decisions and the outcomes. Once a fixed workflow has about a thousand labelled decisions, train a frozen head on a small open model&rsquo;s hidden states (seconds, no GPU) and compare; once it has a few thousand and the volume exceeds a few requests per second, train a LoRA adapter with the head that matches the option regime and serve it merged. Keep the universal model for new question types, for escalation on inputs the tuned model was not trained to refuse, and for any surface whose labels never accumulate. The two are complements: the universal model is how classification reaches people who are not in the machine-learning field, and the tuned small model is what the high-volume core of the system ends up running.</p>
+<figure id="fig-14">
+<img loading="lazy" src="fig/fig_decision.png" alt="The decision procedure the results support" width="1562" height="625">
+<figcaption><strong>Figure 14.</strong> The decision procedure the results support.</figcaption>
+</figure>
+</section>
+<section id="sec-9">
+<h2>9. Limitations</h2>
+<p>Single seed on the agentic sets and on every LoRA point of the label curve; seed spread was 0.3–1.6 points where measured. Jev is non-deterministic (2 of 987 identical answers on re-query) and every Jev number is one draw. Jev&rsquo;s criteria were the bare option strings, which is the information our arms received, but richer criteria and tool descriptions might help it, particularly on MetaTool. Local latencies and the per-task capacity figures of Section 7.3 are an unoptimised bfloat16 path and therefore lower bounds; the measured serving curve covers one dataset on one GPU, reads one decision per request, and did not isolate prefix caching; the fan-out latency sweep was timed with a freshly initialised adapter of the trained shape (latency does not depend on weight values) because the trained adapter was not retained, and its &ldquo;cached state&rdquo; timings include copying the cache; Jev&rsquo;s latencies include network from a laptop, and its behaviour above 32 concurrent requests was not measured. GPU prices are one cloud&rsquo;s on-demand list prices at the time of the study. MMLU-Pro is a public test set. Mind2Web candidates come from the original ranker, and 27 % of cross-task targets fall outside them. AgentRewardBench&rsquo;s side-effect question is nearly constant. WildGuard&rsquo;s calibration split shares near-duplicate prompts with its training split. VitaminC&rsquo;s calibration split shares the training distribution, and the contrastive-pair consistency we planned to compute from the saved predictions was not computed. ObscureWikiQA questions are model-generated and model-verified (82 % pass rate), from article introductions, with a 31-row calibration split. Trained arms were not run on BoolQ, MASSIVE, ANLI or SST-5, and Arm 2a was not run on the dynamic-option sets. Every one of these is recorded in the repository with the decision that produced it.</p>
+</section>
+<section id="sec-10">
+<h2>10. Future work: reinforcement learning from the environment, not from the confusion matrix</h2>
+<p>The obvious next step for a decision model is reinforcement learning, and the obvious formulation of it is wrong. If the reward for a decision is whether it was a false positive or a false negative, the policy gradient is estimating the gradient of a weighted classification loss, and one could have written that loss down and back-propagated it directly. Class-weighted cross-entropy, cost-sensitive learning and threshold tuning already exist; running them through a sampler and a baseline is the same optimisation with more variance and a new name. RLVR works for generators because the verifier scores an object the model cannot be trained on by supervision (a whole reasoning trace) and because the reward is available for unlabelled inputs. Neither holds for a classifier whose reward is a comparison against a label.</p>
+<p>The hypothesis worth testing is that the reward should come from the environment the decision acts in. A browser-step decision is followed by a page transition, a task completion or a dead end. A tool-selection decision is followed by a call that succeeds, errors or returns nothing useful. A moderation decision is followed by an appeal or a report. An agent-run judgement is followed by a retry that works or does not. In each case the outcome is observable, delayed, sometimes noisy, and available at volumes far beyond what anyone will label; it is a contextual-bandit signal [<a href="#ref-32">32</a>], and it is not reducible to a fixed loss because it depends on what the rest of the system does with the probability. Optimising the decision model against it would train, for instance, the escalation behaviour of Section 6.4 directly: a &ldquo;not enough information&rdquo; answer that leads to a successful fallback earns reward, a confident guess that leads to a failed action loses it, and the model learns when to abstain from what happened rather than from a labelled abstention class it was never shown.</p>
+<p>TypeSafe&rsquo;s own description of Jev&rsquo;s training, &ldquo;Reinforcement Learning for Calibrated Decisions&rdquo;, with probabilities &ldquo;optimized against outcomes&rdquo; [<a href="#ref-37">37</a>, <a href="#ref-38">38</a>], suggests that something like this is what a universal decision model is already made of, which would explain both its escalation behaviour and its calibration as shipped. That is our reading, not a disclosed fact. What we would explore is whether the same signal can be applied to a purpose-tuned small model after supervised initialisation, at the point where the labelled curve of Section 6.3 flattens. The open problems are the ones the bandit and RLHF literature already names: credit assignment when the outcome arrives many steps after the decision, the counterfactual problem that only the chosen option&rsquo;s outcome is observed, reward hacking when the environment&rsquo;s success signal is gameable [<a href="#ref-33">33</a>], and keeping the probabilities calibrated while optimising a reward that is indifferent to them. Recent work on process-level verifiable rewards for agents [<a href="#ref-50">50</a>] and on learning reward models from heterogeneous feedback [<a href="#ref-49">49</a>] offers starting points. The prize is a decision model whose confidence means what it should mean for the system it is embedded in, learned from that system&rsquo;s own logs rather than from a confusion matrix.</p>
+</section>
+<section id="sec-11">
+<h2>11. Conclusion</h2>
+<p>Universal decision models democratised classification. They gave a calibrated, typed, one-pass classifier to people who had never trained one and pointed it at decisions the field had not treated as classification: browser steps, tool calls, agent-run review, moderation, model routing. Measured on those surfaces with the same interface and the same rows, a purpose-tuned classifier on a 4B open model does the better job in the majority of labelled cases, by a clear margin in accuracy on catalogue and candidate-list decisions, by a factor of four in latency and by four to ninety times in cost per decision, after minutes of training. Even a sentence embedding with logistic regression wins on fixed catalogues. The universal model remains the right tool with no labels, on reading and judgement over the state, wherever conservative escalation matters more than mean accuracy, and wherever load is too low or too bursty to keep a GPU busy; its closed-book knowledge, once contamination is controlled for, is that of a small model. Something like it is needed so that people outside the machine-learning field experience what a classifier can do; something like ours is what the high-volume core of the system will end up running. The next step for both is to learn from the environment the decision acts in, and the way not to do that is to rename supervised learning.</p>
+</section>
+<section id="use-of-ai-tools">
+<h2>Use of AI tools</h2>
+<p>AI coding assistants were used to help write experiment code and to edit and proofread the manuscript; ObscureWikiQA questions were generated and verified by language models as described in Section 5. The author designed the study, checked all results against the saved outputs, and takes full responsibility for the content.</p>
+</section>
+<section id="data-availability-statement">
+<h2>Data Availability Statement</h2>
+<p>Code (data builders, training and evaluation code, every table and figure) is available at https://github.com/vamshibobby/decisions-without-generation under the MIT licence; references in this paper to &ldquo;the repository&rdquo; mean this repository. Raw results and predictions are in the public Hugging Face dataset <code>saivamshiatukuri/decision-model-results</code>, cached hidden states in <code>saivamshiatukuri/decision-model-hidden-cache</code>, and the fine-tuned Mind2Web decision model in <code>saivamshiatukuri/qwen3.5-4b-decision-mind2web</code>. The remaining checkpoints are available from the author on request.</p>
+</section>
+<section id="conflicts-of-interest">
+<h2>Conflicts of Interest</h2>
+<p>The author declares no conflicts of interest. The author has no affiliation with TypeSafe.</p>
+</section>
+<section id="references">
+<h2>References</h2><ol>
+<li id="ref-1">E. J. Hu et al. LoRA: Low-Rank Adaptation of Large Language Models. arXiv:2106.09685, 2021.</li>
+<li id="ref-2">C. Guo, G. Pleiss, Y. Sun, K. Q. Weinberger. On Calibration of Modern Neural Networks. ICML 2017; arXiv:1706.04599.</li>
+<li id="ref-3">Y. Geifman, R. El-Yaniv. Selective Classification for Deep Neural Networks. NeurIPS 2017; arXiv:1705.08500.</li>
+<li id="ref-4">Z. Zhao, E. Wallace, S. Feng, D. Klein, S. Singh. Calibrate Before Use: Improving Few-Shot Performance of Language Models. ICML 2021; arXiv:2102.09690.</li>
+<li id="ref-5">W. Yin, J. Hay, D. Roth. Benchmarking Zero-shot Text Classification: Datasets, Evaluation and Entailment Approach. EMNLP 2019; arXiv:1909.00161.</li>
+<li id="ref-6">L. Tunstall et al. Efficient Few-Shot Learning Without Prompts (SetFit). arXiv:2209.11055, 2022.</li>
+<li id="ref-7">N. Reimers, I. Gurevych. Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. EMNLP 2019; arXiv:1908.10084.</li>
+<li id="ref-8">I. Casanueva et al. Efficient Intent Detection with Dual Sentence Encoders (banking77). arXiv:2003.04807, 2020.</li>
+<li id="ref-9">S. Larson et al. An Evaluation Dataset for Intent Classification and Out-of-Scope Prediction (CLINC150). EMNLP 2019; arXiv:1909.02027.</li>
+<li id="ref-10">C. Clark et al. BoolQ: Exploring the Surprising Difficulty of Natural Yes/No Questions. NAACL 2019; arXiv:1905.10044.</li>
+<li id="ref-11">J. FitzGerald et al. MASSIVE: A 1M-Example Multilingual NLU Dataset with 51 Typologically-Diverse Languages. arXiv:2204.08582, 2022.</li>
+<li id="ref-12">Y. Nie et al. Adversarial NLI: A New Benchmark for Natural Language Understanding. ACL 2020; arXiv:1910.14599.</li>
+<li id="ref-13">R. Socher et al. Recursive Deep Models for Semantic Compositionality Over a Sentiment Treebank. EMNLP 2013.</li>
+<li id="ref-14">Y. Wang et al. MMLU-Pro: A More Robust and Challenging Multi-Task Language Understanding Benchmark. arXiv:2406.01574, 2024.</li>
+<li id="ref-15">S. Han et al. WildGuard: Open One-Stop Moderation Tools for Safety Risks, Jailbreaks, and Refusals of LLMs. arXiv:2406.18495, 2024.</li>
+<li id="ref-16">Y. Huang et al. MetaTool Benchmark for Large Language Models: Deciding Whether to Use Tools and Which to Use. arXiv:2310.03128, 2023.</li>
+<li id="ref-17">S. G. Patil et al. The Berkeley Function Calling Leaderboard (BFCL): From Tool Use to Agentic Evaluation of Large Language Models. ICML 2025.</li>
+<li id="ref-18">Z. Liu et al. APIGen: Automated Pipeline for Generating Verifiable and Diverse Function-Calling Datasets (xLAM). arXiv:2406.18518, 2024.</li>
+<li id="ref-19">X. Deng et al. Mind2Web: Towards a Generalist Agent for the Web. NeurIPS 2023; arXiv:2306.06070.</li>
+<li id="ref-20">X. H. Lù et al. AgentRewardBench: Evaluating Automatic Evaluations of Web Agent Trajectories. arXiv:2504.08942, 2025.</li>
+<li id="ref-21">T. Schuster, A. Fisch, R. Barzilay. Get Your Vitamin C! Robust Fact Verification with Contrastive Evidence. NAACL 2021; arXiv:2103.08541.</li>
+<li id="ref-22">S. Yang, J. Kautz, A. Hatamizadeh. Gated Delta Networks: Improving Mamba2 with Delta Rule. arXiv:2412.06464, 2024.</li>
+<li id="ref-23">L. Zheng et al. Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena. NeurIPS 2023; arXiv:2306.05685.</li>
+<li id="ref-24">C. Zheng et al. Large Language Models Are Not Robust Multiple Choice Selectors. ICLR 2024; arXiv:2309.03882.</li>
+<li id="ref-25">A. Holtzman et al. Surface Form Competition: Why the Highest Probability Answer Isn&rsquo;t Always Right. EMNLP 2021; arXiv:2104.08315.</li>
+<li id="ref-26">P. Belcak et al. Small Language Models are the Future of Agentic AI. arXiv:2506.02153, 2025.</li>
+<li id="ref-27">L. Ouyang et al. Training Language Models to Follow Instructions with Human Feedback. NeurIPS 2022; arXiv:2203.02155.</li>
+<li id="ref-28">DeepSeek-AI. DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning. arXiv:2501.12948, 2025.</li>
+<li id="ref-29">Z. Shao et al. DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models (GRPO). arXiv:2402.03300, 2024.</li>
+<li id="ref-30">N. Lambert et al. Tülu 3: Pushing Frontiers in Open Language Model Post-Training (RLVR). arXiv:2411.15124, 2024.</li>
+<li id="ref-31">R. Rafailov et al. Direct Preference Optimization: Your Language Model is Secretly a Reward Model. NeurIPS 2023; arXiv:2305.18290.</li>
+<li id="ref-32">L. Li, W. Chu, J. Langford, R. E. Schapire. A Contextual-Bandit Approach to Personalized News Article Recommendation. WWW 2010; arXiv:1003.0146.</li>
+<li id="ref-33">J. Skalse, N. Howe, D. Krasheninnikov, D. Krueger. Defining and Characterizing Reward Hacking. NeurIPS 2022; arXiv:2209.13085.</li>
+<li id="ref-34">S. Kadavath et al. Language Models (Mostly) Know What They Know. arXiv:2207.05221, 2022.</li>
+<li id="ref-35">O. Sainz et al. NLP Evaluation in Trouble: On the Need to Measure LLM Data Contamination for Each Benchmark. EMNLP Findings 2023; arXiv:2310.18018.</li>
+<li id="ref-36">Knowledgator Engineering. GLiClass: Generalist Lightweight Model for Sequence Classification Tasks. arXiv:2508.07662, 2025.</li>
+<li id="ref-37">TypeSafe AI. Introducing System One Models &amp; Jev. typesafe.ai/blog/introducing-system-one-models-and-jev, 2026.</li>
+<li id="ref-38">TypeSafe AI. System One (concepts). docs.typesafe.ai/concepts/system-one, 2026.</li>
+<li id="ref-39">N. Houlsby et al. Parameter-Efficient Transfer Learning for NLP. ICML 2019; arXiv:1902.00751.</li>
+<li id="ref-40">T. Schick, H. Schütze. Exploiting Cloze Questions for Few Shot Text Classification and Natural Language Inference. EACL 2021; arXiv:2001.07676.</li>
+<li id="ref-41">I. Aarab. BTZSC: A Benchmark for Zero-Shot Text Classification Across Cross-Encoders, Embedding Models, Rerankers and LLMs. arXiv:2603.11991, 2026.</li>
+<li id="ref-42">J. Devlin, M.-W. Chang, K. Lee, K. Toutanova. BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. NAACL 2019; arXiv:1810.04805.</li>
+<li id="ref-43">M. P. Naeini, G. Cooper, M. Hauskrecht. Obtaining Well Calibrated Probabilities Using Bayesian Binning. AAAI 2015.</li>
+<li id="ref-44">G. W. Brier. Verification of Forecasts Expressed in Terms of Probability. Monthly Weather Review, 1950.</li>
+<li id="ref-45">Qwen Team. Qwen3 Technical Report. arXiv:2505.09388, 2025; Qwen3.5 model cards, 2026.</li>
+<li id="ref-46">Outside evaluations of Jev, September 2026: XenoSpectrum, &ldquo;Jev, TypeSafe, BERT classifier decomposition&rdquo; (phishing benchmark); themsquared/jev-benchmark (tool-call risk); LangChain, &ldquo;Building a harness with Jev&rdquo;; Cherry Creek News review of TypeSafe&rsquo;s evals and Every&rsquo;s extraction test; jkudish/jev-browser; AppitStudio/awesome-jev.</li>
+<li id="ref-47">I. Ong et al. RouteLLM: Learning to Route LLMs with Preference Data. arXiv:2406.18665, 2024.</li>
+<li id="ref-48">D. Kahneman. Thinking, Fast and Slow. Farrar, Straus and Giroux, 2011.</li>
+<li id="ref-49">Y. Metz, A. Geiszl, R. Baur, M. El-Assady. Reward Learning from Multiple Feedback Types. arXiv:2502.21038, 2025.</li>
+<li id="ref-50">H. Yuan et al. Verifiable Process Rewards for Agentic Reasoning. arXiv:2605.10325, 2026.</li>
+</ol></section>
+<section id="appendix-a">
+<h2>Appendix A: Cost-model assumptions and reproducibility</h2>
+<p>Prices are on-demand list prices of the cloud the experiments ran on (A6000 48 GB $0.35/hr, A100 80 GB $1.09/hr; L4/A10 24 GB cards are typically $0.6–0.8/hr on-demand and fit every task in this study, since the 4B backbone in bfloat16 is about 8 GB and the longest prompts need under 14 GB at batch 1 and about 30 GB at batch 32). Throughput is the measured batch-32 prefill rate on the A6000 (about 8.7k tokens per second) divided by tokens per request, capped at about 60 requests per second by per-request overhead; batch-1 latency is measured on the A100. Jev&rsquo;s cost is its billed usage on the same rows at $0.042 per million input tokens. Training times are the wall-clock between consecutive evaluation timestamps in the experiment log, which include the evaluation pass. All data preparation, the embedding floor on every split, frozen-head training on cached hidden states, rescoring, figures and this paper ran on a laptop CPU.</p>
+<p>Every experiment appends one row to <code>results/summary.csv</code>; every prediction is saved; <code>python -m dm.eval.report</code> regenerates every table and <code>python paper/make_figures.py</code> every figure; <code>docs/09_REPRODUCE.md</code> lists the commands, and <code>AMBIGUITIES.md</code> records the 22 decisions taken where the original plan under-specified the study, including the two corrections made after an independent review (the Jev probability floor and per-row out-of-scope indices).</p>
+</section>
+<section id="appendix-b">
+<h2>Appendix B: Per-dataset results</h2>
+<p>Full tables (accuracy, macro-F1, NLL, Brier, ECE raw and post-temperature, AUROC, selective accuracy at 80 % and 90 %, OOS recall, seeds, n) for every arm on every dataset, per-question tables for the multi-question sets, the synthetic latency sweep, the real-row latency table, the escalation analysis and reliability diagrams are in <code>results/REPORT.md</code>, <code>results/tables/</code> and <code>results/plots/</code> in the repository.</p>
+</section>
+<section id="cite"><h2>Cite this paper</h2>
+<p>Atukuri, S. V. (2026). Decisions Without Generation: What Universal Decision Models Changed About Classification, and Where a Fine-Tuned 4B Model Still Wins. Zenodo. https://doi.org/10.5281/zenodo.24601222</p>
+<pre><code>@misc{atukuri2026decisions,
+  author       = {Atukuri, Sai Vamshi},
+  title        = {{Decisions Without Generation: What Universal Decision Models Changed About Classification, and Where a Fine-Tuned 4B Model Still Wins}},
+  year         = {2026},
+  month        = nov,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.24601222},
+  url          = {https://doi.org/10.5281/zenodo.24601222}
+}</code></pre>
+<p class="note">Full text: <a href="https://vamshibobby.github.io/papers/decisions-without-generation/">https://vamshibobby.github.io/papers/decisions-without-generation/</a> · PDF: <a href="decisions-without-generation.pdf">https://vamshibobby.github.io/papers/decisions-without-generation/decisions-without-generation.pdf</a> · Code: <a href="https://github.com/vamshibobby/decisions-without-generation">https://github.com/vamshibobby/decisions-without-generation</a> · Licence: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+</section>
+</article>
+</main>
+<footer class="site-foot"><p>© 2026 Sai Vamshi Atukuri. Text licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. <a href="../../">All papers</a> · <a href="../../llms.txt">llms.txt</a></p></footer>
+</body>
+</html>

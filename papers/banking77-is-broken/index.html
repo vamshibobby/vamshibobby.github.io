@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BANKING77 Is Broken: Rethinking a Cornerstone Intent-Detection Benchmark for Enterprise Conversational Agents</title>
+<meta name="description" content="BANKING77 has been the default benchmark for fine-grained intent detection since 2020, and it is now also a launch benchmark for a new class of decision…">
+<meta name="author" content="Sai Vamshi Atukuri">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="canonical" href="https://vamshibobby.github.io/papers/banking77-is-broken/">
+<link rel="icon" href="data:,">
+<meta name="color-scheme" content="light dark">
+
+<!-- Highwire Press tags for Google Scholar -->
+<meta name="citation_title" content="BANKING77 Is Broken: Rethinking a Cornerstone Intent-Detection Benchmark for Enterprise Conversational Agents">
+<meta name="citation_author" content="Atukuri, Sai Vamshi">
+<meta name="citation_author_institution" content="Independent Researcher">
+<meta name="citation_author_orcid" content="https://orcid.org/0009-0003-3111-7148">
+<meta name="citation_author_email" content="vamshibobby1996@gmail.com">
+<meta name="citation_publication_date" content="2026/11/27">
+<meta name="citation_online_date" content="2026/11/27">
+<meta name="citation_pdf_url" content="https://vamshibobby.github.io/papers/banking77-is-broken/banking77-is-broken.pdf">
+<meta name="citation_abstract_html_url" content="https://vamshibobby.github.io/papers/banking77-is-broken/">
+<meta name="citation_fulltext_html_url" content="https://vamshibobby.github.io/papers/banking77-is-broken/">
+<meta name="citation_language" content="en">
+<meta name="citation_keywords" content="intent detection; BANKING77; benchmark audit; label noise; conversational agents; ambiguity detection; out-of-scope detection; decision models">
+<meta name="citation_publisher" content="Zenodo">
+<meta name="citation_doi" content="10.5281/zenodo.24601220">
+
+<!-- Dublin Core -->
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.title" content="BANKING77 Is Broken: Rethinking a Cornerstone Intent-Detection Benchmark for Enterprise Conversational Agents">
+<meta name="DC.creator" content="Atukuri, Sai Vamshi">
+<meta name="DC.date" content="2026-11-27">
+<meta name="DC.identifier" content="https://doi.org/10.5281/zenodo.24601220">
+<meta name="DC.description" content="BANKING77 has been the default benchmark for fine-grained intent detection since 2020, and it is now also a launch benchmark for a new class of decision…">
+<meta name="DC.language" content="en">
+<meta name="DC.type" content="Text.Preprint">
+<meta name="DC.rights" content="https://creativecommons.org/licenses/by/4.0/">
+<meta name="DC.identifier" content="doi:10.5281/zenodo.24601220">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="BANKING77 Is Broken: Rethinking a Cornerstone Intent-Detection Benchmark for Enterprise Conversational Agents">
+<meta property="og:description" content="BANKING77 has been the default benchmark for fine-grained intent detection since 2020, and it is now also a launch benchmark for a new class of decision…">
+<meta property="og:url" content="https://vamshibobby.github.io/papers/banking77-is-broken/">
+<meta property="og:site_name" content="Sai Vamshi Atukuri — Research">
+<meta property="article:published_time" content="2026-11-27">
+<meta property="article:author" content="Sai Vamshi Atukuri">
+<meta property="article:tag" content="intent detection">
+<meta property="article:tag" content="BANKING77">
+<meta property="article:tag" content="benchmark audit">
+<meta property="article:tag" content="label noise">
+<meta property="article:tag" content="conversational agents">
+<meta property="article:tag" content="ambiguity detection">
+<meta property="article:tag" content="out-of-scope detection">
+<meta property="article:tag" content="decision models">
+<meta property="og:image" content="https://vamshibobby.github.io/papers/banking77-is-broken/fig/leaderboard.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://vamshibobby.github.io/papers/banking77-is-broken/fig/leaderboard.png">
+<meta name="twitter:title" content="BANKING77 Is Broken: Rethinking a Cornerstone Intent-Detection Benchmark for Enterprise Conversational Agents">
+<meta name="twitter:description" content="BANKING77 has been the default benchmark for fine-grained intent detection since 2020, and it is now also a launch benchmark for a new class of decision…">
+<link rel="alternate" type="application/pdf" href="https://vamshibobby.github.io/papers/banking77-is-broken/banking77-is-broken.pdf" title="PDF">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "ScholarlyArticle",
+ "@id": "https://vamshibobby.github.io/papers/banking77-is-broken/#article",
+ "headline": "BANKING77 Is Broken: Rethinking a Cornerstone Intent-Detection Benchmark for Enterprise Conversational Agents",
+ "name": "BANKING77 Is Broken: Rethinking a Cornerstone Intent-Detection Benchmark for Enterprise Conversational Agents",
+ "author": {
+  "@type": "Person",
+  "@id": "https://orcid.org/0009-0003-3111-7148",
+  "name": "Sai Vamshi Atukuri",
+  "url": "https://vamshibobby.github.io/",
+  "affiliation": {
+   "@type": "Organization",
+   "name": "Independent Researcher"
+  },
+  "sameAs": [
+   "https://orcid.org/0009-0003-3111-7148",
+   "https://github.com/vamshibobby"
+  ]
+ },
+ "datePublished": "2026-11-27",
+ "abstract": "BANKING77 has been the default benchmark for fine-grained intent detection since 2020, and it is now also a launch benchmark for a new class of decision models that return typed, probabilistic answers instead of text. We show that it no longer measures what modern conversational agents need. An audit of all 13,083 queries finds that about 1.1% of labels are clearly wrong and a further ~6% are genuinely ambiguous, so the realistic accuracy ceiling is 96–97%, not 100%. Over half of the test set has a near-paraphrase in the training set, and every reported improvement since 2020 sits inside the benchmark’s ±0.85-point confidence interval. The benchmark is also blind by construction to what enterprise assistants actually face: out-of-scope requests, underspecified requests that require a clarifying question, messages with several requests, multi-turn context and escalation to a human. We introduce BANKING77-X, a 20,381-record extension that keeps the 77 intents, so existing models can be evaluated as they are, corrects the original’s audited labels, and makes these cases first-class: every user turn receives one of 80 categories (77 intents plus ambiguous, multi_intent and out_of_scope), along with a three-level hierarchy, escalation signals and entity spans. All new items were generated by one large language model (Claude Opus) and kept only if a second model of the same family (Claude Sonnet), labelling blind, agreed under strict rules; the data may therefore favour Claude-family readings, and we exclude Claude models from the benchmark. No new item was labelled by a human; a small human spot-check of a stratified sample (36 labels) found no errors. We benchmark 22 systems: six commercial decision models, fourteen open models under 9B parameters run zero-shot, and two embedding classifiers. A classifier trained on BANKING77 labels clean queries with 0.91 accuracy but scores 0.48 on BANKING77-X; the best decision models reach 0.88; the best open model reaches 0.77. Detecting ambiguity is the hardest part: most systems that label intents with 90%+ accuracy almost never recognise that a message is ambiguous.",
+ "description": "BANKING77 has been the default benchmark for fine-grained intent detection since 2020, and it is now also a launch benchmark for a new class of decision…",
+ "keywords": [
+  "intent detection",
+  "BANKING77",
+  "benchmark audit",
+  "label noise",
+  "conversational agents",
+  "ambiguity detection",
+  "out-of-scope detection",
+  "decision models"
+ ],
+ "inLanguage": "en",
+ "url": "https://vamshibobby.github.io/papers/banking77-is-broken/",
+ "mainEntityOfPage": "https://vamshibobby.github.io/papers/banking77-is-broken/",
+ "isAccessibleForFree": true,
+ "license": "https://creativecommons.org/licenses/by/4.0/",
+ "encoding": {
+  "@type": "MediaObject",
+  "contentUrl": "https://vamshibobby.github.io/papers/banking77-is-broken/banking77-is-broken.pdf",
+  "encodingFormat": "application/pdf",
+  "name": "banking77-is-broken.pdf"
+ },
+ "isBasedOn": {
+  "@type": "SoftwareSourceCode",
+  "codeRepository": "https://github.com/vamshibobby/banking77-x",
+  "url": "https://github.com/vamshibobby/banking77-x"
+ },
+ "sameAs": "https://doi.org/10.5281/zenodo.24601220",
+ "identifier": {
+  "@type": "PropertyValue",
+  "propertyID": "DOI",
+  "value": "10.5281/zenodo.24601220"
+ },
+ "publisher": {
+  "@type": "Organization",
+  "name": "Zenodo"
+ }
+}
+</script>
+<style>:root{--bg:#fdfcf9;--fg:#1d1d1b;--muted:#5d5d57;--line:#dedbd2;--accent:#1f5fae;--box:#f3f1ea;--code:#f1efe8}
+@media (prefers-color-scheme:dark){:root{--bg:#16171a;--fg:#e6e4de;--muted:#a3a19a;--line:#34363b;--accent:#8ab8f0;--box:#1f2125;--code:#22252a}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.62 Charter,"Bitstream Charter","Sitka Text",Cambria,Georgia,serif}
+main,.site-head,.site-foot{max-width:46rem;margin:0 auto;padding:0 16px}
+.site-head{padding-top:18px;font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+.site-head a{color:var(--muted);text-decoration:none}
+.site-foot{margin-top:3rem;padding-bottom:2rem;border-top:1px solid var(--line);color:var(--muted);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+h1,h2,h3,h4{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.25}
+h1{font-size:1.75rem;margin:1.4rem 0 .5rem}
+h1 .subtitle{display:block;font-size:1.15rem;font-weight:500;color:var(--muted);margin-top:.35rem}
+h2{font-size:1.3rem;margin:2.2rem 0 .6rem;padding-bottom:.25rem;border-bottom:1px solid var(--line)}
+h3{font-size:1.08rem;margin:1.6rem 0 .4rem}
+h4{font-size:1rem;margin:1.2rem 0 .3rem}
+.kicker,.byline,.status,.linkbar,.meta{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.kicker{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;margin:1.6rem 0 0}
+.byline{margin:.4rem 0;font-size:.98rem}
+.status{color:var(--muted);font-size:.9rem;margin:.3rem 0}
+.linkbar{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 0;padding:0;list-style:none;font-size:.92rem}
+.linkbar a{display:inline-block;padding:.28rem .7rem;border:1px solid var(--line);border-radius:6px;text-decoration:none;background:var(--box)}
+#abstract{background:var(--box);border-radius:8px;padding:.2rem 1.1rem .6rem;margin-top:1.5rem}
+#abstract h2{border:0;margin-top:1rem}
+.table-wrap{overflow-x:auto;margin:1.2rem 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;min-width:60%}
+caption{caption-side:bottom;text-align:left;color:var(--muted);font-size:13.5px;padding-top:.5rem;line-height:1.45}
+th,td{border-bottom:1px solid var(--line);padding:.35rem .55rem;text-align:left;vertical-align:top}
+thead th{border-bottom:2px solid var(--fg)}
+th[colspan]{text-align:center}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+figure{margin:1.6rem 0}
+figure img{display:block;max-width:100%;height:auto;margin:0 auto;background:#fff;border-radius:4px;padding:6px}
+figcaption{color:var(--muted);font-size:.9rem;margin-top:.5rem;line-height:1.5}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86em}
+code{background:var(--code);padding:0 .2em;border-radius:3px;word-break:break-word}
+pre{background:var(--code);padding:.8rem 1rem;border-radius:6px;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0}
+#cite pre{white-space:pre-wrap}
+#references ol,#references ul{padding-left:1.6rem;font-size:.92rem}
+#references li{margin-bottom:.35rem}
+.papers{list-style:none;padding:0}
+.papers li{margin:0 0 1.8rem}
+.papers h3{margin:0 0 .25rem;font-size:1.12rem}
+.papers h3 a{text-decoration:none}
+.papers .meta{color:var(--muted);font-size:.88rem;margin:0 0 .35rem}
+.papers p{margin:.25rem 0}
+.papers .linkbar{margin-top:.5rem;font-size:.85rem}
+.note{color:var(--muted);font-size:.92rem}
+@media (max-width:540px){body{font-size:16px}h1{font-size:1.45rem}}</style>
+</head>
+<body>
+<header class="site-head"><a href="../../">← Sai Vamshi Atukuri · Research papers</a></header>
+<main>
+<article itemscope itemtype="https://schema.org/ScholarlyArticle">
+<header>
+<p class="kicker">Preprint · November 2026</p>
+<h1 itemprop="name">BANKING77 Is Broken<span class="subtitle">Rethinking a Cornerstone Intent-Detection Benchmark for Enterprise Conversational Agents</span></h1>
+<p class="byline"><a href="../../" rel="author" itemprop="author">Sai Vamshi Atukuri</a> · Independent Researcher, USA · <a href="https://orcid.org/0009-0003-3111-7148">ORCID 0009-0003-3111-7148</a></p>
+<p class="status">Preprint published on Zenodo on 27 November 2026: <a href="https://doi.org/10.5281/zenodo.24601220">doi:10.5281/zenodo.24601220</a>.</p>
+<ul class="linkbar"><li><a href="banking77-is-broken.pdf" type="application/pdf">PDF</a></li><li><a href="https://github.com/vamshibobby/banking77-x">Code</a></li><li><a href="https://doi.org/10.5281/zenodo.24601220">DOI 10.5281/zenodo.24601220</a></li><li><a href="#cite">Cite</a></li></ul>
+</header>
+<section id="abstract"><h2>Abstract</h2>
+<p>BANKING77 has been the default benchmark for fine-grained intent detection since 2020, and it is now also a launch benchmark for a new class of <em>decision models</em> that return typed, probabilistic answers instead of text. We show that it no longer measures what modern conversational agents need. An audit of all 13,083 queries finds that about 1.1% of labels are clearly wrong and a further ~6% are genuinely ambiguous, so the realistic accuracy ceiling is 96–97%, not 100%. Over half of the test set has a near-paraphrase in the training set, and every reported improvement since 2020 sits inside the benchmark’s ±0.85-point confidence interval. The benchmark is also blind by construction to what enterprise assistants actually face: out-of-scope requests, underspecified requests that require a clarifying question, messages with several requests, multi-turn context and escalation to a human. We introduce BANKING77-X, a 20,381-record extension that keeps the 77 intents, so existing models can be evaluated as they are, corrects the original’s audited labels, and makes these cases first-class: every user turn receives one of 80 categories (77 intents plus <code>ambiguous</code>, <code>multi_intent</code> and <code>out_of_scope</code>), along with a three-level hierarchy, escalation signals and entity spans. All new items were generated by one large language model (Claude Opus) and kept only if a second model of the same family (Claude Sonnet), labelling blind, agreed under strict rules; the data may therefore favour Claude-family readings, and we exclude Claude models from the benchmark. No new item was labelled by a human; a small human spot-check of a stratified sample (36 labels) found no errors. We benchmark 22 systems: six commercial decision models, fourteen open models under 9B parameters run zero-shot, and two embedding classifiers. A classifier trained on BANKING77 labels clean queries with 0.91 accuracy but scores 0.48 on BANKING77-X; the best decision models reach 0.88; the best open model reaches 0.77. Detecting ambiguity is the hardest part: most systems that label intents with 90%+ accuracy almost never recognise that a message is ambiguous.</p>
+</section>
+<section id="key-results"><h2>Key results</h2>
+<table><thead><tr><th scope="col">Result</th><th scope="col">Value reported in the paper</th></tr></thead><tbody>
+<tr><th scope="row">Clearly wrong BANKING77 labels</th><td>about 1.1% (~140 rows, 95% CI 102–211), including ~36 in the test set</td></tr>
+<tr><th scope="row">Genuinely ambiguous BANKING77 queries</th><td>a further ~6%; realistic accuracy ceiling 96–97%, not 100%</td></tr>
+<tr><th scope="row">Train–test leakage</th><td>58% of test items have a training neighbour at cosine ≥0.90 (28.6% at ≥0.95)</td></tr>
+<tr><th scope="row">Statistical resolution of the test set</th><td>95% Wilson interval about ±0.85 points near 94% accuracy; no full-data improvement since 2020 clearly clears it</td></tr>
+<tr><th scope="row">BANKING77-X size</th><td>20,381 records (12,654 train / 1,735 dev / 5,992 test), 80 categories</td></tr>
+<tr><th scope="row">Classifier trained on BANKING77 only</th><td>0.91 category accuracy on clean queries, 0.476 BANKING77-X score</td></tr>
+<tr><th scope="row">Best decision models (BANKING77-X score)</th><td>Perplexity Decider 27B 0.877; Jev 1.13 0.869; Mercury Decide 0.829</td></tr>
+<tr><th scope="row">Best open models under 9B, zero-shot</th><td>Gemma 4 E4B 0.766; Qwen3.5-4B 0.749</td></tr>
+</tbody></table>
+<p class="note">Scores are on test-mini (931 chat records); see Table 4. Total API cost of the benchmark was about $1.84.</p>
+</section>
+<section id="sec-1">
+<h2>1. Introduction</h2>
+<p>Intent detection is the first decision a task-oriented assistant makes: before it can answer, it has to know what the customer wants. BANKING77 <span class="citation" data-cites="casanueva2020efficient">(<a href="#ref-casanueva2020efficient">Casanueva et al. 2020</a>)</span> became the standard yardstick for this decision because it is single-domain, fine-grained (77 intents) and hard for keyword matchers. It is reported in few-shot learning papers <span class="citation" data-cites="zhang2021cpft mehri2020dialoglue mehri2021example">(<a href="#ref-zhang2021cpft">Zhang et al. 2021</a>; <a href="#ref-mehri2020dialoglue">Mehri et al. 2020</a>; <a href="#ref-mehri2021example">Mehri and Eric 2021</a>)</span>, in embedding leaderboards through MTEB <span class="citation" data-cites="muennighoff2023mteb">(<a href="#ref-muennighoff2023mteb">Muennighoff et al. 2023</a>)</span>, in LLM in-context learning studies <span class="citation" data-cites="loukas2023breaking li2024longiclbench">(<a href="#ref-loukas2023breaking">Loukas, Stogiannidis, Malakasiotis, et al. 2023</a>; <a href="#ref-li2024longiclbench">Li et al. 2025</a>)</span>, and now in the launch posts of commercial decision models that answer typed questions with calibrated probabilities.</p>
+<p>Two things have changed since BANKING77 was released. First, the benchmark has saturated. Full-data accuracy has moved from 93.66 <span class="citation" data-cites="casanueva2020efficient">(<a href="#ref-casanueva2020efficient">Casanueva et al. 2020</a>)</span> to 94.42 <span class="citation" data-cites="lin2023icda">(<a href="#ref-lin2023icda">Lin et al. 2023</a>)</span> in three years, a gap of 23 test items, and we show that the remaining errors are mostly label noise and genuine ambiguity rather than model failures. Second, the systems being evaluated are no longer stand-alone classifiers. They sit inside chat assistants that must decide <em>what to do</em> with a message: answer it, ask a clarifying question, say it is out of scope, or hand the customer to a person. BANKING77 cannot test any of these decisions: it has no out-of-scope class, no conversation, and forces every query into exactly one label.</p>
+<p>This paper makes four contributions.</p>
+<ol>
+<li><p><strong>An audit of BANKING77</strong> covering label noise, the accuracy ceiling and statistical resolution, train–test leakage, taxonomy design, realism and distribution traps (§<a href="#sec-3">3</a>). Several of these issues were reported piecemeal before <span class="citation" data-cites="ying2022label zhang2022oos casanueva2022nlu">(<a href="#ref-ying2022label">Ying and Thomas 2022</a>; <a href="#ref-zhang2022oos">Zhang et al. 2022</a>; <a href="#ref-casanueva2022nlu">Casanueva et al. 2022</a>)</span>; we quantify them together and add new ones.</p></li>
+<li><p><strong>BANKING77-X</strong>, an extension built for modern conversational agents (§<a href="#sec-4">4</a>). It keeps the 77 intents and adds 80-way per-turn categories, strict ambiguity and multi-intent labels, 870 dialogues labelled turn by turn, escalation signals, entities and a hierarchy.</p></li>
+<li><p><strong>A decision-task evaluation protocol</strong> with a scenario-weighted score, so that strong accuracy on clean queries cannot hide failures on out-of-scope, ambiguous or conversational input (§<a href="#sec-5">5</a>).</p></li>
+<li><p><strong>A benchmark of 22 systems</strong>, including six decision models served through OpenRouter and fourteen recent open models (§<a href="#sec-6">6</a>). The whole benchmark cost under $2 in API fees.</p></li>
+</ol>
+</section>
+<section id="sec-2">
+<h2>2. Background and related work</h2>
+<section id="the-banking77-dataset">
+<h4>The BANKING77 dataset.</h4>
+<p><span class="citation" data-cites="casanueva2020efficient">Casanueva et al. (<a href="#ref-casanueva2020efficient">2020</a>)</span> released BANKING77 together with dual sentence encoders (USE <span class="citation" data-cites="cer2018use">(<a href="#ref-cer2018use">Cer et al. 2018</a>)</span> and ConveRT <span class="citation" data-cites="henderson2020convert">(<a href="#ref-henderson2020convert">Henderson et al. 2020</a>)</span>) for efficient intent detection. It contains 13,083 customer-service queries for a UK/EU app-only e-money product, split into 10,003 training and 3,080 test queries (40 per intent), across 77 intents. The authors reported 93.66% for fine-tuned BERT and 93.36% for USE+ConveRT in the full-data setting, and released 10- and 30-shot settings to emphasise few-shot learning. The paper does not describe how the queries were collected or labelled.</p>
+</section>
+<section id="work-built-on-banking77">
+<h4>Work built on BANKING77.</h4>
+<p>BANKING77 quickly became a standard few-shot benchmark. DialoGLUE <span class="citation" data-cites="mehri2020dialoglue">(<a href="#ref-mehri2020dialoglue">Mehri et al. 2020</a>)</span> included it in a suite of dialogue understanding tasks and carved its own validation set from the training data. Contrastive pre-training and fine-tuning <span class="citation" data-cites="zhang2021cpft">(<a href="#ref-zhang2021cpft">Zhang et al. 2021</a>)</span> reported 80.86 and 87.20 at 5 and 10 shots, re-running discriminative nearest-neighbour classification <span class="citation" data-cites="zhang2020dnnc">(<a href="#ref-zhang2020dnnc">Zhang et al. 2020</a>)</span> as a baseline, and example-driven intent prediction <span class="citation" data-cites="mehri2021example">(<a href="#ref-mehri2021example">Mehri and Eric 2021</a>)</span> reached 93.83–94.06 with full data on DialoGLUE’s split. Selective in-context data augmentation <span class="citation" data-cites="lin2023icda">(<a href="#ref-lin2023icda">Lin et al. 2023</a>)</span> pushed full-data accuracy to 94.42 with RoBERTa-Large. MTEB <span class="citation" data-cites="muennighoff2023mteb">(<a href="#ref-muennighoff2023mteb">Muennighoff et al. 2023</a>)</span> made BANKING77 one of its classification tasks, so it now feeds every embedding leaderboard; several embedding models train on its training split <span class="citation" data-cites="lee2024nvembed wang2024e5mistral">(<a href="#ref-lee2024nvembed">Lee et al. 2025</a>; <a href="#ref-wang2024e5mistral">Wang et al. 2024</a>)</span>. In the LLM era, <span class="citation" data-cites="loukas2023breaking loukas2023penny">Loukas, Stogiannidis, Malakasiotis, et al. (<a href="#ref-loukas2023breaking">2023</a>; <a href="#ref-loukas2023penny">Loukas, Stogiannidis, Diamantopoulos, et al. 2023</a>)</span> compared GPT-3.5, GPT-4 and SetFit <span class="citation" data-cites="tunstall2022setfit">(<a href="#ref-tunstall2022setfit">Tunstall et al. 2022</a>)</span> in few-shot settings (83.1 micro-F1 for GPT-4 with three curated examples per class); LongICLBench <span class="citation" data-cites="li2024longiclbench">(<a href="#ref-li2024longiclbench">Li et al. 2025</a>)</span> used it to test long-context in-context learning; <span class="citation" data-cites="park2025dynamic">Park et al. (<a href="#ref-park2025dynamic">2025</a>)</span> showed that rewriting its label names per query changes in-context accuracy by 2–4 points; and a recent survey of 41 open models up to 9B parameters <span class="citation" data-cites="ganesh2026selecting">(<a href="#ref-ganesh2026selecting">Ganesh et al. 2026</a>)</span> found a best zero-shot accuracy of 0.708 from label names alone. InstructDial <span class="citation" data-cites="gupta2022instructdial">(<a href="#ref-gupta2022instructdial">Gupta et al. 2022</a>)</span> held it out for zero-shot evaluation.</p>
+</section>
+<section id="known-problems-and-corrections">
+<h4>Known problems and corrections.</h4>
+<p><span class="citation" data-cites="ying2022label">Ying and Thomas (<a href="#ref-ying2022label">2022</a>)</span> applied confident learning <span class="citation" data-cites="northcutt2021cl">(<a href="#ref-northcutt2021cl">C. Northcutt et al. 2021</a>)</span> and a similarity heuristic to the <em>training</em> split and flagged about 14% of it as possibly mislabelled; the two methods agreed on the corrected label for only 80 of the 127 items both flagged, no flag was checked by hand, the test set was not examined, and no corrected release followed. <span class="citation" data-cites="zhang2022oos">Zhang et al. (<a href="#ref-zhang2022oos">2022</a>)</span> showed that the absence of out-of-scope examples hides a large weakness: holding out 27 intents as in-domain out-of-scope, a 5-shot RoBERTa reached only 43.0% in-scope accuracy and 46.3% out-of-scope precision. <span class="citation" data-cites="casanueva2022nlu">Casanueva et al. (<a href="#ref-casanueva2022nlu">2022</a>)</span> criticised single-label, low-diversity intent datasets in general and proposed multi-label, slot-rich NLU++. HINT3 <span class="citation" data-cites="arora2020hint3">(<a href="#ref-arora2020hint3">Arora et al. 2020</a>)</span> and <span class="citation" data-cites="chrabrowa2023going">Chrabrowa et al. (<a href="#ref-chrabrowa2023going">2023</a>)</span> contrasted research datasets with imbalanced, overlapping real-world traffic. MTEB’s revised BANKING77 task removed duplicates and very short texts but changed no labels. More broadly, <span class="citation" data-cites="northcutt2021pervasive">C. G. Northcutt et al. (<a href="#ref-northcutt2021pervasive">2021</a>)</span> showed that test-set label errors can reverse model rankings on popular benchmarks.</p>
+</section>
+<section id="related-intent-datasets">
+<h4>Related intent datasets.</h4>
+<p>CLINC150 <span class="citation" data-cites="larson2019clinc">(<a href="#ref-larson2019clinc">Larson et al. 2019</a>)</span> introduced an out-of-scope class; HWU64 <span class="citation" data-cites="liu2019hwu">(<a href="#ref-liu2019hwu">Liu et al. 2021</a>)</span>, SNIPS <span class="citation" data-cites="coucke2018snips">(<a href="#ref-coucke2018snips">Coucke et al. 2018</a>)</span> and ATIS <span class="citation" data-cites="hemphill1990atis">(<a href="#ref-hemphill1990atis">Hemphill et al. 1990</a>)</span> are coarser single-label sets; MASSIVE <span class="citation" data-cites="fitzgerald2023massive">(<a href="#ref-fitzgerald2023massive">FitzGerald et al. 2023</a>)</span> adds languages; MultiWOZ <span class="citation" data-cites="budzianowski2018multiwoz">(<a href="#ref-budzianowski2018multiwoz">Budzianowski et al. 2018</a>)</span> provides multi-turn context but at a coarser level. None combines BANKING77’s fine granularity with ambiguity, multiple requests, conversation and escalation.</p>
+</section>
+<section id="decision-models">
+<h4>Decision models.</h4>
+<p>A recent class of models, served through OpenRouter’s decisions endpoint <span class="citation" data-cites="openrouter2026decisions">(<a href="#ref-openrouter2026decisions">OpenRouter 2026</a>)</span>, takes a <em>state</em> (text) and typed questions (choice, yes/no, score) and returns probabilities instead of generated text. Examples include TypeSafe Jev <span class="citation" data-cites="jev2026">(<a href="#ref-jev2026">TypeSafe AI 2026</a>)</span>, Perplexity Decider <span class="citation" data-cites="pplxdecider2026">(<a href="#ref-pplxdecider2026">Perplexity AI 2026</a>)</span>, Inception Mercury Decide <span class="citation" data-cites="mercurydecide2026">(<a href="#ref-mercurydecide2026">Inception 2026</a>)</span>, Liquid d1 <span class="citation" data-cites="liquidd1">(<a href="#ref-liquidd1">Liquid AI 2026a</a>)</span>, Cloudflare Clef <span class="citation" data-cites="clef2026">(<a href="#ref-clef2026">Chen et al. 2026</a>)</span> and Kev <span class="citation" data-cites="kev2026">(<a href="#ref-kev2026">Palmer 2026</a>)</span>. BANKING77 is one of the first benchmarks these models are compared on (Table <a href="#table-1">1</a>).</p>
+<div class="table-wrap"><table id="table-1">
+<caption>Table 1: BANKING77 results reported for decision models and reference systems on the full 3,080-query test set. Setup varies widely; subset runs (77–300 queries, 67.8–87.0) are excluded. % = accuracy; F1 = macro-F1 except GPT-4 (micro-F1). The Decision Index figures are vendor-run and were seen only in secondary coverage; the Jev 1.13 and Claude Opus 5 figures are as publicly reported, not re-run by us.</caption>
+<thead>
+<tr>
+<th>Model</th>
+<th>Setup</th>
+<th class="num">Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloudflare Clef</td>
+<td>vendor-run Decision Index</td>
+<td class="num">94.2 F1</td>
+</tr>
+<tr>
+<td>Fine-tuned BERT <span class="citation" data-cites="casanueva2020efficient">(<a href="#ref-casanueva2020efficient">Casanueva et al. 2020</a>)</span></td>
+<td>all 10,003 training examples</td>
+<td class="num">93.7%</td>
+</tr>
+<tr>
+<td>Jev 1.13</td>
+<td>24 retrieved examples + label definitions</td>
+<td class="num">92.4%</td>
+</tr>
+<tr>
+<td>Cloudflare Clef Flash</td>
+<td>vendor-run Decision Index</td>
+<td class="num">90.9 F1</td>
+</tr>
+<tr>
+<td>Claude Opus 5</td>
+<td>zero-shot, one-line definitions</td>
+<td class="num">84.4%</td>
+</tr>
+<tr>
+<td>GPT-4 <span class="citation" data-cites="loukas2023breaking">(<a href="#ref-loukas2023breaking">Loukas, Stogiannidis, Malakasiotis, et al. 2023</a>)</span></td>
+<td>3-shot, curated examples</td>
+<td class="num">83.1 F1</td>
+</tr>
+<tr>
+<td>Jev 1.13</td>
+<td>zero-shot, one-line definitions</td>
+<td class="num">81.0%</td>
+</tr>
+<tr>
+<td>Jev</td>
+<td>vendor-run Decision Index</td>
+<td class="num">79.7 F1</td>
+</tr>
+</tbody>
+</table></div>
+</section>
+</section>
+<section id="sec-3">
+<h2>3. Auditing BANKING77</h2>
+<p>We audited the original PolyAI files (unchanged since 2020) with four parallel analyses: published literature, duplicates and leakage, label noise, and taxonomy and evaluation design.</p>
+<section id="sec-3-1">
+<h3>3.1 Label noise</h3>
+<p>We pooled train and test (13,083 rows), obtained out-of-sample probabilities from 5-fold cross-validation over an ensemble of four inexpensive models (logistic regression on mpnet, bge and e5 sentence embeddings <span class="citation" data-cites="reimers2019sbert">(<a href="#ref-reimers2019sbert">Reimers and Gurevych 2019</a>)</span>, plus TF-IDF; 94.3% accuracy), and ran cleanlab <span class="citation" data-cites="northcutt2021cl cleanlab">(<a href="#ref-northcutt2021cl">C. Northcutt et al. 2021</a>; <a href="#ref-cleanlab">Cleanlab 2026</a>)</span>. We then adjudicated 240 rows one by one: all 150 lowest-quality rows plus random samples of the rest. About <strong>1.1% of labels are clearly wrong</strong> (~140 rows, 95% CI 102–211), including ~36 in the test set (CI 27–51), and a further <strong>~6% are genuinely ambiguous</strong>. cleanlab’s default filter flagged only 0.73% of rows, at 72% precision, and missed about half of the errors among the hardest 150. Errors include “Someone stole my cards!” labelled <code>lost_or_stolen_phone</code> and “How do I top up my card?” labelled <code>transfer_into_account</code>; the same request with different hyphenation receives different labels; and six rows with no intent at all (“what is the word?”) carry gold labels. Because a single, LLM-assisted adjudication pass cannot see errors that the models reproduce, these figures are lower bounds.</p>
+</section>
+<section id="sec-3-2">
+<h3>3.2 The ceiling and statistical resolution</h3>
+<p>Table <a href="#table-2">2</a> decomposes the 170 test items our ensemble gets wrong. Only about 25 are model errors; the rest are wrong gold labels or genuinely ambiguous queries. The realistic ceiling is therefore 96–97%, and above ~95% a model is mostly learning annotator quirks. With 3,080 test items, the 95% Wilson interval on an accuracy near 94% is about ±0.85 points; two independently reported results must differ by ~1.8 points to be distinguishable, and a paired McNemar test needs 0.65–0.97 points. No published full-data improvement since 2020 clearly clears these bars. A frozen sentence-embedding nearest-neighbour model with no training reaches 92.7%; TF-IDF with logistic regression reaches 89.4%.</p>
+<div class="table-wrap"><table id="table-2">
+<caption>Table 2: Causes of the 170 test items a cheap embedding ensemble gets wrong.</caption>
+<thead>
+<tr>
+<th>Cause</th>
+<th class="num">Test items</th>
+<th class="num">Share of test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gold label is wrong</td>
+<td class="num">~36</td>
+<td class="num">1.2%</td>
+</tr>
+<tr>
+<td>Query is genuinely ambiguous</td>
+<td class="num">~109</td>
+<td class="num">3.5%</td>
+</tr>
+<tr>
+<td>Model is actually wrong</td>
+<td class="num">~25</td>
+<td class="num">0.8%</td>
+</tr>
+</tbody>
+</table></div>
+</section>
+<section id="sec-3-3">
+<h3>3.3 Train–test leakage</h3>
+<p>There are no exact duplicates, but 11 test queries differ from a training query only by whitespace. With mpnet embeddings, 28.6% of test items have a training neighbour at cosine ≥0.95 and 58% at ≥0.90. TF-IDF with logistic regression scores 97.3% on the near-copied items and 86.2% on the rest; an mpnet 1-nearest-neighbour model scores 97.7% versus 90.7%. The corpus appears crowd-paraphrased from a small set of scenarios: 60.9% of queries have three or more same-intent paraphrases at cosine ≥0.85, and the vocabulary has only 2,564 word types. Embedding models that train on the BANKING77 training split <span class="citation" data-cites="lee2024nvembed">(<a href="#ref-lee2024nvembed">Lee et al. 2025</a>)</span> and are then scored on its test split in MTEB inherit this leakage.</p>
+</section>
+<section id="sec-3-4">
+<h3>3.4 Taxonomy</h3>
+<p>The 77 intents form a grid of five products (card payment, top-up, transfer, cash withdrawal, direct debit) crossed with six statuses (pending, declined or failed, reverted, fee, not recognised, wrong exchange rate). Many cells differ only by a detail customers rarely state: timing, direction of money, or payment rail. The four transfer-status intents alone cause about 80 confusions in cross-validation, with 10-nearest-neighbour label purity of only 0.71–0.73 for three of them (0.85 for <code>transfer_timing</code>). Several label names misdescribe their data: <code>get_physical_card</code> is about where to find the PIN in 99% of training and 100% of test rows, and GPT-4 and GPT-3.5 misclassify 87.5% of those test items <span class="citation" data-cites="loukas2023penny">(<a href="#ref-loukas2023penny">Loukas, Stogiannidis, Diamantopoulos, et al. 2023</a>)</span>; <code>apple_pay_or_google_pay</code> is 84% about topping up. Two label strings are malformed (<code>Refund_not_showing_up</code>, <code>reverted_card_payment?</code>). This matters for LLM evaluation, which often classifies from label names: a nearest-label-name probe scores 0% on <code>get_physical_card</code>.</p>
+</section>
+<section id="sec-3-5">
+<h3>3.5 Realism and scope</h3>
+<p>Every query is a short, clean, single-turn, in-scope English message with exactly one label. 94.6% start with a capital letter, about 60% end with a question mark, and only about 1% contain a typo. About 1.3% of queries clearly make two requests yet carry one label, and ambiguous queries are forced into a single answer instead of a clarifying question. There is no out-of-scope class, no conversation history, no escalation signal and no entity annotation. The data is dated (six texts say “it’s 2018”), covers one unnamed product, and its collection process is undocumented.</p>
+</section>
+<section id="sec-3-6">
+<h3>3.6 Distribution traps</h3>
+<p>At the time of the audit the official Hugging Face loader was a script that <code>datasets</code> 4.0 no longer ran; the dataset has since been converted to Parquet, and our scripts pin the audited revision. Integer label ids depend on the loader: mapping through <code>categories.json</code> gets all 77 wrong, and Python’s <code>sorted()</code> gets 52 wrong because the capital “R” sorts first. The MTEB mirror silently drops 14 rows (9,993 train / 3,076 test) while keeping the 11 cross-split copies, and its metadata lists a different licence (MIT) from the original (CC-BY-4.0). The original baselines cannot be reproduced: the ConveRT models have been taken down and the few-shot subsets are not in the repository.</p>
+</section>
+</section>
+<section id="sec-4">
+<h2>4. BANKING77-X</h2>
+<section id="sec-4-1">
+<h3>4.1 Design principles</h3>
+<p>BANKING77-X is designed around the decision an enterprise assistant makes on every customer turn.</p>
+<ol>
+<li><p><strong>Compatibility.</strong> The 77 intents are kept, with two names normalised, so any BANKING77 model can be evaluated unchanged. Each intent receives a one-line definition written from its training examples; where the name and the data disagree, the definition wins.</p></li>
+<li><p><strong>One category per turn.</strong> Every user turn receives one of 80 categories: one of the 77 intents; <code>ambiguous</code> (one request that 2–3 intents fit, needing a clarifying question); <code>multi_intent</code> (2–3 separate requests); or <code>out_of_scope</code>.</p></li>
+<li><p><strong>Strict ambiguity.</strong> A message is ambiguous only if it is in scope, 2–3 intents each fit fully, a specific missing cue can be named (direction of money, timing, status, channel or product), and one question would resolve it. Being vague but fitting one intent does not count.</p></li>
+<li><p><strong>Context.</strong> Multi-turn dialogues label every user turn, judged with the history up to that turn.</p></li>
+<li><p><strong>Operations.</strong> Each record carries escalation signals (human request, frustration, live fraud, vulnerable customer, formal complaint) and entity spans.</p></li>
+</ol>
+</section>
+<section id="sec-4-2">
+<h3>4.2 Contents</h3>
+<p>Table <a href="#table-3">3</a> lists the slices. The original queries are kept with the audit’s corrections applied: 73 labels corrected, 91 queries re-labelled as ambiguous with candidate intents, 6 no-intent queries moved to out-of-scope, 22 duplicates removed and a stratified 10% dev split carved from train (BANKING77 has none). Test rows with a near-copy in train are flagged so they can be excluded. A three-level hierarchy (3 domains, 11 families, 77 intents) plus a cross-cutting request type (how-to, status tracking, problem, fee, fraud or security, account action) supports routing: 59% of ambiguous items resolve to a single family, so a hierarchical system can route them even when the exact intent requires a question.</p>
+<div class="table-wrap"><table id="table-3">
+<caption>Table 3: BANKING77-X slices. Totals: 20,381 records (12,654 train / 1,735 dev / 5,992 test); categories: 17,305 single intent, 1,089 ambiguous, 721 multi-intent, 1,266 out-of-scope.</caption>
+<thead>
+<tr>
+<th>Slice</th>
+<th>Content</th>
+<th class="num">Records</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>original</td>
+<td>Cleaned BANKING77 queries</td>
+<td class="num">13,061</td>
+</tr>
+<tr>
+<td>out-of-scope</td>
+<td>30 unsupported banking topics, chit-chat, near-misses</td>
+<td class="num">1,159</td>
+</tr>
+<tr>
+<td>ambiguous</td>
+<td>Strictly ambiguous single messages with candidates and a clarifying question</td>
+<td class="num">715</td>
+</tr>
+<tr>
+<td>multi-intent</td>
+<td>2–3 separate requests in one message</td>
+<td class="num">644</td>
+</tr>
+<tr>
+<td>noisy</td>
+<td>Typos, slang, non-native English, terse and rambling messages</td>
+<td class="num">759</td>
+</tr>
+<tr>
+<td>entities</td>
+<td>Amounts, dates, merchants and 9 more entity types with spans</td>
+<td class="num">763</td>
+</tr>
+<tr>
+<td>hard</td>
+<td>Minimal pairs, keyword traps, misleading label names</td>
+<td class="num">754</td>
+</tr>
+<tr>
+<td>escalation</td>
+<td>Human requests, frustration, live fraud, vulnerability, complaints</td>
+<td class="num">482</td>
+</tr>
+<tr>
+<td>dialogues (v2)</td>
+<td>870 dialogues, one record per user turn (ambiguous-first, context-first)</td>
+<td class="num">1,555</td>
+</tr>
+<tr>
+<td>dialogues (v1)</td>
+<td>Context-dependent last turns</td>
+<td class="num">489</td>
+</tr>
+</tbody>
+</table></div>
+<section id="dialogues">
+<h4>Dialogues.</h4>
+<p>The v2 dialogues follow two patterns. In <em>ambiguous-first</em> dialogues the first user turn is ambiguous, the agent asks a clarifying question, and a later turn resolves it, sometimes with a reply that only works in context (“the second one”), sometimes adding a new request, sometimes still unclear, and sometimes pointing to neither candidate. In <em>context-first</em> dialogues the first turn is clear and a later turn depends on it: an elliptical follow-up (“how long will that take?”), an anaphoric shift (“can I cancel it?”, which is <code>cancel_transfer</code> after a transfer and <code>request_refund</code> after a purchase) or a correction.</p>
+</section>
+</section>
+<section id="sec-4-3">
+<h3>4.3 Construction and validation</h3>
+<p>New items were generated by one large language model (Claude Opus) following a written specification, with one generator per slice, and checked automatically for schema, valid labels, entity spans and duplicates. Every generated item was then labelled <em>blind</em> by a different model (Claude Sonnet), which saw only the dialogue, shuffled across slices, with no slice name and no gold label. Items were kept only if the two agreed: exact intent sets for multi-intent items, and for ambiguous items, the second annotator also had to call the message ambiguous and name at least two of the same candidates. Agreement was 96–100% for out-of-scope, noisy, hard and entity items and for the first turns of dialogues, 81% for multi-intent and escalation items and for multi-turn dialogues overall (84–89% on later turns), and only 42–54% for ambiguous items: most rejections were cases where the second annotator judged one candidate clearly likelier, which our strict rule treats as not ambiguous. Generated items within cosine 0.92 of any original query were removed, and splits were assigned by scenario group so that variants never cross splits. No generated item was labelled by a human. As a spot-check, a human reviewed 21 stratified chat samples (13 dialogues and 8 single messages; 36 labels in total) and marked all 36 correct (95% Wilson lower bound 90%).</p>
+</section>
+</section>
+<section id="sec-5">
+<h2>5. Evaluation protocol</h2>
+<section id="decision-tasks">
+<h4>Decision tasks.</h4>
+<p>Each record is posed as up to five typed questions: <em>route</em> (answer, clarify, out of scope, escalate), <em>category</em> (80 options), <em>intent</em> (77 + none), <em>family</em> (11 + out of scope) and <em>request type</em>. The route follows a fixed policy: escalate on a human request, live fraud, formal complaint or vulnerable customer; otherwise clarify if ambiguous; otherwise out of scope; otherwise answer.</p>
+</section>
+<section id="score">
+<h4>Score.</h4>
+<p>The BANKING77-X score is the mean, over scenarios, of the mean of route accuracy and category accuracy. Every scenario weighs the same, so strong accuracy on the large clean slice cannot hide failures on out-of-scope, ambiguous or conversational input. We also report the precision, recall and F1 of detecting <code>ambiguous</code>, <code>multi_intent</code> and <code>out_of_scope</code>.</p>
+</section>
+<section id="derived-route">
+<h4>Derived route.</h4>
+<p>Decision models answer each question independently, and we found that their separately asked route is often inconsistent with their own category (for example, Jev answers “clarify” for 226 of the 678 test-mini rows whose correct route is “answer”). A deployed bot would combine a category with an escalation check, so our headline uses a <em>derived route</em>: escalate if the model says so, otherwise clarify, out of scope or answer according to its own category. We report both.</p>
+</section>
+<section id="test-mini">
+<h4>test-mini.</h4>
+<p>To keep API costs low we evaluate on <em>test-mini</em>, a stratified 931-record subset of the test split with about 60 records per scenario (150 clean), keeping whole dialogues together. Differences below about 0.03 in the headline score are within noise at this size.</p>
+</section>
+<section id="systems">
+<h4>Systems.</h4>
+<p><em>Decision models</em> were queried through OpenRouter’s decisions endpoint with the five questions as choice questions and the intent definitions as option descriptions; two further decision models (Together Tev1 and Upstage Solar Decide) refuse questions with more than 20 and 26 options respectively and could not be evaluated. <em>Open models</em> (Qwen2.5, Qwen3 and Qwen3.5 <span class="citation" data-cites="qwen2025qwen25 yang2025qwen3 qwen2026qwen35">(<a href="#ref-qwen2025qwen25"><span class="nocase">Qwen Team et al.</span> 2024</a>; <a href="#ref-yang2025qwen3"><span class="nocase">Yang et al.</span> 2025</a>; <a href="#ref-qwen2026qwen35">Qwen Team 2026</a>)</span>, Gemma 4 <span class="citation" data-cites="gemmateam2026gemma4">(<a href="#ref-gemmateam2026gemma4">Gemma Team 2026</a>)</span>, Granite 4.1 <span class="citation" data-cites="ibm2026granite41">(<a href="#ref-ibm2026granite41">Granite Team, IBM 2026</a>)</span>, Phi-4-mini <span class="citation" data-cites="microsoft2025phi4mini">(<a href="#ref-microsoft2025phi4mini"><span class="nocase">Microsoft et al.</span> 2025</a>)</span>, Nemotron 3 Nano 4B <span class="citation" data-cites="nvidia2026nemotron3nano4b nvidia2025nemotron3nano taghibakhshi2025nemotronelastic">(<a href="#ref-nvidia2026nemotron3nano4b">NVIDIA 2026</a>, <a href="#ref-nvidia2025nemotron3nano">2025</a>; <a href="#ref-taghibakhshi2025nemotronelastic">Taghibakhshi et al. 2025</a>)</span> and LFM2.5 <span class="citation" data-cites="liquid2026lfm25 liquid2026lfm25b liquid2025lfm2">(<a href="#ref-liquid2026lfm25">Liquid AI 2026b</a>, <a href="#ref-liquid2026lfm25b">2026c</a>; <a href="#ref-liquid2025lfm2"><span class="nocase">Amini et al.</span> 2025</a>)</span>) were run zero-shot on free Kaggle GPUs (2×T4) with vLLM <span class="citation" data-cites="kwon2023vllm">(<a href="#ref-kwon2023vllm">Kwon et al. 2023</a>)</span> or transformers, greedy decoding and thinking disabled, using one fixed prompt that lists all 80 categories with definitions, the ambiguity and multi-intent rules and the route policy, and asks for a JSON answer (Appendix <a href="#appendix-a">A</a>). <em>Embedding classifiers</em> are logistic regression on mpnet embeddings <span class="citation" data-cites="allmpnetbasev2">(<a href="#ref-allmpnetbasev2">Sentence-Transformers 2021</a>)</span> trained either on BANKING77 only or on BANKING77-X train. Total API cost was about $1.84 and open models used about 13 free GPU hours; both figures cover runs that also included records outside this paper’s chat scope. We exclude Claude models because the data was generated and validated with Claude.</p>
+</section>
+</section>
+<section id="sec-6">
+<h2>6. Results</h2>
+<figure id="figure-1">
+<img loading="lazy" src="fig/leaderboard.png" alt="Bar chart of the BANKING77-X score on test-mini for all 22 systems, from Perplexity Decider 27B (0.877) down to LFM2.5-1.2B (0.340)" width="680" height="840">
+<img loading="lazy" src="fig/intent_vs_ambiguity.png" alt="Scatter plot of intent accuracy versus ambiguity-detection F1 for every system" width="680" height="540">
+<figcaption>Figure 1: Left: BANKING77-X score on test-mini. Right: intent accuracy versus ambiguity-detection F1. Most systems label plain intents well; only three decision models reliably recognise ambiguity. †LFM2.5-2.6B always reasons before answering and was given 1,024 output tokens instead of 200.</figcaption>
+</figure>
+<div class="table-wrap"><table id="table-4">
+<caption>Table 4: Results on the chat portion of test-mini (931 records). Score = scenario-macro mean of route (derived) and category accuracy; native = with the separately asked route. Type: D decision model (API cost in US$ for test-mini), O open model run zero-shot, C embedding classifier. Best value per column in bold.</caption>
+<thead>
+<tr>
+<th>Model</th>
+<th>Type</th>
+<th class="num">Score</th>
+<th class="num">Native</th>
+<th class="num">Category</th>
+<th class="num">Intent</th>
+<th class="num">Dialogue</th>
+<th class="num">Amb. F1</th>
+<th class="num">Multi F1</th>
+<th class="num">OOS F1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Perplexity Decider 27B</td>
+<td>D ($0.25)</td>
+<td class="num"><strong>0.877</strong></td>
+<td class="num">0.807</td>
+<td class="num"><strong>0.876</strong></td>
+<td class="num"><strong>0.948</strong></td>
+<td class="num"><strong>0.922</strong></td>
+<td class="num"><strong>0.747</strong></td>
+<td class="num">0.872</td>
+<td class="num">0.866</td>
+</tr>
+<tr>
+<td>Jev 1.13</td>
+<td>D ($0.33)</td>
+<td class="num">0.869</td>
+<td class="num">0.736</td>
+<td class="num">0.873</td>
+<td class="num">0.941</td>
+<td class="num">0.893</td>
+<td class="num">0.712</td>
+<td class="num">0.838</td>
+<td class="num">0.857</td>
+</tr>
+<tr>
+<td>Mercury Decide</td>
+<td>D ($0)</td>
+<td class="num">0.829</td>
+<td class="num">0.767</td>
+<td class="num">0.864</td>
+<td class="num">0.943</td>
+<td class="num">0.859</td>
+<td class="num">0.655</td>
+<td class="num"><strong>0.896</strong></td>
+<td class="num"><strong>0.872</strong></td>
+</tr>
+<tr>
+<td>Liquid d1</td>
+<td>D ($0.19)</td>
+<td class="num">0.788</td>
+<td class="num">0.758</td>
+<td class="num">0.774</td>
+<td class="num">0.933</td>
+<td class="num">0.779</td>
+<td class="num">0.060</td>
+<td class="num">0.715</td>
+<td class="num">0.823</td>
+</tr>
+<tr>
+<td>Gemma 4 E4B</td>
+<td>O</td>
+<td class="num">0.766</td>
+<td class="num">0.772</td>
+<td class="num">0.725</td>
+<td class="num">0.881</td>
+<td class="num">0.770</td>
+<td class="num">0.179</td>
+<td class="num">0.473</td>
+<td class="num">0.793</td>
+</tr>
+<tr>
+<td>Qwen3.5-4B</td>
+<td>O</td>
+<td class="num">0.749</td>
+<td class="num">0.748</td>
+<td class="num">0.725</td>
+<td class="num">0.848</td>
+<td class="num">0.745</td>
+<td class="num">0.340</td>
+<td class="num">0.637</td>
+<td class="num">0.728</td>
+</tr>
+<tr>
+<td>Clef Flash 9B</td>
+<td>D ($0.75)</td>
+<td class="num">0.732</td>
+<td class="num">0.624</td>
+<td class="num">0.739</td>
+<td class="num">0.910</td>
+<td class="num">0.709</td>
+<td class="num">0.072</td>
+<td class="num">0.318</td>
+<td class="num">0.815</td>
+</tr>
+<tr>
+<td>Qwen3-8B</td>
+<td>O</td>
+<td class="num">0.710</td>
+<td class="num">0.659</td>
+<td class="num">0.657</td>
+<td class="num">0.776</td>
+<td class="num">0.667</td>
+<td class="num">0.250</td>
+<td class="num">0.650</td>
+<td class="num">0.660</td>
+</tr>
+<tr>
+<td>Qwen3-4B-2507</td>
+<td>O</td>
+<td class="num">0.705</td>
+<td class="num">0.682</td>
+<td class="num">0.646</td>
+<td class="num">0.810</td>
+<td class="num">0.675</td>
+<td class="num">0.147</td>
+<td class="num">0.177</td>
+<td class="num">0.744</td>
+</tr>
+<tr>
+<td>Gemma 4 E2B</td>
+<td>O</td>
+<td class="num">0.694</td>
+<td class="num">0.386</td>
+<td class="num">0.636</td>
+<td class="num">0.789</td>
+<td class="num">0.663</td>
+<td class="num">0.072</td>
+<td class="num">0.433</td>
+<td class="num">0.730</td>
+</tr>
+<tr>
+<td>mpnet heads (X-trained)</td>
+<td>C</td>
+<td class="num">0.681</td>
+<td class="num">0.656</td>
+<td class="num">0.657</td>
+<td class="num">0.806</td>
+<td class="num">0.588</td>
+<td class="num">0.245</td>
+<td class="num">0.319</td>
+<td class="num">0.785</td>
+</tr>
+<tr>
+<td>Kev 4B</td>
+<td>D ($0.24)</td>
+<td class="num">0.672</td>
+<td class="num">0.528</td>
+<td class="num">0.694</td>
+<td class="num">0.848</td>
+<td class="num">0.650</td>
+<td class="num">0.193</td>
+<td class="num">0.132</td>
+<td class="num">0.622</td>
+</tr>
+<tr>
+<td>Granite 4.1 3B</td>
+<td>O</td>
+<td class="num">0.670</td>
+<td class="num">0.473</td>
+<td class="num">0.560</td>
+<td class="num">0.707</td>
+<td class="num">0.659</td>
+<td class="num">0.083</td>
+<td class="num">0.095</td>
+<td class="num">0.726</td>
+</tr>
+<tr>
+<td>Qwen2.5-7B</td>
+<td>O</td>
+<td class="num">0.665</td>
+<td class="num">0.563</td>
+<td class="num">0.575</td>
+<td class="num">0.735</td>
+<td class="num">0.638</td>
+<td class="num">0.070</td>
+<td class="num">0.173</td>
+<td class="num">0.725</td>
+</tr>
+<tr>
+<td>Nemotron 3 Nano 4B</td>
+<td>O</td>
+<td class="num">0.630</td>
+<td class="num">0.621</td>
+<td class="num">0.553</td>
+<td class="num">0.703</td>
+<td class="num">0.653</td>
+<td class="num">0.237</td>
+<td class="num">0.055</td>
+<td class="num">0.527</td>
+</tr>
+<tr>
+<td>LFM2.5-2.6B†</td>
+<td>O</td>
+<td class="num">0.599</td>
+<td class="num">0.454</td>
+<td class="num">0.440</td>
+<td class="num">0.531</td>
+<td class="num">0.645</td>
+<td class="num">0.190</td>
+<td class="num">0.268</td>
+<td class="num">0.566</td>
+</tr>
+<tr>
+<td>Phi-4-mini</td>
+<td>O</td>
+<td class="num">0.508</td>
+<td class="num">0.272</td>
+<td class="num">0.391</td>
+<td class="num">0.524</td>
+<td class="num">0.488</td>
+<td class="num">0.263</td>
+<td class="num">0.268</td>
+<td class="num">0.535</td>
+</tr>
+<tr>
+<td>Qwen3-1.7B</td>
+<td>O</td>
+<td class="num">0.482</td>
+<td class="num">0.252</td>
+<td class="num">0.321</td>
+<td class="num">0.483</td>
+<td class="num">0.479</td>
+<td class="num">0.273</td>
+<td class="num">0.248</td>
+<td class="num">0.544</td>
+</tr>
+<tr>
+<td>mpnet (B77-trained)</td>
+<td>C</td>
+<td class="num">0.476</td>
+<td class="num">0.476</td>
+<td class="num">0.490</td>
+<td class="num">0.624</td>
+<td class="num">0.354</td>
+<td class="num">0.000</td>
+<td class="num">0.000</td>
+<td class="num">0.286</td>
+</tr>
+<tr>
+<td>Qwen3.5-0.8B</td>
+<td>O</td>
+<td class="num">0.430</td>
+<td class="num">0.416</td>
+<td class="num">0.333</td>
+<td class="num">0.451</td>
+<td class="num">0.416</td>
+<td class="num">0.194</td>
+<td class="num">0.074</td>
+<td class="num">0.045</td>
+</tr>
+<tr>
+<td>Qwen3.5-2B</td>
+<td>O</td>
+<td class="num">0.412</td>
+<td class="num">0.364</td>
+<td class="num">0.291</td>
+<td class="num">0.490</td>
+<td class="num">0.348</td>
+<td class="num">0.026</td>
+<td class="num">0.193</td>
+<td class="num">0.299</td>
+</tr>
+<tr>
+<td>LFM2.5-1.2B</td>
+<td>O</td>
+<td class="num">0.340</td>
+<td class="num">0.108</td>
+<td class="num">0.193</td>
+<td class="num">0.241</td>
+<td class="num">0.321</td>
+<td class="num">0.080</td>
+<td class="num">0.048</td>
+<td class="num">0.286</td>
+</tr>
+</tbody>
+</table></div>
+<p>Table <a href="#table-4">4</a> lists all 22 systems; Figure <a href="#figure-1">1</a> summarises them.</p>
+<section id="decision-models-lead-and-ambiguity-separates-them">
+<h4>Decision models lead, and ambiguity separates them.</h4>
+<p>Perplexity Decider (0.877) and Jev (0.869) are tied at the top, followed by Mercury Decide (0.829), which is free. All six decision models label single intents with 85–95% accuracy, but only three recognise ambiguity (F1 0.65–0.75); Liquid d1 and Clef Flash almost never answer <code>ambiguous</code> (F1 0.06–0.07) and fall to 0.79 and 0.73 (Figure <a href="#figure-1">1</a>, right).</p>
+</section>
+<section id="the-best-open-models-are-4b-parameters">
+<h4>The best open models are 4B parameters.</h4>
+<p>Gemma 4 E4B (0.766) and Qwen3.5-4B (0.749) are the strongest open models, ahead of Qwen3-8B (0.710) and the 9B Clef Flash decision model (0.732). Gemma 4 E4B has the highest intent accuracy of any open model (0.881) but rarely says <code>ambiguous</code> (F1 0.18); Qwen3.5-4B detects ambiguity and multiple requests better (F1 0.34 and 0.64). Apart from Gemma 4 E2B (0.694), models of 2B parameters or fewer cannot follow the task reliably and score close to or below the BANKING77-only classifier (0.34–0.48 versus 0.48).</p>
+</section>
+<section id="banking77-accuracy-does-not-predict-banking77-x-performance">
+<h4>BANKING77 accuracy does not predict BANKING77-X performance.</h4>
+<p>The classifier trained only on BANKING77 labels clean queries with 0.91 category accuracy, yet its overall score is 0.48. It cannot clarify, escalate or use context, and it scores 0.00 on ambiguous and multi-intent messages (Figure <a href="#figure-2">2</a>). Training the same classifier on the BANKING77-X training split raises its score to 0.68.</p>
+</section>
+<section id="context-matters">
+<h4>Context matters.</h4>
+<p>On v2 dialogues, the first turn of an ambiguous-first dialogue is the hardest cell for every non-leading system (category accuracy 0.07–0.32 for Liquid d1, Clef Flash, Gemma 4 E4B and Qwen3.5-4B), while the later turns that resolve it are labelled well by the same systems (0.82–0.91).</p>
+<figure id="figure-2">
+<img loading="lazy" src="fig/scenario_heatmap.png" alt="Heatmap of category accuracy by scenario (clean, noisy, hard, out-of-scope, ambiguous, multi-intent, dialogue turns) for selected systems" width="1400" height="540">
+<figcaption>Figure 2: Category accuracy by scenario for selected systems on test-mini. Ambiguous messages and the ambiguous first turns of dialogues separate systems that look alike on clean, noisy and hard queries.</figcaption>
+</figure>
+</section>
+</section>
+<section id="sec-7">
+<h2>7. Why BANKING77-X fits enterprise conversational agents</h2>
+<p>An enterprise assistant is judged on the decision it takes, not on the label it prints. Asking a clarifying question when a request is underspecified, recognising two requests in one message, reading a turn in light of the conversation, declining unsupported requests and escalating vulnerable or defrauded customers are all routine in production and all invisible to BANKING77. BANKING77-X measures each of them, keeps the original 77 intents so results remain comparable, and weights scenarios equally so a single number cannot be earned on clean text alone. Our results show that this changes the ranking: systems separated by a fraction of a point on clean queries are separated by 0.1–0.4 on BANKING77-X.</p>
+</section>
+<section id="sec-8">
+<h2>8. Limitations</h2>
+<ul>
+<li><p><strong>LLM-generated data.</strong> All new items were written by one model family and filtered by another member of the same family. The data may carry that family’s style, and the filter may favour its readings; we therefore exclude Claude models from the benchmark. No generated item was labelled by a human; the human spot-check covered only 36 labels, which bounds but does not establish label accuracy.</p></li>
+<li><p><strong>Strict ambiguity is conservative.</strong> Requiring both annotators to see the same ambiguity removed more than half of the generated ambiguous items; the remaining set under-represents borderline cases.</p></li>
+<li><p><strong>One domain.</strong> BANKING77-X remains a single English-language retail-banking domain.</p></li>
+<li><p><strong>test-mini size and prompts.</strong> With about 60 records per scenario, small differences are noise. Open-model scores depend on the prompt: our first prompt grouped intents under family headings and several models answered with family names; we report the corrected prompt and keep the first run’s outputs.</p></li>
+<li><p><strong>Partial correction of the original.</strong> Only the 240 audited original rows were corrected; roughly 70 wrong labels probably remain.</p></li>
+</ul>
+</section>
+<section id="sec-9">
+<h2>9. Future work</h2>
+<section id="voice">
+<h4>Voice.</h4>
+<p>This paper covers chat. Voice bots add a further layer of difficulty: speech-recognition errors (“top hop” for <em>top up</em>, “pen” for <em>PIN</em>), spoken numbers and amounts, disfluencies and self-corrections, and phone-bot dialogue phenomena such as misrecognition repair, menu-style answers (“the second one”), identity checks mid-call and callers who interrupt. We plan to extend BANKING77-X with a voice channel built from real audio (recorded or synthesised speech passed through production speech recognisers, across accents and noise conditions) and with phone-bot dialogues, so that the same requests can be scored typed and spoken.</p>
+</section>
+<section id="beyond-voice">
+<h4>Beyond voice.</h4>
+<p>Further directions are a larger human-labelled test set, a second generator and validator from a different model family, domains beyond retail banking, and full-test evaluation of the strongest systems.</p>
+</section>
+</section>
+<section id="sec-10">
+<h2>10. Conclusion</h2>
+<p>BANKING77 served the field well, but it now measures a narrow skill that modern systems have largely mastered, with an error floor set by its own labels. The decisions that matter for deployed assistants (clarify, decline, escalate, use context) are exactly where today’s models differ most, and exactly what BANKING77 cannot see. BANKING77-X keeps BANKING77’s intents and adds those decisions. The data, the audit, the evaluation code and all model outputs are at <a href="https://github.com/vamshibobby/banking77-x" class="uri">https://github.com/vamshibobby/banking77-x</a>. The dataset is released under CC-BY-4.0 (the original slice keeps BANKING77’s CC-BY-4.0 licence) and the code under the MIT licence.</p>
+<section id="use-of-ai-tools">
+<h4>Use of AI tools.</h4>
+<p>The BANKING77-X data was generated and validated with Claude models as described in §<a href="#sec-4">4</a>; AI assistance was also used for analysis code and drafting. All results were computed from the data and output files described here. The author designed the study, checked the reported numbers against those files, and takes full responsibility for the content.</p>
+</section>
+<section id="conflicts-of-interest">
+<h4>Conflicts of Interest.</h4>
+<p>The author declares no conflicts of interest.</p>
+</section>
+</section>
+<section id="references">
+<h2>References</h2>
+<ul class="refs">
+<li id="ref-liquid2025lfm2"><span class="nocase">Amini, Alexander, Anna Banaszak, Harold Benoit, et al.</span> 2025. <em><span>LFM2</span> Technical Report</em>. <a href="https://arxiv.org/abs/2511.23404">https://arxiv.org/abs/2511.23404</a>.</li>
+<li id="ref-arora2020hint3">Arora, Gaurav, Chirag Jain, Manas Chaturvedi, and Krupal Modi. 2020. <span>“<span>HINT</span>3: Raising the Bar for Intent Detection in the Wild.”</span> <em>Proceedings of the First Workshop on Insights from Negative Results in NLP</em> (Online), November, 100–105. <a href="https://doi.org/10.18653/v1/2020.insights-1.16">https://doi.org/10.18653/v1/2020.insights-1.16</a>.</li>
+<li id="ref-budzianowski2018multiwoz">Budzianowski, Paweł, Tsung-Hsien Wen, Bo-Hsiang Tseng, et al. 2018. <span>“<span>M</span>ulti<span>WOZ</span> - a Large-Scale Multi-Domain <span>W</span>izard-of-<span>O</span>z Dataset for Task-Oriented Dialogue Modelling.”</span> <em>Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing</em> (Brussels, Belgium), 5016–26. <a href="https://doi.org/10.18653/v1/D18-1547">https://doi.org/10.18653/v1/D18-1547</a>.</li>
+<li id="ref-casanueva2020efficient">Casanueva, Iñigo, Tadas Temčinas, Daniela Gerz, Matthew Henderson, and Ivan Vulić. 2020. <span>“Efficient Intent Detection with Dual Sentence Encoders.”</span> <em>Proceedings of the 2nd Workshop on Natural Language Processing for Conversational AI</em> (Online), July, 38–45. <a href="https://doi.org/10.18653/v1/2020.nlp4convai-1.5">https://doi.org/10.18653/v1/2020.nlp4convai-1.5</a>.</li>
+<li id="ref-casanueva2022nlu">Casanueva, Inigo, Ivan Vulić, Georgios Spithourakis, and Paweł Budzianowski. 2022. <span>“<span>NLU</span>++: A Multi-Label, Slot-Rich, Generalisable Dataset for Natural Language Understanding in Task-Oriented Dialogue.”</span> <em>Findings of the Association for Computational Linguistics: NAACL 2022</em> (Seattle, United States), July, 1998–2013. <a href="https://doi.org/10.18653/v1/2022.findings-naacl.154">https://doi.org/10.18653/v1/2022.findings-naacl.154</a>.</li>
+<li id="ref-cer2018use">Cer, Daniel, Yinfei Yang, Sheng-yi Kong, et al. 2018. <em>Universal Sentence Encoder</em>. <a href="https://arxiv.org/abs/1803.11175">https://arxiv.org/abs/1803.11175</a>.</li>
+<li id="ref-clef2026">Chen, Michelle, Alex Reneau, and Kevin Flansburg. 2026. <em>Introducing <span>Clef</span>: Our Open-Source Decision Models, and New <span>RL</span> Fine-Tuning Platform</em>. Cloudflare Blog. <a href="https://blog.cloudflare.com/clef-decision-models/">https://blog.cloudflare.com/clef-decision-models/</a>.</li>
+<li id="ref-chrabrowa2023going">Chrabrowa, Aleksandra, Tsimur Hadeliya, Dariusz Kajtoch, Robert Mroczkowski, and Piotr Rybak. 2023. <span>“Going Beyond Research Datasets: Novel Intent Discovery in the Industry Setting.”</span> <em>Findings of the Association for Computational Linguistics: EACL 2023</em> (Dubrovnik, Croatia), May, 925–41. <a href="https://doi.org/10.18653/v1/2023.findings-eacl.68">https://doi.org/10.18653/v1/2023.findings-eacl.68</a>.</li>
+<li id="ref-cleanlab">Cleanlab. 2026. <em>Cleanlab: Data-Centric <span>AI</span> Package for Machine Learning with Noisy Labels</em>. GitHub repository. <a href="https://github.com/cleanlab/cleanlab">https://github.com/cleanlab/cleanlab</a>.</li>
+<li id="ref-coucke2018snips">Coucke, Alice, Alaa Saade, Adrien Ball, et al. 2018. <em>Snips Voice Platform: An Embedded Spoken Language Understanding System for Private-by-Design Voice Interfaces</em>. <a href="https://arxiv.org/abs/1805.10190">https://arxiv.org/abs/1805.10190</a>.</li>
+<li id="ref-fitzgerald2023massive">FitzGerald, Jack, Christopher Hench, Charith Peris, et al. 2023. <span>“<span>MASSIVE</span>: A 1<span>M</span>-Example Multilingual Natural Language Understanding Dataset with 51 Typologically-Diverse Languages.”</span> <em>Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)</em> (Toronto, Canada), July, 4277–302. <a href="https://doi.org/10.18653/v1/2023.acl-long.235">https://doi.org/10.18653/v1/2023.acl-long.235</a>.</li>
+<li id="ref-ganesh2026selecting">Ganesh, Parishruthi, Gerry Dozier, and Cheryl Seals. 2026. <em>Selecting Open-Weight Language Models for Zero-Shot Intent Classification: A Systematic Evaluation of 41 Models</em>. <a href="https://arxiv.org/abs/2607.27421">https://arxiv.org/abs/2607.27421</a>.</li>
+<li id="ref-gemmateam2026gemma4">Gemma Team. 2026. <em><span>Gemma 4</span> Technical Report</em>. <a href="https://arxiv.org/abs/2607.02770">https://arxiv.org/abs/2607.02770</a>.</li>
+<li id="ref-ibm2026granite41">Granite Team, IBM. 2026. <em><span>Granite 4.1</span> <span>LLMs</span>: How They’re Built</em>. Hugging Face blog. <a href="https://huggingface.co/blog/ibm-granite/granite-4-1">https://huggingface.co/blog/ibm-granite/granite-4-1</a>.</li>
+<li id="ref-gupta2022instructdial">Gupta, Prakhar, Cathy Jiao, Yi-Ting Yeh, Shikib Mehri, Maxine Eskenazi, and Jeffrey Bigham. 2022. <span>“<span>I</span>nstruct<span>D</span>ial: Improving Zero and Few-Shot Generalization in Dialogue Through Instruction Tuning.”</span> <em>Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing</em> (Abu Dhabi, United Arab Emirates), December, 505–25. <a href="https://doi.org/10.18653/v1/2022.emnlp-main.33">https://doi.org/10.18653/v1/2022.emnlp-main.33</a>.</li>
+<li id="ref-hemphill1990atis">Hemphill, Charles T., John J. Godfrey, and George R. Doddington. 1990. <span>“The <span>ATIS</span> Spoken Language Systems Pilot Corpus.”</span> <em>Speech and Natural Language: Proceedings of a Workshop Held at Hidden Valley, <span>P</span>ennsylvania, June 24-27, 1990</em>. <a href="https://aclanthology.org/H90-1021/">https://aclanthology.org/H90-1021/</a>.</li>
+<li id="ref-henderson2020convert">Henderson, Matthew, Iñigo Casanueva, Nikola Mrkšić, Pei-Hao Su, Tsung-Hsien Wen, and Ivan Vulić. 2020. <span>“<span>C</span>onve<span>RT</span>: Efficient and Accurate Conversational Representations from Transformers.”</span> <em>Findings of the Association for Computational Linguistics: EMNLP 2020</em> (Online), November, 2161–74. <a href="https://doi.org/10.18653/v1/2020.findings-emnlp.196">https://doi.org/10.18653/v1/2020.findings-emnlp.196</a>.</li>
+<li id="ref-mercurydecide2026">Inception. 2026. <em><span>Mercury Decide</span></em>. OpenRouter model page. <a href="https://openrouter.ai/inception/mercury-decide">https://openrouter.ai/inception/mercury-decide</a>.</li>
+<li id="ref-kwon2023vllm">Kwon, Woosuk, Zhuohan Li, Siyuan Zhuang, et al. 2023. <span>“Efficient Memory Management for Large Language Model Serving with <span>PagedAttention</span>.”</span> <em>Proceedings of the 29th Symposium on Operating Systems Principles (SOSP ’23)</em>, 611–26. <a href="https://doi.org/10.1145/3600006.3613165">https://doi.org/10.1145/3600006.3613165</a>.</li>
+<li id="ref-larson2019clinc">Larson, Stefan, Anish Mahendran, Joseph J. Peper, et al. 2019. <span>“An Evaluation Dataset for Intent Classification and Out-of-Scope Prediction.”</span> <em>Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)</em> (Hong Kong, China), November, 1311–16. <a href="https://doi.org/10.18653/v1/D19-1131">https://doi.org/10.18653/v1/D19-1131</a>.</li>
+<li id="ref-lee2024nvembed">Lee, Chankyu, Rajarshi Roy, Mengyao Xu, et al. 2025. <span>“<span>NV-Embed</span>: Improved Techniques for Training <span>LLMs</span> as Generalist Embedding Models.”</span> <em>The Thirteenth International Conference on Learning Representations (ICLR)</em>. <a href="https://arxiv.org/abs/2405.17428">https://arxiv.org/abs/2405.17428</a>.</li>
+<li id="ref-li2024longiclbench">Li, Tianle, Ge Zhang, Quy Duc Do, Xiang Yue, and Wenhu Chen. 2025. <span>“Long-Context <span>LLMs</span> Struggle with Long in-Context Learning.”</span> <em>Transactions on Machine Learning Research</em>. <a href="https://openreview.net/forum?id=Cw2xlg0e46">https://openreview.net/forum?id=Cw2xlg0e46</a>.</li>
+<li id="ref-lin2023icda">Lin, Yen-Ting, Alexandros Papangelis, Seokhwan Kim, et al. 2023. <span>“Selective in-Context Data Augmentation for Intent Detection Using Pointwise <span>V</span>-Information.”</span> <em>Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics</em> (Dubrovnik, Croatia), May, 1463–76. <a href="https://doi.org/10.18653/v1/2023.eacl-main.107">https://doi.org/10.18653/v1/2023.eacl-main.107</a>.</li>
+<li id="ref-liquidd1">Liquid AI. 2026a. <em>D1</em>. OpenRouter model page. <a href="https://openrouter.ai/liquid/d1">https://openrouter.ai/liquid/d1</a>.</li>
+<li id="ref-liquid2026lfm25">Liquid AI. 2026b. <em>Introducing <span>LFM2.5</span>: The Next Generation of on-Device <span>AI</span></em>. Liquid AI blog. <a href="https://www.liquid.ai/blog/introducing-lfm2-5-the-next-generation-of-on-device-ai">https://www.liquid.ai/blog/introducing-lfm2-5-the-next-generation-of-on-device-ai</a>.</li>
+<li id="ref-liquid2026lfm25b">Liquid AI. 2026c. <em><span>LFM2.5-2.6B</span>: Deploy Agents Everywhere</em>. Liquid AI blog. <a href="https://www.liquid.ai/blog/lfm2-5-2-6b">https://www.liquid.ai/blog/lfm2-5-2-6b</a>.</li>
+<li id="ref-liu2019hwu">Liu, Xingkun, Arash Eshghi, Pawel Swietojanski, and Verena Rieser. 2021. <span>“Benchmarking Natural Language Understanding Services for Building Conversational Agents.”</span> In <em>Increasing Naturalness and Flexibility in Spoken Dialogue Interaction: 10th International Workshop on Spoken Dialogue Systems (IWSDS 2019)</em>, vol. 714. Lecture Notes in Electrical Engineering. Springer Singapore. <a href="https://doi.org/10.1007/978-981-15-9323-9_15">https://doi.org/10.1007/978-981-15-9323-9_15</a>.</li>
+<li id="ref-loukas2023penny">Loukas, Lefteris, Ilias Stogiannidis, Odysseas Diamantopoulos, Prodromos Malakasiotis, and Stavros Vassos. 2023. <span>“Making <span>LLMs</span> Worth Every Penny: Resource-Limited Text Classification in Banking.”</span> <em>Proceedings of the 4th ACM International Conference on AI in Finance (ICAIF ’23)</em>, November, 392–400. <a href="https://doi.org/10.1145/3604237.3626891">https://doi.org/10.1145/3604237.3626891</a>.</li>
+<li id="ref-loukas2023breaking">Loukas, Lefteris, Ilias Stogiannidis, Prodromos Malakasiotis, and Stavros Vassos. 2023. <span>“Breaking the Bank with <span>C</span>hat<span>GPT</span>: Few-Shot Text Classification for Finance.”</span> <em>Proceedings of the Fifth Workshop on Financial Technology and Natural Language Processing and the Second Multimodal AI for Financial Forecasting</em> (Macao), 74–80. <a href="https://aclanthology.org/2023.finnlp-1.7/">https://aclanthology.org/2023.finnlp-1.7/</a>.</li>
+<li id="ref-mehri2021example">Mehri, Shikib, and Mihail Eric. 2021. <span>“Example-Driven Intent Prediction with Observers.”</span> <em>Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies</em> (Online), June, 2979–92. <a href="https://doi.org/10.18653/v1/2021.naacl-main.237">https://doi.org/10.18653/v1/2021.naacl-main.237</a>.</li>
+<li id="ref-mehri2020dialoglue">Mehri, Shikib, Mihail Eric, and Dilek Hakkani-Tür. 2020. <em><span>DialoGLUE</span>: A Natural Language Understanding Benchmark for Task-Oriented Dialogue</em>. <a href="https://arxiv.org/abs/2009.13570">https://arxiv.org/abs/2009.13570</a>.</li>
+<li id="ref-microsoft2025phi4mini"><span class="nocase">Microsoft, Abdelrahman Abouelenin, Atabak Ashfaq, et al.</span> 2025. <em><span>Phi-4-Mini</span> Technical Report: Compact yet Powerful Multimodal Language Models via Mixture-of-<span>LoRAs</span></em>. <a href="https://arxiv.org/abs/2503.01743">https://arxiv.org/abs/2503.01743</a>.</li>
+<li id="ref-muennighoff2023mteb">Muennighoff, Niklas, Nouamane Tazi, Loic Magne, and Nils Reimers. 2023. <span>“<span>MTEB</span>: Massive Text Embedding Benchmark.”</span> <em>Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics</em> (Dubrovnik, Croatia), May, 2014–37. <a href="https://doi.org/10.18653/v1/2023.eacl-main.148">https://doi.org/10.18653/v1/2023.eacl-main.148</a>.</li>
+<li id="ref-northcutt2021pervasive">Northcutt, Curtis G., Anish Athalye, and Jonas Mueller. 2021. <span>“Pervasive Label Errors in Test Sets Destabilize Machine Learning Benchmarks.”</span> <em>Proceedings of the Neural Information Processing Systems Track on Datasets and Benchmarks</em> 1. <a href="https://datasets-benchmarks-proceedings.neurips.cc/paper/2021/hash/f2217062e9a397a1dca429e7d70bc6ca-Abstract-round1.html">https://datasets-benchmarks-proceedings.neurips.cc/paper/2021/hash/f2217062e9a397a1dca429e7d70bc6ca-Abstract-round1.html</a>.</li>
+<li id="ref-northcutt2021cl">Northcutt, Curtis, Lu Jiang, and Isaac Chuang. 2021. <span>“Confident Learning: Estimating Uncertainty in Dataset Labels.”</span> <em>Journal of Artificial Intelligence Research</em> 70: 1373–411. <a href="https://doi.org/10.1613/jair.1.12125">https://doi.org/10.1613/jair.1.12125</a>.</li>
+<li id="ref-nvidia2025nemotron3nano">NVIDIA. 2025. <em><span>Nemotron 3 Nano</span>: Open, Efficient Mixture-of-Experts Hybrid <span>Mamba-Transformer</span> Model for Agentic Reasoning</em>. <a href="https://arxiv.org/abs/2512.20848">https://arxiv.org/abs/2512.20848</a>.</li>
+<li id="ref-nvidia2026nemotron3nano4b">NVIDIA. 2026. <em><span>NVIDIA-Nemotron-3-Nano-4B-BF16</span> Model Card</em>. Hugging Face model card. <a href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16">https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16</a>.</li>
+<li id="ref-openrouter2026decisions">OpenRouter. 2026. <em>Decisions <span>API</span>: Submit a Decisions Request (<span>POST</span> /Api/Alpha/Decisions)</em>. OpenRouter API reference. <a href="https://openrouter.ai/docs/api/api-reference/alphadecisions/submit-a-decisions-request">https://openrouter.ai/docs/api/api-reference/alphadecisions/submit-a-decisions-request</a>.</li>
+<li id="ref-kev2026">Palmer, Jared. 2026. <em><span>Kev-4B</span>: A Calibrated Decision Model on <span>Qwen3.5-4B</span></em>. OpenRouter model page. <a href="https://openrouter.ai/jaredpalmer/kev-4b">https://openrouter.ai/jaredpalmer/kev-4b</a>.</li>
+<li id="ref-park2025dynamic">Park, Gyutae, Ingeol Baek, Byeongjeong Kim, Joongbo Shin, and Hwanhee Lee. 2025. <span>“Dynamic Label Name Refinement for Few-Shot Dialogue Intent Classification.”</span> <em>Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)</em> (Vienna, Austria), July, 41–52. <a href="https://doi.org/10.18653/v1/2025.acl-short.3">https://doi.org/10.18653/v1/2025.acl-short.3</a>.</li>
+<li id="ref-pplxdecider2026">Perplexity AI. 2026. <em>Pplx-Decider-V1-27b</em>. OpenRouter model page. <a href="https://openrouter.ai/perplexity/pplx-decider-v1-27b">https://openrouter.ai/perplexity/pplx-decider-v1-27b</a>.</li>
+<li id="ref-qwen2026qwen35">Qwen Team. 2026. <em><span>Qwen3.5</span>: Towards Native Multimodal Agents</em>. Blog post. <a href="https://qwen.ai/blog?id=qwen3.5">https://qwen.ai/blog?id=qwen3.5</a>.</li>
+<li id="ref-qwen2025qwen25"><span class="nocase">Qwen Team, An Yang, Baosong Yang, et al.</span> 2024. <em><span>Qwen2.5</span> Technical Report</em>. <a href="https://arxiv.org/abs/2412.15115">https://arxiv.org/abs/2412.15115</a>.</li>
+<li id="ref-reimers2019sbert">Reimers, Nils, and Iryna Gurevych. 2019. <span>“Sentence-<span>BERT</span>: Sentence Embeddings Using <span>S</span>iamese <span>BERT</span>-Networks.”</span> <em>Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)</em> (Hong Kong, China), November, 3982–92. <a href="https://doi.org/10.18653/v1/D19-1410">https://doi.org/10.18653/v1/D19-1410</a>.</li>
+<li id="ref-allmpnetbasev2">Sentence-Transformers. 2021. <em>All-Mpnet-Base-V2</em>. Hugging Face model card. <a href="https://huggingface.co/sentence-transformers/all-mpnet-base-v2">https://huggingface.co/sentence-transformers/all-mpnet-base-v2</a>.</li>
+<li id="ref-taghibakhshi2025nemotronelastic">Taghibakhshi, Ali, Sharath Turuvekere Sreenivas, Saurav Muralidharan, et al. 2025. <em>Nemotron Elastic: Towards Efficient Many-in-One Reasoning <span>LLMs</span></em>. <a href="https://arxiv.org/abs/2511.16664">https://arxiv.org/abs/2511.16664</a>.</li>
+<li id="ref-tunstall2022setfit">Tunstall, Lewis, Nils Reimers, Unso Eun Seo Jo, et al. 2022. <em>Efficient Few-Shot Learning Without Prompts</em>. <a href="https://arxiv.org/abs/2209.11055">https://arxiv.org/abs/2209.11055</a>.</li>
+<li id="ref-jev2026">TypeSafe AI. 2026. <em>Jev 1.13: Structured Decision Model</em>. OpenRouter model page. <a href="https://openrouter.ai/typesafe/jev-1.13">https://openrouter.ai/typesafe/jev-1.13</a>.</li>
+<li id="ref-wang2024e5mistral">Wang, Liang, Nan Yang, Xiaolong Huang, Linjun Yang, Rangan Majumder, and Furu Wei. 2024. <span>“Improving Text Embeddings with Large Language Models.”</span> <em>Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)</em> (Bangkok, Thailand), August, 11897–916. <a href="https://doi.org/10.18653/v1/2024.acl-long.642">https://doi.org/10.18653/v1/2024.acl-long.642</a>.</li>
+<li id="ref-yang2025qwen3"><span class="nocase">Yang, An, Anfeng Li, Baosong Yang, et al.</span> 2025. <em><span>Qwen3</span> Technical Report</em>. <a href="https://arxiv.org/abs/2505.09388">https://arxiv.org/abs/2505.09388</a>.</li>
+<li id="ref-ying2022label">Ying, Cecilia, and Stephen Thomas. 2022. <span>“Label Errors in <span>BANKING</span>77.”</span> <em>Proceedings of the Third Workshop on Insights from Negative Results in NLP</em> (Dublin, Ireland), May, 139–43. <a href="https://doi.org/10.18653/v1/2022.insights-1.19">https://doi.org/10.18653/v1/2022.insights-1.19</a>.</li>
+<li id="ref-zhang2021cpft">Zhang, Jianguo, Trung Bui, Seunghyun Yoon, et al. 2021. <span>“Few-Shot Intent Detection via Contrastive Pre-Training and Fine-Tuning.”</span> <em>Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing</em> (Online; Punta Cana, Dominican Republic), November, 1906–12. <a href="https://doi.org/10.18653/v1/2021.emnlp-main.144">https://doi.org/10.18653/v1/2021.emnlp-main.144</a>.</li>
+<li id="ref-zhang2020dnnc">Zhang, Jianguo, Kazuma Hashimoto, Wenhao Liu, et al. 2020. <span>“Discriminative Nearest Neighbor Few-Shot Intent Detection by Transferring Natural Language Inference.”</span> <em>Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)</em> (Online), November, 5064–82. <a href="https://doi.org/10.18653/v1/2020.emnlp-main.411">https://doi.org/10.18653/v1/2020.emnlp-main.411</a>.</li>
+<li id="ref-zhang2022oos">Zhang, Jianguo, Kazuma Hashimoto, Yao Wan, et al. 2022. <span>“Are Pre-Trained Transformers Robust in Intent Classification? A Missing Ingredient in Evaluation of Out-of-Scope Intent Detection.”</span> <em>Proceedings of the 4th Workshop on NLP for Conversational AI</em> (Dublin, Ireland), May, 12–20. <a href="https://doi.org/10.18653/v1/2022.nlp4convai-1.2">https://doi.org/10.18653/v1/2022.nlp4convai-1.2</a>.</li>
+</ul>
+</section>
+<section id="appendix-a">
+<h2>Appendix A. Prompt for open models</h2>
+<p>The system prompt (about 2,240 tokens) lists the 77 intents with one-line definitions in alphabetical order and then states:</p>
+<blockquote>
+<p>Classify the customer’s LAST message, using earlier turns of the conversation as context. CATEGORY — exactly one of: one of the 77 intents, if the message makes one clear request; “ambiguous”, if it makes ONE request that 2–3 intents each fit fully and a specific missing detail (direction of money, timing, status, channel, product) would decide between them; “multi_intent”, if it makes 2–3 SEPARATE requests; “out_of_scope”, if none of the 77 intents covers it. ROUTE — “escalate” if the customer asks for a human, reports fraud happening right now, makes a formal complaint or legal threat, or is in a vulnerable situation; otherwise “clarify” if ambiguous; otherwise “out_of_scope”; otherwise “answer”. Reply with ONLY a JSON object: {"category", "intents", "candidate_intents", "route"}.</p>
+</blockquote>
+<p>The user message is the conversation (with a “Channel: chat” header) followed by “Classify the customer’s last message.”</p>
+</section>
+<section id="appendix-b">
+<h2>Appendix B. Hierarchy</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Families</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cards</td>
+<td>card lifecycle; card problems and security; PIN and passcode; virtual cards</td>
+</tr>
+<tr>
+<td>money movement</td>
+<td>card payments; top-up; transfers; cash and ATM; currency exchange</td>
+</tr>
+<tr>
+<td>account</td>
+<td>identity verification; account management</td>
+</tr>
+<tr>
+<td>out of scope</td>
+<td>credit and lending; savings and investing; other products; app features; support and legal; general</td>
+</tr>
+</tbody>
+</table></div>
+
+</section>
+<section id="cite"><h2>Cite this paper</h2>
+<p>Atukuri, S. V. (2026). BANKING77 Is Broken: Rethinking a Cornerstone Intent-Detection Benchmark for Enterprise Conversational Agents. Zenodo. https://doi.org/10.5281/zenodo.24601220</p>
+<pre><code>@misc{atukuri2026banking77,
+  author       = {Atukuri, Sai Vamshi},
+  title        = {{BANKING77 Is Broken: Rethinking a Cornerstone Intent-Detection Benchmark for Enterprise Conversational Agents}},
+  year         = {2026},
+  month        = nov,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.24601220},
+  url          = {https://doi.org/10.5281/zenodo.24601220}
+}</code></pre>
+<p class="note">Full text: <a href="https://vamshibobby.github.io/papers/banking77-is-broken/">https://vamshibobby.github.io/papers/banking77-is-broken/</a> · PDF: <a href="banking77-is-broken.pdf">https://vamshibobby.github.io/papers/banking77-is-broken/banking77-is-broken.pdf</a> · Code: <a href="https://github.com/vamshibobby/banking77-x">https://github.com/vamshibobby/banking77-x</a> · Licence: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+</section>
+</article>
+</main>
+<footer class="site-foot"><p>© 2026 Sai Vamshi Atukuri. Text licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. <a href="../../">All papers</a> · <a href="../../llms.txt">llms.txt</a></p></footer>
+</body>
+</html>

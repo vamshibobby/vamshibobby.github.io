@@ -1,7 +1,7 @@
 # Sai Vamshi Atukuri — research papers (full abstracts and key results)
 
 Independent researcher working on decision models, LLM agents and evaluation. Independent Researcher, USA. ORCID https://orcid.org/0009-0003-3111-7148. GitHub https://github.com/vamshibobby.
-Generated 2026-11-24.
+Generated 2026-11-27.
 
 ==============================================================================
 
@@ -120,4 +120,150 @@ Atukuri, S. V. (2026). Choosing Affordable Language Models for Serial Fiction: I
   publisher    = {Zenodo},
   doi          = {10.5281/zenodo.22977925},
   url          = {https://doi.org/10.5281/zenodo.22977925}
+}
+
+==============================================================================
+
+Decisions Without Generation: What Universal Decision Models Changed About Classification, and Where a Fine-Tuned 4B Model Still Wins
+
+Author: Sai Vamshi Atukuri (Independent Researcher, ORCID 0009-0003-3111-7148)
+Date: 2026-11-27
+Status: Preprint published on Zenodo on 27 November 2026: doi:10.5281/zenodo.24601222.
+Full text (HTML): https://vamshibobby.github.io/papers/decisions-without-generation/
+PDF: https://vamshibobby.github.io/papers/decisions-without-generation/decisions-without-generation.pdf
+Code: https://github.com/vamshibobby/decisions-without-generation
+DOI: https://doi.org/10.5281/zenodo.24601222
+Keywords: text classification; decision models; calibration; LoRA; AI agents; tool selection; LLM serving cost; selective prediction
+
+Abstract
+
+The release of TypeSafe’s Jev, a hosted “System One” model that answers typed questions about a
+piece of text with calibrated probabilities in a single non-autoregressive pass, did something that
+a decade of text classifiers had not: it put a classifier into the hands of people who never trained
+one, and it was pointed at decisions where nobody had thought to use a classifier before. Browser
+agents ask it which element to click. Orchestrators ask it which tool to call and whether the call
+is risky. Harnesses ask it whether a trajectory succeeded or is looping. Moderation pipelines ask it
+whether a response is harmful. We treat these as new problem statements and ask a practical
+question: on the decision surfaces Jev made visible, how do the classical tools of the field,
+sentence-embedding classifiers, zero-shot log-probability readouts, and classifier heads on a small
+fine-tuned language model, perform in accuracy, calibration, latency and cost? We build four designs
+on Qwen3.5-4B that share Jev’s interface (state plus one to five typed questions, one forward pass,
+one probability vector per question): a zero-shot logprob readout, LoRA with linear heads, LoRA with
+a per-option [CLS] scorer for dynamic option sets, and a LoRA language model read at answer slots.
+We evaluate them, an embedding floor, and Jev on sixteen datasets spanning intent routing,
+moderation, tool selection, browser-step selection, agent-trajectory judging, fact verification,
+adversarial inference and knowledge, with temperature fitted on a disjoint calibration split and
+every model measured on the same rows. The picture is consistent. With a few thousand labels and ten
+to eighty minutes on a rented GPU, a fine-tuned 4B model matches or beats the universal model on
+every agentic decision we measured, at 55–85 ms per decision against roughly 250 ms for the API, and
+at $1–9 per million decisions on a fully used GPU against $10–144 billed per token. The head design
+barely matters; training does. Jev, in turn, is the strongest zero-label decision model we measured,
+beats our zero-shot 4B on every reading task, escalates when evidence is missing where our best
+fine-tuned model has learned to guess, and is the most conservative scorer at high confidence. On
+knowledge we ran two probes: on the public MMLU-Pro benchmark Jev leads a one-pass 4B by nineteen
+points, but on ObscureWikiQA, a set built from articles too obscure for any benchmark, its closed-
+book accuracy is within the confidence interval of the 4B’s, so the MMLU-Pro lead reflects that
+benchmark rather than a general advantage. Decomposing a decision into typed sub-questions, the
+lever its users report most often, did not help on the one task where we tested it. We also analyse
+serving: a hosted API scales out by adding concurrent calls, while a self-hosted classifier is bound
+by the capacity of its GPU, and we measure what continuous batching does to that ceiling on one task
+(one A100 goes from 17 requests per second one at a time to 73 under load) and where the cost curves
+cross. We also build Jev’s serving contract on the 4B itself, encoding the state once with the
+untouched base weights and fanning isolated question segments out over the cached state: accuracy
+matches or slightly exceeds the shared-prompt arms and a marginal question costs two milliseconds,
+at the price of a second forward pass. We conclude that universal decision models democratised
+classification, that in most labelled, high-volume settings a purpose-tuned small classifier will
+still do the better job, and that both are needed. We close with a research direction: reinforcement
+learning for decision models whose reward comes from the environment the decision acts in, rather
+than from a loss that penalises false positives and negatives, which would reduce to supervised
+training with a different name.
+
+Key results (numbers as reported in the paper)
+
+- Agentic decisions (fine-tuned 4B vs Jev): With a few thousand labels and ten to eighty minutes on a rented GPU, a fine-tuned 4B model matches or beats the universal model on every agentic decision measured
+- Latency per decision: 55–85 ms (fine-tuned 4B) against roughly 250 ms for the API
+- Cost per million decisions: $1–9 on a fully used GPU against $10–144 billed per token
+- Mind2Web browser-step selection: One epoch (6,787 steps, about 20 minutes on an A100) gives 6 points over the universal model in distribution and 5 to 6 on unseen websites and domains
+- Knowledge: Jev leads a one-pass 4B by nineteen points on MMLU-Pro; on ObscureWikiQA its closed-book accuracy is within the confidence interval of the 4B's
+- Continuous batching, one A100: 17 requests per second one at a time → 73 under load
+- Jev-style fan-out on the 4B: Accuracy matches or slightly exceeds the shared-prompt arms; a marginal question costs two milliseconds
+- Decomposition into typed sub-questions: Did not help on the one task where it was tested
+  (Sixteen datasets spanning intent routing, moderation, tool selection, browser-step selection, agent-trajectory judging, fact verification, adversarial inference and knowledge; numbers from the abstract and Table 4.)
+
+How to cite
+
+Atukuri, S. V. (2026). Decisions Without Generation: What Universal Decision Models Changed About Classification, and Where a Fine-Tuned 4B Model Still Wins. Zenodo. https://doi.org/10.5281/zenodo.24601222
+
+@misc{atukuri2026decisions,
+  author       = {Atukuri, Sai Vamshi},
+  title        = {{Decisions Without Generation: What Universal Decision Models Changed About Classification, and Where a Fine-Tuned 4B Model Still Wins}},
+  year         = {2026},
+  month        = nov,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.24601222},
+  url          = {https://doi.org/10.5281/zenodo.24601222}
+}
+
+==============================================================================
+
+BANKING77 Is Broken: Rethinking a Cornerstone Intent-Detection Benchmark for Enterprise Conversational Agents
+
+Author: Sai Vamshi Atukuri (Independent Researcher, ORCID 0009-0003-3111-7148)
+Date: 2026-11-27
+Status: Preprint published on Zenodo on 27 November 2026: doi:10.5281/zenodo.24601220.
+Full text (HTML): https://vamshibobby.github.io/papers/banking77-is-broken/
+PDF: https://vamshibobby.github.io/papers/banking77-is-broken/banking77-is-broken.pdf
+Code: https://github.com/vamshibobby/banking77-x
+DOI: https://doi.org/10.5281/zenodo.24601220
+Keywords: intent detection; BANKING77; benchmark audit; label noise; conversational agents; ambiguity detection; out-of-scope detection; decision models
+
+Abstract
+
+BANKING77 has been the default benchmark for fine-grained intent detection since 2020, and it is now
+also a launch benchmark for a new class of decision models that return typed, probabilistic answers
+instead of text. We show that it no longer measures what modern conversational agents need. An audit
+of all 13,083 queries finds that about 1.1% of labels are clearly wrong and a further ~6% are
+genuinely ambiguous, so the realistic accuracy ceiling is 96–97%, not 100%. Over half of the test
+set has a near-paraphrase in the training set, and every reported improvement since 2020 sits inside
+the benchmark’s ±0.85-point confidence interval. The benchmark is also blind by construction to what
+enterprise assistants actually face: out-of-scope requests, underspecified requests that require a
+clarifying question, messages with several requests, multi-turn context and escalation to a human.
+We introduce BANKING77-X, a 20,381-record extension that keeps the 77 intents, so existing models
+can be evaluated as they are, corrects the original’s audited labels, and makes these cases first-
+class: every user turn receives one of 80 categories (77 intents plus ambiguous, multi_intent and
+out_of_scope), along with a three-level hierarchy, escalation signals and entity spans. All new
+items were generated by one large language model (Claude Opus) and kept only if a second model of
+the same family (Claude Sonnet), labelling blind, agreed under strict rules; the data may therefore
+favour Claude-family readings, and we exclude Claude models from the benchmark. No new item was
+labelled by a human; a small human spot-check of a stratified sample (36 labels) found no errors. We
+benchmark 22 systems: six commercial decision models, fourteen open models under 9B parameters run
+zero-shot, and two embedding classifiers. A classifier trained on BANKING77 labels clean queries
+with 0.91 accuracy but scores 0.48 on BANKING77-X; the best decision models reach 0.88; the best
+open model reaches 0.77. Detecting ambiguity is the hardest part: most systems that label intents
+with 90%+ accuracy almost never recognise that a message is ambiguous.
+
+Key results (numbers as reported in the paper)
+
+- Clearly wrong BANKING77 labels: about 1.1% (~140 rows, 95% CI 102–211), including ~36 in the test set
+- Genuinely ambiguous BANKING77 queries: a further ~6%; realistic accuracy ceiling 96–97%, not 100%
+- Train–test leakage: 58% of test items have a training neighbour at cosine ≥0.90 (28.6% at ≥0.95)
+- Statistical resolution of the test set: 95% Wilson interval about ±0.85 points near 94% accuracy; no full-data improvement since 2020 clearly clears it
+- BANKING77-X size: 20,381 records (12,654 train / 1,735 dev / 5,992 test), 80 categories
+- Classifier trained on BANKING77 only: 0.91 category accuracy on clean queries, 0.476 BANKING77-X score
+- Best decision models (BANKING77-X score): Perplexity Decider 27B 0.877; Jev 1.13 0.869; Mercury Decide 0.829
+- Best open models under 9B, zero-shot: Gemma 4 E4B 0.766; Qwen3.5-4B 0.749
+  (Scores are on test-mini (931 chat records); see Table 4. Total API cost of the benchmark was about $1.84.)
+
+How to cite
+
+Atukuri, S. V. (2026). BANKING77 Is Broken: Rethinking a Cornerstone Intent-Detection Benchmark for Enterprise Conversational Agents. Zenodo. https://doi.org/10.5281/zenodo.24601220
+
+@misc{atukuri2026banking77,
+  author       = {Atukuri, Sai Vamshi},
+  title        = {{BANKING77 Is Broken: Rethinking a Cornerstone Intent-Detection Benchmark for Enterprise Conversational Agents}},
+  year         = {2026},
+  month        = nov,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.24601220},
+  url          = {https://doi.org/10.5281/zenodo.24601220}
 }
